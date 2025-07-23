@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Haunted Empire - Creator Monetization Platform</title>
+    <script src="config.js"></script>
     <meta name="description" content="Haunted Empire provides monetization tools and services for horror content creators, including payment processing and revenue tracking.">
     <style>
         * {
@@ -135,6 +136,16 @@
     </header>
 
     <main>
+        <!-- Monetization & Backend Integration Buttons -->
+        <section class="section monetization-section">
+            <h2>Monetization Actions</h2>
+            <button onclick="triggerStripePayment()" class="monetization-btn">Test Stripe Payment</button>
+            <button onclick="triggerLoreDrop()" class="monetization-btn lore">Trigger Live Lore Drop</button>
+            <button onclick="fetchStats()" class="monetization-btn status">Show Backend Status</button>
+        </section>
+        <!-- Alert and Stats containers -->
+        <div id="alert-box"></div>
+        <div id="stats-box"></div>
         <section class="hero">
             <div class="container">
                 <h1>Haunted Empire</h1>
