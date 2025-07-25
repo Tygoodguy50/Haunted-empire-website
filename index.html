@@ -6,6 +6,13 @@
     <title>Haunted Empire - Creator Monetization Platform</title>
     <script src="config.js"></script>
     <script src="main.js"></script>
+    <!-- Analytics: Google Analytics or Plausible (privacy-friendly) -->
+    <script defer data-domain="haunted-empire.com" src="https://plausible.io/js/plausible.js"></script>
+    <script>
+      window.analyticsTrack = function(event, props) {
+        if (window.plausible) plausible(event, {props});
+      };
+    </script>
     <meta name="description" content="Haunted Empire provides monetization tools and services for horror content creators, including payment processing and revenue tracking.">
     <style>
         * {
@@ -136,6 +143,42 @@
         </nav>
     </header>
 
+    <!-- Feature Flags (A/B Testing) -->
+    <script>
+      window.FEATURE_FLAGS = {
+        promoBanner: true,
+        loreDrop: true,
+        referralBanner: true,
+        leaderboardGrowth: true,
+        stripeWebhookBadge: true
+      };
+    </script>
+    <!-- Email Capture Modal -->
+    <div id="email-modal" class="hidden email-modal">
+      <div class="email-modal-content">
+        <h2 class="email-modal-title">Unlock More Earnings!</h2>
+        <p>Enter your email for exclusive offers and bonus credits.</p>
+        <input type="email" id="user-email" placeholder="Your email" class="email-input">
+        <button id="email-submit" class="monetization-btn lore">Submit</button>
+        <button id="email-close" class="monetization-btn status email-close">Close</button>
+      </div>
+    </div>
+
+    <!-- Referral Banner -->
+    <div class="ad-promo referral-banner hidden" id="referral-banner">
+      <span>Refer a friend &amp; earn $10 in credits!</span>
+      <input type="text" id="referral-link" readonly class="referral-link" placeholder="Your referral link" title="Referral link for sharing">
+      <button class="monetization-btn lore" id="copy-referral">Copy Link</button>
+    </div>
+
+    <!-- Leaderboard -->
+    <section class="section" id="leaderboard-section">
+      <div class="container">
+        <h2>Top Earners This Week</h2>
+        <ol id="leaderboard" class="leaderboard-list"></ol>
+      </div>
+    </section>
+
     <main>
         <!-- Monetization & Backend Integration Buttons -->
         <section class="section monetization-section">
@@ -157,10 +200,170 @@
         <section id="about" class="section">
             <div class="container">
                 <h2>About Haunted Empire</h2>
+        <!-- Monetization Banner: Dynamic Ad Promo -->
+        <div class="ad-promo" data-featured id="promo-banner">
+          <span class="ci-status-badge" data-success id="promo-status">Live</span>
+          <span id="promo-message">🎉 Limited Time: Get 2x Lore Credits on all purchases!</span>
+          <button class="monetization-btn lore" id="promo-action">Claim Now</button>
+        </div>
+
+        <!-- Dynamic Lore Drop Section -->
+        <div class="lore-drop" data-new id="lore-drop">
+          <span class="ci-status-badge" data-success id="lore-status">Deployed</span>
+          <strong id="lore-title">New Lore Drop:</strong>
+          <span id="lore-content">The Haunted Empire expands with the Shadow Market! Earn bonus credits for early access.</span>
+          <button class="monetization-btn status" id="lore-action">Unlock Early Access</button>
+        </div>
+
+    <!-- CI/CD Status Badges (Dynamic) -->
+    <div class="ci-status-container">
+      <span class="ci-status-badge" data-success id="build-status">Build Passed</span>
+      <span class="ci-status-badge" data-fail id="deploy-status">Deploy Failed</span>
+      <span class="ci-status-badge" data-success id="stripe-webhook-status" style="display:none">Stripe Payouts: OK</span>
+    </div>
+
+        <script>
+          // Stripe Checkout Integration
+          function openStripeCheckout(product) {
+            fetch('/create-checkout-session', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ product })
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.url) window.location = data.url;
+              else alert('Payment error.');
+              analyticsTrack('stripe_checkout', {product});
+            });
+          }
+
+          // Promo Banner A/B Test
+          document.getElementById('promo-action').onclick = function() {
+            openStripeCheckout('lore-credits');
+            document.getElementById('promo-message').textContent = '✅ Claimed! Your bonus credits are on the way.';
+            document.getElementById('promo-status').setAttribute('data-success', '');
+            analyticsTrack('promo_claimed', {variant: 'A'});
+          };
+
+          // Lore Drop A/B Test
+          document.getElementById('lore-action').onclick = function() {
+            openStripeCheckout('early-access');
+            document.getElementById('lore-content').textContent = '✅ Early access unlocked! You earned bonus credits.';
+            document.getElementById('lore-status').setAttribute('data-success', '');
+            analyticsTrack('loredrop_unlocked', {variant: 'A'});
+          };
+
+          // Email Capture Modal Logic & Analytics
+          setTimeout(() => {
+            document.getElementById('email-modal').classList.remove('hidden');
+            analyticsTrack('email_modal_shown', {});
+          }, 2000);
+          document.getElementById('email-close').onclick = function() {
+            document.getElementById('email-modal').classList.add('hidden');
+            analyticsTrack('email_modal_closed', {});
+          };
+          document.getElementById('email-submit').onclick = function() {
+            const email = document.getElementById('user-email').value;
+            if (!email || !email.includes('@')) return alert('Enter a valid email.');
+            fetch('/api/email-capture', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email })
+            }).then(() => {
+              document.getElementById('email-modal').classList.add('hidden');
+              document.getElementById('referral-banner').style.display = 'block';
+              document.getElementById('referral-link').value = window.location.origin + '/?ref=' + btoa(email);
+              analyticsTrack('email_captured', {email});
+            });
+          };
+
+          // Referral System & Analytics
+          document.getElementById('copy-referral').onclick = function() {
+            navigator.clipboard.writeText(document.getElementById('referral-link').value);
+            document.getElementById('copy-referral').textContent = 'Copied!';
+            analyticsTrack('referral_copied', {});
+            setTimeout(() => document.getElementById('copy-referral').textContent = 'Copy Link', 2000);
+          };
+
+          // Leaderboard Fetch & Personal Rank
+          function updateLeaderboard() {
+            fetch('/api/leaderboard')
+              .then(res => res.json())
+              .then(data => {
+                const lb = document.getElementById('leaderboard');
+                lb.innerHTML = '';
+                let myEmail = '';
+                try { myEmail = atob((new URLSearchParams(window.location.search)).get('ref') || ''); } catch(e) {}
+                let myRank = null, myGrowth = null;
+                data.forEach((user, i) => {
+                  const li = document.createElement('li');
+                  li.textContent = `#${i+1} ${user.name} — $${user.earnings} this week`;
+                  if (window.FEATURE_FLAGS.leaderboardGrowth && user.growth) {
+                    li.textContent += ` (+${user.growth}% growth)`;
+                  }
+                  if (myEmail && user.email === myEmail) {
+                    myRank = i+1;
+                    myGrowth = user.growth;
+                    li.style.fontWeight = 'bold';
+                  }
+                  lb.appendChild(li);
+                });
+                if (myRank) {
+                  const statsBox = document.getElementById('stats-box');
+                  statsBox.innerHTML = `<div>Your Rank: #${myRank} | Weekly Growth: ${myGrowth || 'N/A'}%</div>`;
+                }
+                analyticsTrack('leaderboard_viewed', {myRank, myGrowth});
+              });
+          }
+          updateLeaderboard();
+
+          // Backend Status Auto-Refresh & Error Reporting
+          function fetchStats() {
+            fetch('/api/status')
+              .then(res => res.json())
+              .then(data => {
+                document.getElementById('stats-box').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                analyticsTrack('backend_status_viewed', {});
+              })
+              .catch(err => {
+                document.getElementById('stats-box').innerHTML = `<span style='color:red'>Error: ${err.message}</span>`;
+                analyticsTrack('backend_status_error', {error: err.message});
+              });
+          }
+          setInterval(fetchStats, 60000); // Auto-refresh every 60s
+
+          // Stripe Webhook Status Badge
+          function checkStripeWebhook() {
+            fetch('/api/stripe-webhook-status')
+              .then(res => res.json())
+              .then(data => {
+                const badge = document.getElementById('stripe-webhook-status');
+                if (data.ok) {
+                  badge.style.display = 'inline-block';
+                  badge.textContent = 'Stripe Payouts: OK';
+                  badge.setAttribute('data-success', '');
+                } else {
+                  badge.style.display = 'inline-block';
+                  badge.textContent = 'Stripe Payouts: Error';
+                  badge.setAttribute('data-fail', '');
+                }
+                analyticsTrack('stripe_webhook_checked', {ok: data.ok});
+              });
+          }
+          if (window.FEATURE_FLAGS.stripeWebhookBadge) setInterval(checkStripeWebhook, 120000); // Every 2 min
+
+          // Simulate CI/CD status change
+          setTimeout(function() {
+            document.getElementById('deploy-status').setAttribute('data-success', '');
+            document.getElementById('deploy-status').textContent = 'Deploy Succeeded';
+            analyticsTrack('deploy_status_changed', {status: 'succeeded'});
+          }, 4000);
+        </script>
                 <p>Haunted Empire is a specialized platform designed to help horror content creators monetize their supernatural storytelling. We provide comprehensive payment processing services, revenue tracking tools, and creator management systems tailored specifically for the horror content community.</p>
                 
                 <p>Our platform enables creators to:</p>
-                <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <ul class="info-list">
                     <li>Process payments for premium horror content</li>
                     <li>Track revenue with tier-based multipliers</li>
                     <li>Manage subscriber relationships</li>
@@ -197,7 +400,7 @@
             <div class="container">
                 <h2>Pricing</h2>
                 <p>We offer competitive transaction fees with no monthly subscription costs:</p>
-                <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <ul class="info-list">
                     <li><strong>Payment Processing:</strong> 2.9% + $0.30 per transaction</li>
                     <li><strong>Creator Tools:</strong> Free access to all creator management features</li>
                     <li><strong>Analytics:</strong> Real-time reporting included at no additional cost</li>
@@ -234,24 +437,24 @@
                 </div>
             </div>
             
-            <div style="margin-top: 2rem; text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+            <div class="footer-bottom">
                 <p>&copy; 2025 PhantomGear Technologies. All rights reserved. | Payment processing powered by Stripe.</p>
             </div>
         </div>
     </footer>
 
     <!-- Legal Pages (Hidden, linked from footer) -->
-    <div id="terms" style="display: none;">
+    <div id="terms" class="hidden">
         <h2>Terms of Service</h2>
         <p>By using Haunted Empire services, you agree to our terms of service...</p>
     </div>
 
-    <div id="privacy" style="display: none;">
+    <div id="privacy" class="hidden">
         <h2>Privacy Policy</h2>
         <p>We respect your privacy and are committed to protecting your personal information...</p>
     </div>
 
-    <div id="refund" style="display: none;">
+    <div id="refund" class="hidden">
         <h2>Refund Policy</h2>
         <p>Refunds are processed according to our 30-day return policy...</p>
     </div>

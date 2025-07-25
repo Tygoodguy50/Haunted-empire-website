@@ -1,8 +1,258 @@
+/* Stripe Webhook Status Badge */
+#stripe-webhook-status {
+  display: none;
+}
+
+/* Logical property equivalents and vendor prefixes for compatibility */
+body {
+  min-block-size: 100vh;
+}
+.container {
+  max-inline-size: 1200px;
+}
+header {
+  border-block-end: 1px solid rgba(255, 107, 107, 0.3);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.logo {
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.hero h1 {
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.hero p {
+  max-inline-size: 600px;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+}
+.section h2 {
+  margin-block-end: 2rem;
+}
+.services {
+  margin-block-start: 2rem;
+}
+.service-card h3 {
+  margin-block-end: 1rem;
+}
+.footer {
+  margin-block-start: 4rem;
+}
+.footer h3 {
+  margin-block-end: 1rem;
+}
+/* Externalized styles for modals, referral, leaderboard */
+.email-modal {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 100vw;
+    block-size: 100vh;
+    background: rgba(0,0,0,0.7);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.email-modal-content {
+    background: #222;
+    padding: 2rem 2.5rem;
+    border-radius: 12px;
+    max-inline-size: 350px;
+    text-align: center;
+    box-shadow: 0 2px 16px 0 rgb(76 205 196 / 30%);
+}
+.email-modal-title {
+    color: #4ecdc4;
+}
+.email-input {
+    inline-size: 90%;
+    padding: 0.5rem;
+    margin-block-end: 1rem;
+    border-radius: 6px;
+    border: none;
+}
+.email-close {
+    margin-block-start: 1rem;
+}
+.referral-banner {
+    display: none;
+}
+.referral-banner.active {
+    display: block;
+}
+.referral-link {
+    inline-size: 70%;
+    margin-block: 0.5rem;
+    border-radius: 6px;
+    border: none;
+    padding: 0.5rem;
+}
+.leaderboard-list {
+    font-size: 1.1rem;
+    color: #4ecdc4;
+}
+/* Externalized styles from index.html inline CSS */
+.ci-status-container {
+    text-align: center;
+    margin-block: 2rem;
+}
+
+.info-list {
+    margin-block: 1rem;
+    padding-inline-start: 2rem;
+}
+
+.footer-bottom {
+    margin-block-start: 2rem;
+    text-align: center;
+    padding-block-start: 2rem;
+    border-block-start: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hidden {
+    display: none;
+}
+/* Responsive Lore Drop & CI/CD UI Integration */
+.lore-drop,
+.ad-promo {
+    display: block;
+    max-inline-size: 700px;
+    margin-inline: auto;
+}
+
+.lore-drop {
+    position: relative;
+    animation: loreDropFadeIn 0.8s cubic-bezier(.4,0,.2,1);
+    background: linear-gradient(90deg, #4ecdc4 0%, #45b7d1 100%);
+    color: #222;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px 0 rgb(76 205 196 / 30%);
+    padding: 1.5rem 2rem;
+    margin-block: 2rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+    letter-spacing: 0.03em;
+    border: 2px solid #45b7d1;
+    transition: box-shadow 0.3s, border-color 0.3s;
+}
+
+@keyframes loreDropFadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.ci-status-badge {
+    position: relative;
+    inset-block-start: -2px;
+    margin-block-end: 0.5em;
+    display: inline-block;
+    padding: 0.3em 0.8em;
+    border-radius: 999px;
+    font-size: 0.95em;
+    font-weight: 700;
+    background: #222;
+    color: #fff;
+    border: 2px solid #4ecdc4;
+    margin-inline-end: 0.5em;
+    vertical-align: middle;
+    box-shadow: 0 1px 4px 0 rgb(76 205 196 / 10%);
+    transition: background 0.2s, border-color 0.2s;
+}
+
+@media (max-width: 600px) {
+    .lore-drop,
+    .ad-promo {
+        max-inline-size: 98vw;
+        font-size: 1em;
+        padding: 1rem 0.5rem;
+    }
+    .ci-status-badge {
+        font-size: 0.85em;
+        padding: 0.2em 0.5em;
+    }
+}
+/* Lore Drop & CI/CD Integration Enhancements */
+.lore-drop {
+
+.lore-drop[data-new] {
+    border-color: #ff6b6b;
+    box-shadow: 0 4px 24px 0 rgb(255 107 107 / 30%);
+}
+
+.ad-promo {
+    background: linear-gradient(90deg, #ff6b6b 0%, #4ecdc4 100%);
+    color: #fff;
+    border-radius: 6px;
+    padding: 1rem 1.5rem;
+    margin-block: 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px 0 rgb(255 107 107 / 15%);
+    border: 1px solid #ff6b6b;
+    text-align: center;
+    transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.ad-promo[data-featured] {
+    border-color: #45b7d1;
+    box-shadow: 0 4px 16px 0 rgb(76 205 196 / 20%);
+}
+
+.ci-status-badge {
+
+.ci-status-badge[data-success] {
+    background: #4ecdc4;
+    color: #222;
+    border-color: #45b7d1;
+}
+
+.ci-status-badge[data-fail] {
+    background: #ff6b6b;
+    color: #fff;
+    border-color: #ff6b6b;
+}
+/* Accessibility & Modern UI Enhancements */
+@media (prefers-color-scheme: dark) {
+    body {
+        color-scheme: dark;
+    }
+}
+
+.nav-links a:focus,
+.nav-links a:active {
+    outline: 2px solid #4ecdc4;
+    outline-offset: 2px;
+    color: #4ecdc4;
+}
+
+.monetization-btn:focus,
+.monetization-btn:active {
+    outline: 2px solid #ff6b6b;
+    outline-offset: 2px;
+}
+
+.footer a:focus,
+.footer a:active {
+    outline: 2px solid #ff6b6b;
+    outline-offset: 2px;
+    color: #ff6b6b;
+}
+
+/* Smoother transitions for interactive elements */
+.monetization-btn,
+.nav-links a,
+.footer a {
+    transition: color 0.3s, background 0.3s, outline 0.2s;
+}
 /* Monetization & Backend Integration Buttons */
 .monetization-section {
     text-align: center;
-    margin-top: 2rem;
+    margin-block-start: 2rem;
 }
+
 .monetization-btn {
     margin: 0.5rem 1rem;
     padding: 0.75rem 2rem;
@@ -12,12 +262,13 @@
     border-radius: 6px;
     font-size: 1rem;
     cursor: pointer;
-    transition: background 0.2s;
 }
+
 .monetization-btn.lore {
     background: #4ecdc4;
     color: #222;
 }
+
 .monetization-btn.status {
     background: #222;
     color: #fff;
@@ -26,8 +277,8 @@
 /* Alert and Stats containers */
 #alert-box {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    inset-block-start: 20px;
+    inset-inline-end: 20px;
     background: #222;
     color: #fff;
     padding: 1rem 2rem;
@@ -35,10 +286,11 @@
     z-index: 9999;
     display: none;
 }
+
 #stats-box {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    inset-block-end: 20px;
+    inset-inline-end: 20px;
     background: #333;
     color: #fff;
     padding: 0.5rem 1.5rem;
@@ -46,116 +298,141 @@
     z-index: 9999;
     display: none;
 }
+
 /* Haunted Empire - Main Stylesheet */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     line-height: 1.6;
     color: #e0e0e0;
     background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 25%, #2a0a2a 50%, #1a0a1a 75%, #0a0a0a 100%);
-    min-height: 100vh;
+    min-block-size: 100vh;
 }
+
 .container {
-    max-width: 1200px;
+    max-inline-size: 1200px;
     margin: 0 auto;
     padding: 0 20px;
 }
+
 header {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgb(255 255 255 / 10%);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     padding: 1rem 0;
-    border-bottom: 1px solid rgba(255, 107, 107, 0.3);
+    border-block-end: 1px solid rgb(255 107 107 / 30%);
 }
+
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 .logo {
     font-size: 1.8rem;
     font-weight: bold;
     background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
 .nav-links {
     display: flex;
     list-style: none;
     gap: 2rem;
 }
+
 .nav-links a {
     color: #e0e0e0;
     text-decoration: none;
     transition: color 0.3s;
 }
+
 .nav-links a:hover {
+
     color: #ff6b6b;
 }
+
+.footer a {
+    color: #ccc;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #4ecdc4;
+}
+
 .hero {
     text-align: center;
     padding: 4rem 0;
 }
+
 .hero h1 {
     font-size: 3rem;
-    margin-bottom: 1rem;
+    margin-block-end: 1rem;
     background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
 .hero p {
     font-size: 1.2rem;
-    margin-bottom: 2rem;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-block-end: 2rem;
+    max-inline-size: 600px;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
 }
+
 .section {
     padding: 3rem 0;
-    margin: 2rem 0;
+    margin-block: 2rem;
 }
+
 .section h2 {
     font-size: 2rem;
-    margin-bottom: 2rem;
+    margin-block-end: 2rem;
     color: #ff6b6b;
 }
+
 .services {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    margin-top: 2rem;
+    margin-block-start: 2rem;
 }
+
 .service-card {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgb(255 255 255 / 10%);
     padding: 2rem;
     border-radius: 10px;
-    border: 1px solid rgba(255, 107, 107, 0.2);
+    border: 1px solid rgb(255 107 107 / 20%);
 }
+
 .service-card h3 {
     color: #4ecdc4;
-    margin-bottom: 1rem;
+    margin-block-end: 1rem;
 }
+
 .footer {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgb(0 0 0 / 30%);
     padding: 3rem 0;
-    margin-top: 4rem;
+    margin-block-start: 4rem;
 }
+
 .footer-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2rem;
 }
+
 .footer h3 {
     color: #ff6b6b;
-    margin-bottom: 1rem;
+    margin-block-end: 1rem;
 }
-.footer a {
-    color: #ccc;
-    text-decoration: none;
-}
-.footer a:hover {
-    color: #4ecdc4;
-}
+
