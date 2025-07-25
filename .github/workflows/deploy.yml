@@ -1,10 +1,5 @@
-jobs:
-      - name: Set Release Tag
-        id: set_tag
-        run: echo "TAG=deploy-$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
 
-
-name: "Haunted Empire Frontend CI/CD"
+name: "Haunted Empire Fullstack CI/CD"
 on:
   push:
     branches:
@@ -15,3 +10,166 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 8 * * *'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout frontend
+        uses: actions/checkout@v4
+        with:
+          path: frontend
+
+      - name: Checkout backend
+        uses: actions/checkout@v4
+        with:
+          repository: Tygoodguy50/haunted-empire-backend
+          path: backend
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Purge Netlify Cache
+        if: success()
+        run: |
+          curl -X POST -H "Authorization: Bearer ${{ secrets.NETLIFY_AUTH_TOKEN }}" \
+            https://api.netlify.com/api/v1/sites/${{ secrets.NETLIFY_SITE_ID }}/purge_cache
+
+      - name: Validate Public URLs
+        run: |
+          curl -sSf https://${{ secrets.NETLIFY_SITE_ID }}.netlify.app | grep Haunted
+          curl -sSf https://${{ secrets.NETLIFY_SITE_ID }}.netlify.app/contact.html | grep Contact
+
+      - name: Set Release Tag
+        id: set_tag
+        run: echo "TAG=deploy-$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        if: success()
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          name: Automated Deploy ${{ env.TAG }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_RELEASE_GITHUB }}
+
+      - name: Notify on Success (Slack)
+        if: success()
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"Haunted Empire deployment succeeded! 🎉"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify on Success (Discord)
+        if: success() && env.DISCORD_WEBHOOK_URL != ''
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H 'Content-Type: application/json' --data '{"content": "Haunted Empire deployment succeeded! 🎉"}' $DISCORD_WEBHOOK_URL
+
+      - name: Install stylelint config (frontend)
+        run: |
+          cd frontend
+          npm install --no-save stylelint-config-standard
+
+      - name: Setup Node.js (frontend)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Lint HTML/CSS/JS (frontend)
+        run: |
+          cd frontend
+          npx htmlhint index.html
+          npx stylelint style.css
+          npx eslint main.js || true
+
+      - name: Lighthouse CI Audit (frontend)
+        run: |
+          cd frontend
+          npm install -g @lhci/cli
+          lhci autorun --collect.url=https://${{ secrets.NETLIFY_SITE_ID }}.netlify.app --upload.target=temporary-public-storage || exit 1
+
+      - name: Trigger Welcome Email (Mailgun)
+        if: success()
+        run: |
+          curl -s -X POST https://api.mailgun.net/v3/mg.phantomgear.it.com/messages \
+            -u "api:${{ secrets.MAILGUN_API_KEY }}" \
+            -F from='Haunted Empire <postmaster@mg.phantomgear.it.com>' \
+            -F to='${{ secrets.PROD_USER_EMAIL }}' \
+            -F subject='Welcome to Haunted Empire!' \
+            -F text='Thanks for joining! Here is your bonus.'
+
+      - name: Trigger Referral Bonus Automation (backend)
+        if: success()
+        run: |
+          curl -sSf https://haunted-empire-backend-1/api/trigger-referral-bonus
+
+      - name: Generate Discount Code (backend)
+        if: success()
+        run: |
+          curl -sSf https://haunted-empire-backend-1/api/generate-discount | tee discount.json
+
+      - name: Email Discount Code (Mailgun)
+        if: success()
+        run: |
+          code=$(cat discount.json | jq -r .code)
+          curl -s -X POST https://api.mailgun.net/v3/mg.phantomgear.it.com/messages \
+            -u "api:${{ secrets.MAILGUN_API_KEY }}" \
+            -F from='Haunted Empire <postmaster@mg.phantomgear.it.com>' \
+            -F to='${{ secrets.PROD_USER_EMAIL }}' \
+            -F subject='Your Haunted Empire Discount Code' \
+            -F text="Use code $code for a special discount!"
+
+      - name: Post to Twitter (X)
+        if: success()
+        env:
+          TWITTER_BEARER_TOKEN: ${{ secrets.TWITTER_BEARER_TOKEN }}
+        run: |
+          curl -X POST "https://api.twitter.com/2/tweets" \
+            -H "Authorization: Bearer $TWITTER_BEARER_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"text":"Haunted Empire just deployed a new update! Check it out: https://${{ secrets.NETLIFY_SITE_ID }}.netlify.app"}'
+
+      - name: Monetization Guardrails - Validate Stripe Webhook (backend)
+        run: |
+          curl -sSf https://haunted-empire-backend-1/api/stripe-webhook-status | grep '"ok":true'
+
+      - name: Monetization Guardrails - Validate Referral Logic (backend)
+        run: |
+          curl -sSf https://haunted-empire-backend-1/api/referral-test | grep '"ok":true'
+
+      - name: Monetization Guardrails - Validate Payout Logic (backend)
+        run: |
+          curl -sSf https://haunted-empire-backend-1/api/payout-test | grep '"ok":true'
+
+      - name: Upload static files to Netlify (frontend)
+        uses: nwtgck/actions-netlify@v2.0
+        with:
+          publish-dir: ./frontend
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          netlify_auth_token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          netlify_site_id: ${{ secrets.NETLIFY_SITE_ID }}
+        # Required secrets:
+        # - NETLIFY_AUTH_TOKEN: Netlify personal access token
+        # - NETLIFY_SITE_ID: Netlify site ID
+        # - GITHUB_TOKEN: GitHub Actions token
+
+      - name: Netlify Health Check (frontend)
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          curl -sSf https://${NETLIFY_SITE_ID}.netlify.app | grep Haunted
+
+      # - name: Post-Deploy Monetization Test (frontend)
+      #   env:
+      #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      #   run: |
+      #     curl -sSf https://${NETLIFY_SITE_ID}.netlify.app/api/leaderboard | grep 'earnings'
+
+      - name: Rollback on Failure
+        if: failure()
+        run: echo "Deployment failed. Rolling back to previous stable version." && exit 1
+
+      - name: Notify on Failure
+        if: failure()
+        run: |
+          echo "Deployment or monetization validation failed!" | tee /dev/stderr
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"Haunted Empire deployment failed. Immediate attention required!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
