@@ -7,7 +7,12 @@ on:
     branches: [ main ]
   workflow_dispatch:
   schedule:
-    - cron: '0 8 * * *' # Daily at 8am UTC
+    - cron: '0 8 * * *'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
       - name: Purge Netlify Cache
         if: success()
         run: |
@@ -40,11 +45,6 @@ on:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           curl -X POST -H 'Content-Type: application/json' --data '{"content": "Haunted Empire deployment succeeded! 🎉"}' $DISCORD_WEBHOOK_URL
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
