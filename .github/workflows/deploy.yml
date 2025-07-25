@@ -31,7 +31,7 @@ jobs:
           tag_name: deploy-$(date +'%Y%m%d%H%M%S')
           name: Automated Deploy $(date +'%Y-%m-%d %H:%M:%S')
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_RELEASE }}
 
       - name: Notify on Success (Slack)
         if: success()
