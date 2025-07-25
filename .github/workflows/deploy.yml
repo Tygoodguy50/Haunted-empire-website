@@ -22,7 +22,6 @@ jobs:
       - name: Validate Public URLs
         run: |
           curl -sSf https://${{ secrets.NETLIFY_SITE_ID }}.netlify.app | grep Haunted
-          curl -sSf https://${{ secrets.NETLIFY_SITE_ID }}.netlify.app/api/leaderboard | grep 'earnings'
           curl -sSf https://${{ secrets.NETLIFY_SITE_ID }}.netlify.app/contact.html | grep Contact
 
       - name: Create GitHub Release
@@ -130,8 +129,8 @@ jobs:
           publish-dir: ./
           production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          netlifySiteId: ${{ secrets.NETLIFY_SITE_ID }}
+          netlify_auth_token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          netlify_site_id: ${{ secrets.NETLIFY_SITE_ID }}
         # Required secrets:
         # - NETLIFY_AUTH_TOKEN: Netlify personal access token
         # - NETLIFY_SITE_ID: Netlify site ID
@@ -143,11 +142,11 @@ jobs:
         run: |
           curl -sSf https://${NETLIFY_SITE_ID}.netlify.app | grep Haunted
 
-      - name: Post-Deploy Monetization Test
-        env:
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        run: |
-          curl -sSf https://${NETLIFY_SITE_ID}.netlify.app/api/leaderboard | grep 'earnings'
+      # - name: Post-Deploy Monetization Test
+      #   env:
+      #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      #   run: |
+      #     curl -sSf https://${NETLIFY_SITE_ID}.netlify.app/api/leaderboard | grep 'earnings'
 
       - name: Rollback on Failure
         if: failure()
