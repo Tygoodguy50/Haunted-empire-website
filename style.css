@@ -282,6 +282,7 @@ header {
 
 .monetization-btn {
     transition: color 0.3s, background 0.3s, outline 0.2s;
+}
 .monetization-btn:focus,
 .monetization-btn:active {
     outline: 2px solid #ff6b6b;
@@ -289,6 +290,7 @@ header {
 }
 .nav-links a {
     transition: color 0.3s, background 0.3s, outline 0.2s;
+}
 .nav-links a:focus,
 .nav-links a:active {
     outline: 2px solid #4ecdc4;
