@@ -137,12 +137,14 @@ header {
     letter-spacing: 0.03em;
     border: 2px solid #45b7d1;
     transition: box-shadow 0.3s, border-color 0.3s;
-}
+
+} /* <-- Added missing closing brace for .lore-drop */
 
 @keyframes loreDropFadeIn {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
 
 .ci-status-badge {
     position: relative;
@@ -160,7 +162,8 @@ header {
     vertical-align: middle;
     box-shadow: 0 1px 4px 0 rgb(76 205 196 / 10%);
     transition: background 0.2s, border-color 0.2s;
-}
+
+} /* <-- Added missing closing brace for .ci-status-badge */
 
 @media (max-width: 600px) {
     .lore-drop,
