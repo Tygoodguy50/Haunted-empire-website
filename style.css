@@ -15,16 +15,13 @@ body {
 header {
   border-block-end: 1px solid rgb(255 107 107 / 30%);
   backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
 }
 
 .logo {
   background-clip: text;
-  background-clip: text;
 }
 
 .hero h1 {
-  background-clip: text;
   background-clip: text;
 }
 
@@ -161,8 +158,15 @@ header {
 }
 
 @keyframes lore-drop-fade-in {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 
@@ -246,27 +250,7 @@ header {
     }
 }
 
-.nav-links a:focus,
-.nav-links a:active {
-    outline: 2px solid #4ecdc4;
-    outline-offset: 2px;
-    color: #4ecdc4;
-}
 
-.monetization-btn:focus,
-.monetization-btn:active {
-    outline: 2px solid #ff6b6b;
-    outline-offset: 2px;
-}
-
-.footer a:focus,
-.footer a:active {
-    outline: 2px solid #ff6b6b;
-    outline-offset: 2px;
-    color: #ff6b6b;
-}
-
-/* Smoother transitions for interactive elements */
 /* Smoother transitions for interactive elements */
 .monetization-btn,
 .nav-links a,
@@ -280,26 +264,26 @@ header {
     margin-block-start: 2rem;
 }
 
-.monetization-btn {
-    transition: color 0.3s, background 0.3s, outline 0.2s;
-}
 .monetization-btn:focus,
 .monetization-btn:active {
     outline: 2px solid #ff6b6b;
     outline-offset: 2px;
 }
-.nav-links a {
-    transition: color 0.3s, background 0.3s, outline 0.2s;
-}
+
 .nav-links a:focus,
 .nav-links a:active {
     outline: 2px solid #4ecdc4;
     outline-offset: 2px;
     color: #4ecdc4;
 }
-.footer a {
-    transition: color 0.3s, background 0.3s, outline 0.2s;
+
+.footer a:focus,
+.footer a:active {
+    outline: 2px solid #ff6b6b;
+    outline-offset: 2px;
+    color: #ff6b6b;
 }
+
 #alert-box {
     position: fixed;
     inset-block-start: 20px;
