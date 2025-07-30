@@ -272,8 +272,7 @@ header {
 # ...existing code...
 .footer a {
     transition: color 0.3s, background 0.3s, outline 0.2s;
-}
-}
+
 
 /* Monetization & Backend Integration Buttons */
 .monetization-section {
