@@ -269,8 +269,10 @@ header {
 /* Smoother transitions for interactive elements */
 .monetization-btn,
 .nav-links a,
+# ...existing code...
 .footer a {
     transition: color 0.3s, background 0.3s, outline 0.2s;
+}
 }
 
 /* Monetization & Backend Integration Buttons */
@@ -298,6 +300,7 @@ header {
 }
 .footer a {
     transition: color 0.3s, background 0.3s, outline 0.2s;
+}
 #alert-box {
     position: fixed;
     inset-block-start: 20px;
