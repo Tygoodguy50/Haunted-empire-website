@@ -99,12 +99,12 @@ jobs:
       - name: Trigger Referral Bonus Automation (backend)
         if: success()
         run: |
-          curl -sSf https://haunted-empire-backend-1/api/trigger-referral-bonus
+          curl -sSf ${{ secrets.BACKEND_API_URL }}/api/trigger-referral-bonus
 
       - name: Generate Discount Code (backend)
         if: success()
         run: |
-          curl -sSf https://haunted-empire-backend-1/api/generate-discount | tee discount.json
+          curl -sSf ${{ secrets.BACKEND_API_URL }}/api/generate-discount | tee discount.json
 
       - name: Email Discount Code (Mailgun)
         if: success()
@@ -129,15 +129,15 @@ jobs:
 
       - name: Monetization Guardrails - Validate Stripe Webhook (backend)
         run: |
-          curl -sSf https://haunted-empire-backend-1/api/stripe-webhook-status | grep '"ok":true'
+          curl -sSf ${{ secrets.BACKEND_API_URL }}/api/stripe-webhook-status | grep '"ok":true'
 
       - name: Monetization Guardrails - Validate Referral Logic (backend)
         run: |
-          curl -sSf https://haunted-empire-backend-1/api/referral-test | grep '"ok":true'
+          curl -sSf ${{ secrets.BACKEND_API_URL }}/api/referral-test | grep '"ok":true'
 
       - name: Monetization Guardrails - Validate Payout Logic (backend)
         run: |
-          curl -sSf https://haunted-empire-backend-1/api/payout-test | grep '"ok":true'
+          curl -sSf ${{ secrets.BACKEND_API_URL }}/api/payout-test | grep '"ok":true'
 
       - name: Upload static files to Netlify (frontend)
         uses: nwtgck/actions-netlify@v2.0
