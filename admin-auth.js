@@ -5,8 +5,8 @@
 const ADMIN_CONFIG = {
     // Use environment variables or secure storage in production
     credentials: {
-        username: 'admin',
-        password: 'HauntedEmpire2025!', // Change this to a secure password
+        username: 'PhantomDp',
+        password: 'Sarastine50!', // Secure admin password
         adminKey: 'haunted_empire_admin_2025' // Additional security layer
     },
     sessionTimeout: 30 * 60 * 1000, // 30 minutes
