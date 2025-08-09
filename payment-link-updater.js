@@ -8,7 +8,7 @@ function updatePaymentLinks() {
     // Updated purchase function for shop items
     window.purchaseProduct = function(productId) {
         const links = {
-            'masterclass': 'https://buy.stripe.com/3cIdRbbZp5aqe674MG8EM06',
+            'masterclass': 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC',
             'templates': 'https://buy.stripe.com/7sYdRb9Rh8mC0fhcf88EM05',
             'editing': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04',
             'generator': 'https://buy.stripe.com/dRm6oJ6F5gT8aTVeng8EM03',
@@ -28,9 +28,9 @@ function updatePaymentLinks() {
     // Updated course enrollment function
     window.enrollInCourse = function(courseId) {
         const links = {
-            'beginners': 'https://buy.stripe.com/3cIdRbbZp5aqe674MG8EM06',
+            'beginners': 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC',
             'advanced': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01', 
-            'masterclass': 'https://buy.stripe.com/3cIdRbbZp5aqe674MG8EM06',
+            'masterclass': 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC',
             'mentorship': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04'
         };
         
@@ -88,7 +88,7 @@ function updatePaymentLinks() {
             'editing': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04', // Professional editing
             'ghostwriting': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01', // Toolkit for ghostwriting
             'publishing': 'https://buy.stripe.com/aFadRb0gH32ifab2Ey8EM02', // Publishing course
-            'mentorship': 'https://buy.stripe.com/3cIdRbbZp5aqe674MG8EM06', // Masterclass
+            'mentorship': 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC', // Masterclass
             'vip': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01', // Complete toolkit
             'emergency': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04' // Emergency editing
         };
