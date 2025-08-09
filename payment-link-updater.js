@@ -8,11 +8,13 @@ function updatePaymentLinks() {
     // Updated purchase function for shop items
     window.purchaseProduct = function(productId) {
         const links = {
+            'beginners': 'https://buy.stripe.com/7sYcN78Nd8mCd233IC8EM0g',
             'masterclass': 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC',
             'templates': 'https://buy.stripe.com/7sYdRb9Rh8mC0fhcf88EM05',
             'editing': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04',
             'generator': 'https://buy.stripe.com/dRm6oJ6F5gT8aTVeng8EM03',
             'publishing': 'https://buy.stripe.com/28E28t3sT8mCfab1Au',
+            'business': 'https://buy.stripe.com/00w7sN2oP6eu8LNa708EM0f',
             'toolkit': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01'
         };
         

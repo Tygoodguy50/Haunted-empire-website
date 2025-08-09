@@ -4,11 +4,13 @@
 const STRIPE_PAYMENT_LINKS = {
     // Shop Products
     shop: {
-        'masterclass': 'https://buy.stripe.com/3cIdRbbZp5aqe674MG8EM06', // Horror Writing Masterclass - $89
+        'beginners': 'https://buy.stripe.com/7sYcN78Nd8mCd233IC8EM0g',   // Beginners Horror Writing - $89
+        'masterclass': 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC',      // Horror Writing Masterclass - $89
         'templates': 'https://buy.stripe.com/7sYdRb9Rh8mC0fhcf88EM05',   // Horror Templates Bundle - $47
         'editing': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04',     // Professional Editing - $150
         'generator': 'https://buy.stripe.com/dRm6oJ6F5gT8aTVeng8EM03',   // Horror Plot Generator - $29
-        'publishing': 'https://buy.stripe.com/28E28t3sT8mCfab1Au',  // From Draft to Published - $197
+        'publishing': 'https://buy.stripe.com/28E28t3sT8mCfab1Au',        // From Draft to Published - $197
+        'business': 'https://buy.stripe.com/00w7sN2oP6eu8LNa708EM0f',    // Horror That Sells - $147
         'toolkit': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01'      // Complete Horror Toolkit - $297
     },
     
@@ -16,7 +18,9 @@ const STRIPE_PAYMENT_LINKS = {
     courses: {
         'beginners': 'https://buy.stripe.com/7sYcN78Nd8mCd233IC8EM0g',   // Beginners Horror Writing
         'advanced': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01',    // Advanced Techniques (toolkit)
-        'masterclass': 'https://buy.stripe.com/3cIdRbbZp5aqe674MG8EM06', // Same as shop masterclass
+        'masterclass': 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC',      // Horror Writing Masterclass
+        'publishing': 'https://buy.stripe.com/28E28t3sT8mCfab1Au',       // From Draft to Published Course
+        'business': 'https://buy.stripe.com/00w7sN2oP6eu8LNa708EM0f',   // Horror That Sells
         'mentorship': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04'   // 1-on-1 Mentorship (editing service)
     },
     

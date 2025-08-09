@@ -387,6 +387,30 @@
                 <a href="#" class="buy-button" style="background: #4CAF50;" onclick="addToCart('masterclass')">Add to Cart</a>
             </div>
 
+            <!-- Beginners Horror Writing Course -->
+            <div class="product-card">
+                <div class="sale-badge">PERFECT START</div>
+                <h3 class="product-title">👻 Beginners Horror Writing</h3>
+                <div class="product-description">
+                    Perfect introduction to horror writing for newcomers to the genre
+                </div>
+                <ul class="features-list">
+                    <li>Basic horror fundamentals</li>
+                    <li>Simple writing exercises</li>
+                    <li>Beginner-friendly techniques</li>
+                    <li>Step-by-step guidance</li>
+                    <li>6 weeks of content</li>
+                </ul>
+                <div class="testimonial">
+                    "Perfect for someone just starting out!" - Mike J.
+                </div>
+                <div class="product-price">
+                    <span class="original-price">$197</span>$59
+                </div>
+                <a href="#" class="buy-button" onclick="purchaseProduct('beginners')">Buy Now</a>
+                <a href="#" class="buy-button" style="background: #4CAF50;" onclick="addToCart('beginners')">Add to Cart</a>
+            </div>
+
             <!-- Horror Templates Bundle -->
             <div class="product-card">
                 <div class="sale-badge">BESTSELLER</div>
@@ -789,6 +813,18 @@
     <script>
         // Enhanced product database with search and filter capabilities
         const enhancedProductData = {
+            'beginners': {
+                name: 'Beginners Horror Writing',
+                price: 59,
+                originalPrice: 197,
+                category: 'courses',
+                rating: 4.6,
+                reviews: 124,
+                features: ['Basic Fundamentals', 'Simple Exercises', 'Beginner Techniques', 'Step-by-Step Guidance', '6 Weeks Content'],
+                description: 'Perfect introduction to horror writing for newcomers to the genre.',
+                badge: 'PERFECT START',
+                testimonial: 'Perfect for someone just starting out!' // - Mike J.'
+            },
             'masterclass': {
                 name: 'Horror Writing Masterclass',
                 price: 297,
@@ -929,7 +965,7 @@
                     case 'featured':
                     default: {
                         // Custom featured order (you can modify this)
-                        const featuredOrder = ['toolkit', 'masterclass', 'business', 'templates', 'publishing', 'generator', 'editing'];
+                        const featuredOrder = ['toolkit', 'masterclass', 'beginners', 'business', 'templates', 'publishing', 'generator', 'editing'];
                         return featuredOrder.indexOf(a) - featuredOrder.indexOf(b);
                     }
                 }
@@ -1029,6 +1065,7 @@
         let cart = JSON.parse(localStorage.getItem('hauntedEmpireCart')) || [];
         
         const productInfo = {
+            'beginners': { name: 'Beginners Horror Writing', price: 59 },
             'masterclass': { name: 'Horror Writing Masterclass', price: 297 },
             'templates': { name: 'Horror Templates Bundle', price: 97 },
             'editing': { name: 'Professional Editing Service', price: 500 },
