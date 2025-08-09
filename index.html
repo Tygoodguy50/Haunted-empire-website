@@ -119,6 +119,43 @@
         console.log('🚨 Emergency admin button script loaded');
     })();
     </script>
+    
+    <!-- INSTANT ADMIN BUTTON - BYPASSES EVERYTHING -->
+    <div id="instant-admin-btn" style="
+        position: fixed !important;
+        top: 5px !important;
+        right: 5px !important;
+        z-index: 2147483647 !important;
+        background: #ff0000 !important;
+        color: white !important;
+        border: 2px solid white !important;
+        padding: 10px 20px !important;
+        font-size: 14px !important;
+        font-weight: bold !important;
+        border-radius: 5px !important;
+        cursor: pointer !important;
+        box-shadow: 0 0 10px red !important;
+        font-family: Arial !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: 120px !important;
+        height: 40px !important;
+        text-align: center !important;
+        line-height: 20px !important;
+    " onclick="
+        const u = prompt('Username:');
+        const p = prompt('Password:');
+        const k = prompt('Admin Key:');
+        if (u === 'PhantomDp' && p === 'Sarastine50!' && k === 'TMT27') {
+            alert('✅ ADMIN ACCESS GRANTED!');
+            if (typeof showAdminDashboard === 'function') showAdminDashboard();
+            else window.location.hash = '#admin';
+        } else {
+            alert('❌ ACCESS DENIED');
+        }
+    ">🔴 ADMIN</div>
+    
     <meta name="description" content="Haunted Empire provides monetization tools and services for horror content creators, including payment processing and revenue tracking.">
     <style>
         * {
