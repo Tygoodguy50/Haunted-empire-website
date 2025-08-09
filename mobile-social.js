@@ -506,6 +506,9 @@ function createSocialMediaWidget() {
                     <button onclick="runDailyWealthCycle()" class="monetization-btn ai">
                         🤖 Run AI Wealth Cycle
                     </button>
+                    <button onclick="executePlatformTriggers()" class="monetization-btn triggers">
+                        ⚡ Execute Platform Triggers
+                    </button>
                 </div>
             </div>
         </div>
@@ -670,6 +673,13 @@ function createSocialMediaWidget() {
             animation: aiGlow 2.5s ease-in-out infinite alternate;
         }
         
+        .monetization-btn.triggers {
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.5);
+            animation: triggersGlow 2s ease-in-out infinite alternate;
+        }
+        
         @keyframes quantumGlow {
             from { box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); }
             to { box-shadow: 0 0 20px rgba(0, 255, 255, 0.6); }
@@ -683,6 +693,11 @@ function createSocialMediaWidget() {
         @keyframes aiGlow {
             from { box-shadow: 0 0 15px rgba(255, 0, 255, 0.5); }
             to { box-shadow: 0 0 30px rgba(255, 0, 255, 0.9); }
+        }
+        
+        @keyframes triggersGlow {
+            from { box-shadow: 0 0 15px rgba(255, 69, 0, 0.5); }
+            to { box-shadow: 0 0 25px rgba(255, 69, 0, 0.8); }
         }
         
         .monetization-btn:hover {
@@ -916,6 +931,106 @@ function runDailyWealthCycle() {
         console.error('🤖 AI Wealth Cycle Error:', error);
         updateSocialFeed('🤖', 'AI wealth cycle error - check console', 'just now');
     });
+}
+
+// Platform Triggers Execution Function
+async function executePlatformTriggers() {
+    // Check admin authentication
+    if (!window.adminSession || !window.adminSession.isLoggedIn) {
+        showNotification('🚫 Admin access required for platform triggers', 'error');
+        return;
+    }
+
+    showNotification('⚡ Executing Platform Triggers...', 'info');
+    updateSocialFeed('⚡', 'Initializing platform trigger execution...', 'just now');
+
+    try {
+        // Initialize Platform Trigger Engine
+        if (!window.PlatformTriggerEngine) {
+            showNotification('❌ Platform Trigger Engine not loaded', 'error');
+            return;
+        }
+
+        const triggerEngine = new window.PlatformTriggerEngine();
+        
+        // Get collapsed futures from Synthetic Intent AI
+        let collapsed_futures = [];
+        if (window.SyntheticIntent) {
+            const syntheticAI = new window.SyntheticIntent();
+            // Generate some futures for testing
+            for (let i = 0; i < 5; i++) {
+                const future = await syntheticAI.simulate_future_scenario();
+                collapsed_futures.push(future);
+            }
+            updateSocialFeed('⚡', `Generated ${collapsed_futures.length} quantum futures for trigger execution`, 'just now');
+        } else {
+            // Fallback to sample futures if Synthetic Intent not available
+            collapsed_futures = [
+                {
+                    scenario: 'viral_horror_content',
+                    urgency: 0.9,
+                    reach_potential: 0.85,
+                    conversion_likelihood: 0.75,
+                    content_type: 'video',
+                    target_demographic: 'horror_enthusiasts',
+                    revenue_potential: 1200
+                },
+                {
+                    scenario: 'course_enrollment_surge',
+                    urgency: 0.7,
+                    reach_potential: 0.65,
+                    conversion_likelihood: 0.8,
+                    content_type: 'educational',
+                    target_demographic: 'aspiring_writers',
+                    revenue_potential: 950
+                },
+                {
+                    scenario: 'book_launch_buzz',
+                    urgency: 0.6,
+                    reach_potential: 0.75,
+                    conversion_likelihood: 0.7,
+                    content_type: 'promotional',
+                    target_demographic: 'horror_readers',
+                    revenue_potential: 800
+                }
+            ];
+            updateSocialFeed('⚡', 'Using fallback quantum futures for demonstration', 'just now');
+        }
+
+        // Execute platform triggers
+        const execution_results = await triggerEngine.execute_platform_triggers(collapsed_futures);
+        
+        if (execution_results && !execution_results.error) {
+            const success_rate = (execution_results.success_rate * 100).toFixed(1);
+            const avg_score = execution_results.average_score?.toFixed(2) || 'N/A';
+            
+            showNotification(`✅ Platform Triggers Executed: ${success_rate}% success rate`, 'success');
+            updateSocialFeed('⚡', `Platform triggers executed: ${execution_results.triggers_executed} triggers, ${success_rate}% success, avg score: ${avg_score}`, 'just now');
+            
+            // Show detailed results
+            console.log('⚡ Platform Trigger Execution Results:', execution_results);
+            
+            // Simulate revenue impact
+            const total_revenue_potential = collapsed_futures.reduce((sum, future) => sum + (future.revenue_potential || 500), 0);
+            const realized_revenue = total_revenue_potential * execution_results.success_rate * 0.6; // 60% realization rate
+            
+            updateSocialFeed('💰', `Estimated revenue impact: $${realized_revenue.toFixed(2)} from platform triggers`, 'just now');
+            
+            // Show platform breakdown
+            const platform_status = triggerEngine.getCurrentStatus();
+            updateSocialFeed('📊', `System status: ${platform_status.queue_length} in queue, ${platform_status.total_executions} total executions, momentum: ${platform_status.model_momentum.toFixed(3)}`, 'just now');
+            
+        } else {
+            showNotification('❌ Platform trigger execution failed', 'error');
+            updateSocialFeed('⚡', 'Platform trigger execution failed - check console for details', 'just now');
+            console.error('Platform Trigger Error:', execution_results?.error);
+        }
+
+    } catch (error) {
+        showNotification('❌ Platform trigger system error', 'error');
+        console.error('⚡ Platform Trigger System Error:', error);
+        updateSocialFeed('⚡', 'Platform trigger system error - check console', 'just now');
+    }
 }
 
 function triggerLoreDrop() {
