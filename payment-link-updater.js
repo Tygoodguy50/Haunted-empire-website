@@ -33,17 +33,17 @@ function updatePaymentLinks() {
             'beginners': 'https://buy.stripe.com/7sYcN78Nd8mCd233IC8EM0g',
             'advanced': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01', 
             'masterclass': 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC',
-            'publishing': 'https://buy.stripe.com/28E28t3sT8mCfab1Au',
+            'publishing': 'https://buy.stripe.com/28E28t3sT8mCfab1Au8EM0e',
             'business': 'https://buy.stripe.com/00w7sN2oP6eu8LNa708EM0f',
             'mentorship': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04'
         };
         
         const stripeUrl = links[courseId];
         if (stripeUrl && stripeUrl !== 'REPLACE_WITH_STRIPE_LINK_FOR_' + courseId.toUpperCase() + '_COURSE') {
-            window.open(stripeUrl, '_blank');
+            window.location.href = stripeUrl;  // Use same tab redirect like courses.html
         } else {
             alert('Course not found. Please check our available courses.');
-            window.open('courses.html', '_blank');
+            window.location.href = 'courses.html';
         }
     };
     
