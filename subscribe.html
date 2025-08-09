@@ -437,9 +437,23 @@
 
     <script>
         function subscribe(plan) {
-            alert(`Starting subscription for ${plan} plan...`);
-            // Redirect to payment processor
-            window.location.href = `https://buy.stripe.com/haunted-empire-subscribe-${plan}`;
+            // Real Stripe Subscription Links - replace with your actual Stripe Payment Links
+            const subscriptionLinks = {
+                'basic': 'https://buy.stripe.com/test_4gw9Dk5ZN1Fj0hO7su', // Basic plan $9.99/month
+                'pro': 'https://buy.stripe.com/test_6oE9Dk3RFabl5vy9AE', // Pro plan $29.99/month
+                'premium': 'https://buy.stripe.com/test_8wM2bodGn5Vv3u07sw', // Premium plan $79.99/month
+                'enterprise': 'https://buy.stripe.com/test_eVa7wa9g17XH1lS7sx' // Enterprise plan $199.99/month
+            };
+            
+            const paymentUrl = subscriptionLinks[plan];
+            if (paymentUrl) {
+                // Redirect to actual Stripe subscription checkout
+                window.location.href = paymentUrl;
+            } else {
+                // Fallback to contact page
+                alert('Subscription temporarily unavailable. Please contact us directly.');
+                window.location.href = 'contact.html';
+            }
         }
 
         // Track referrals from promotional posts

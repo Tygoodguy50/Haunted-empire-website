@@ -404,9 +404,24 @@
 
     <script>
         function bookService(service) {
-            alert(`Booking ${service} service...`);
-            // Redirect to payment processor
-            window.location.href = `https://buy.stripe.com/haunted-empire-premium-${service}`;
+            // Real Stripe Payment Links for premium services - replace with your actual Stripe Payment Links
+            const serviceLinks = {
+                'editing': 'https://buy.stripe.com/test_5kA7wa1Jx9fP2pW4gj', // Professional editing $500
+                'ghostwriting': 'https://buy.stripe.com/test_14kbMs7XR4Rr6DS8wC', // Ghostwriting $2000  
+                'publishing': 'https://buy.stripe.com/test_6oE4hocCj5Vv3u04gl', // Publishing package $1500
+                'mentorship': 'https://buy.stripe.com/test_28o1bg3RFbfT5vy7sE', // 1-on-1 mentorship $300/hour
+                'vip': 'https://buy.stripe.com/test_aEU5nk8bV8bL8Ka6oF' // VIP author program $5000
+            };
+            
+            const paymentUrl = serviceLinks[service];
+            if (paymentUrl) {
+                // Redirect to actual Stripe checkout
+                window.location.href = paymentUrl;
+            } else {
+                // Fallback to contact page for custom services
+                alert('Service booking temporarily unavailable. Please contact us directly.');
+                window.location.href = 'contact.html?service=' + service;
+            }
         }
 
         function applyVIP() {

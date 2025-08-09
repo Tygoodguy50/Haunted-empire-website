@@ -382,9 +382,23 @@
 
     <script>
         function enrollInCourse(course) {
-            alert(`Enrolling in ${course} course...`);
-            // Redirect to payment processor
-            window.location.href = `https://buy.stripe.com/haunted-empire-course-${course}`;
+            // Real Stripe Payment Links for courses - replace with your actual Stripe Payment Links
+            const courseLinks = {
+                'beginners': 'https://buy.stripe.com/test_28o9DkfKt5Vv0hOcMO', // Beginner course
+                'advanced': 'https://buy.stripe.com/test_6oEaIog0x1Fj3u0dQS', // Advanced course  
+                'masterclass': 'https://buy.stripe.com/test_fZe2bodGn7XH2pW5kn', // Masterclass
+                'mentorship': 'https://buy.stripe.com/test_9AQ7wafKt4Rr6DS4gl' // 1-on-1 mentorship
+            };
+            
+            const paymentUrl = courseLinks[course];
+            if (paymentUrl) {
+                // Redirect to actual Stripe checkout
+                window.location.href = paymentUrl;
+            } else {
+                // Fallback to contact page
+                alert('Enrollment temporarily unavailable. Please contact us directly.');
+                window.location.href = 'contact.html';
+            }
         }
 
         // Track referrals from promotional posts

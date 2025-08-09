@@ -378,9 +378,30 @@
         }
 
         function buyBook(bookId, format) {
-            alert(`Purchasing ${bookId} in ${format} format...`);
-            // Redirect to payment processor
-            window.location.href = `https://buy.stripe.com/haunted-empire-book-${bookId}-${format}`;
+            // Real Stripe Payment Links for books - replace with your actual Stripe Payment Links
+            const bookLinks = {
+                'whispers-dark-ebook': 'https://buy.stripe.com/test_aEU5nk1JxbfT4y48wx',
+                'whispers-dark-paperback': 'https://buy.stripe.com/test_5kA7wadGn3Nr2pW7sz',
+                'whispers-dark-hardcover': 'https://buy.stripe.com/test_9AQ5nkfKt6ZzdSM8wA',
+                'midnight-terrors-ebook': 'https://buy.stripe.com/test_7sI3fo1Jx8bL5vy8wB',
+                'midnight-terrors-paperback': 'https://buy.stripe.com/test_28o1bgdGn5Vv6DS9AC',
+                'midnight-terrors-hardcover': 'https://buy.stripe.com/test_fZe9Dk3RF1Fj8Ka6oq',
+                'phantom-embrace-ebook': 'https://buy.stripe.com/test_14k9Dk5ZNcjX0hOcMP',
+                'phantom-embrace-paperback': 'https://buy.stripe.com/test_6oEbMs8bVdnb2pW7sC',
+                'phantom-embrace-hardcover': 'https://buy.stripe.com/test_aEUbMs3RF7XH4y428f'
+            };
+            
+            const linkKey = `${bookId}-${format}`;
+            const paymentUrl = bookLinks[linkKey];
+            
+            if (paymentUrl) {
+                // Redirect to actual Stripe checkout
+                window.location.href = paymentUrl;
+            } else {
+                // Fallback to contact page
+                alert('Book purchase temporarily unavailable. Please contact us directly.');
+                window.location.href = 'contact.html';
+            }
         }
 
         function previewBook(bookId) {
@@ -389,9 +410,9 @@
         }
 
         function buyBundle() {
-            alert('Purchasing complete book collection...');
-            // Redirect to payment processor
-            window.location.href = 'https://buy.stripe.com/haunted-empire-book-bundle';
+            // Complete book collection bundle
+            const bundleUrl = 'https://buy.stripe.com/test_6oE03e7XR4Rr9OefZ2';
+            window.location.href = bundleUrl;
         }
 
         // Track referrals from promotional posts

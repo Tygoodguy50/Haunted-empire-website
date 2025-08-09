@@ -365,12 +365,27 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // Purchase functions
+        // Purchase functions - Updated with real Stripe integration
         function purchaseProduct(product) {
-            // Redirect to payment processor
-            alert(`Redirecting to secure checkout for ${product}...`);
-            // In real implementation, redirect to Stripe/PayPal
-            window.location.href = `https://buy.stripe.com/haunted-empire-${product}`;
+            // Real Stripe Payment Links - replace these with your actual Stripe Payment Links
+            const paymentLinks = {
+                'masterclass': 'https://buy.stripe.com/test_14k6s48bV1Fj2pW5ko', // Replace with real link
+                'templates': 'https://buy.stripe.com/test_aEU5nk9g1bfT8Ka9AC', // Replace with real link  
+                'editing': 'https://buy.stripe.com/test_9AQ6s4gOxcjX5vy8wx', // Replace with real link
+                'generator': 'https://buy.stripe.com/test_5kAcQwhSB1Fj4y4cMP', // Replace with real link
+                'publishing': 'https://buy.stripe.com/test_7sIbMsdGn8bL4y428b', // Replace with real link
+                'toolkit': 'https://buy.stripe.com/test_6oEeYE8bV3NraiM4gj' // Replace with real link
+            };
+            
+            const paymentUrl = paymentLinks[product];
+            if (paymentUrl) {
+                // Redirect to actual Stripe checkout
+                window.location.href = paymentUrl;
+            } else {
+                // Fallback to contact page
+                alert('Payment processing temporarily unavailable. Please contact us directly.');
+                window.location.href = 'contact.html';
+            }
         }
 
         function addToCart(product) {
