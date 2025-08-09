@@ -14,7 +14,7 @@ const STRIPE_PAYMENT_LINKS = {
     
     // Course Enrollments
     courses: {
-        'beginners': 'https://buy.stripe.com/3cIdRbbZp5aqe674MG8EM06',   // Beginner Horror Writing (same as masterclass)
+        'beginners': 'https://buy.stripe.com/7sYcN78Nd8mCd233IC8EM0g',   // Beginners Horror Writing
         'advanced': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01',    // Advanced Techniques (toolkit)
         'masterclass': 'https://buy.stripe.com/3cIdRbbZp5aqe674MG8EM06', // Same as shop masterclass
         'mentorship': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04'   // 1-on-1 Mentorship (editing service)

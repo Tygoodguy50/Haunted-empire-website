@@ -28,7 +28,7 @@ function updatePaymentLinks() {
     // Updated course enrollment function
     window.enrollInCourse = function(courseId) {
         const links = {
-            'beginners': 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC',
+            'beginners': 'https://buy.stripe.com/7sYcN78Nd8mCd233IC8EM0g',
             'advanced': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01', 
             'masterclass': 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC',
             'publishing': 'https://buy.stripe.com/28E28t3sT8mCfab1Au',
