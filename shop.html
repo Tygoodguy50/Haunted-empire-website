@@ -12,6 +12,48 @@
             padding: 20px;
         }
         
+        /* Shop-specific horror illustrations */
+        .shop-hero {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 3px solid #8B0000;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .shop-illustration {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: shopFloat 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes shopFloat {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(-10px) scale(1.05); }
+        }
+        
+        .product-card-illustration {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.5));
+        }
+        
+        .floating-shop-element {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.4;
+            animation: floatShop 6s ease-in-out infinite;
+        }
+        
+        @keyframes floatShop {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(15px, -15px) rotate(10deg); }
+        }
+        
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -325,8 +367,15 @@
     </header>
 
     <main class="shop-container">
-        <h1>🛒 Horror Writing Shop</h1>
-        <p class="subtitle">Transform Your Writing with Professional Resources</p>
+        <div class="shop-hero">
+            <div class="shop-illustration">🛒💀📚🔮</div>
+            <h1>🛒 Horror Writing Shop</h1>
+            <p class="subtitle">Transform Your Writing with Professional Resources</p>
+            <!-- Floating shop elements -->
+            <div class="floating-shop-element" style="top: 20px; left: 10%;">📖</div>
+            <div class="floating-shop-element" style="top: 30px; right: 15%; animation-delay: -2s;">🕯️</div>
+            <div class="floating-shop-element" style="bottom: 20px; left: 80%; animation-delay: -4s;">📜</div>
+        </div>
         
         <div class="urgent-banner">
             🚨 FLASH SALE: 70% OFF ALL PRODUCTS - ENDS IN <span class="countdown" id="countdown">24:00:00</span>
@@ -365,6 +414,7 @@
         <div class="product-grid" id="product-grid">
             <!-- Horror Writing Masterclass -->
             <div class="product-card">
+                <div class="product-card-illustration">🎃📚✨</div>
                 <div class="sale-badge">70% OFF</div>
                 <h3 class="product-title">🎃 Horror Writing Masterclass</h3>
                 <div class="product-description">
@@ -389,6 +439,7 @@
 
             <!-- Beginners Horror Writing Course -->
             <div class="product-card">
+                <div class="product-card-illustration">👻🌱📖</div>
                 <div class="sale-badge">PERFECT START</div>
                 <h3 class="product-title">👻 Beginners Horror Writing</h3>
                 <div class="product-description">

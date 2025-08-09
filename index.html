@@ -128,6 +128,127 @@
         .footer a:hover {
             color: #4ecdc4;
         }
+        
+        /* Horror-themed illustrations and visual elements */
+        .horror-illustration {
+            position: relative;
+            display: inline-block;
+            margin: 20px;
+        }
+        
+        .spooky-border {
+            border: 3px solid transparent;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #ff6b6b) border-box;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .spooky-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff0000, #8b0000, #ff4500);
+            border-radius: 15px;
+            z-index: -1;
+            animation: spookyGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes spookyGlow {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.02); }
+        }
+        
+        .floating-ghost {
+            position: fixed;
+            font-size: 2rem;
+            opacity: 0.7;
+            animation: ghostFloat 6s ease-in-out infinite;
+            z-index: 100;
+            pointer-events: none;
+        }
+        
+        @keyframes ghostFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        .creepy-eyes {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff0000;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ff0000;
+            animation: blink 4s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 90%, 100% { opacity: 1; }
+            95% { opacity: 0; }
+        }
+        
+        .horror-card-illustration {
+            text-align: center;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.5));
+            animation: subtlePulse 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes subtlePulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.5)); }
+            100% { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(255, 107, 107, 0.8)); }
+        }
+        
+        .blood-drip {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .blood-drip::after {
+            content: '🩸';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: drip 3s infinite;
+            font-size: 1.5rem;
+        }
+        
+        @keyframes drip {
+            0% { top: -10px; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+        
+        .skeleton-hand {
+            position: absolute;
+            font-size: 2rem;
+            animation: skellyWave 4s ease-in-out infinite;
+        }
+        
+        @keyframes skellyWave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(20deg); }
+            75% { transform: rotate(-10deg); }
+        }
+        
+        .horror-background-pattern {
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(78, 205, 196, 0.1) 0%, transparent 50%),
+                linear-gradient(45deg, transparent 49%, rgba(255, 255, 255, 0.02) 50%, transparent 51%);
+        }
+        
+        .spooky-shadow {
+            box-shadow: 
+                0 0 20px rgba(255, 107, 107, 0.3),
+                inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
     </style>
 </head>
 <body>
@@ -195,10 +316,22 @@
         <!-- Alert and Stats containers -->
         <div id="alert-box"></div>
         <div id="stats-box"></div>
-        <section class="hero">
+        <section class="hero horror-background-pattern">
             <div class="container">
-                <h1>Haunted Empire</h1>
+                <!-- Floating horror elements -->
+                <div class="floating-ghost" style="top: 10%; left: 10%;">👻</div>
+                <div class="floating-ghost" style="top: 20%; right: 15%; animation-delay: -2s;">🎃</div>
+                <div class="floating-ghost" style="top: 15%; left: 80%; animation-delay: -4s;">🦇</div>
+                
+                <!-- Main hero content with illustrations -->
+                <div class="horror-card-illustration">🏰💀📚</div>
+                <h1 class="spooky-border blood-drip">Haunted Empire</h1>
                 <p>The premier monetization platform for horror content creators. We provide payment processing, revenue tracking, and creator management tools for the supernatural content community.</p>
+                
+                <!-- Creepy eyes scattered around -->
+                <div class="creepy-eyes" style="top: 50px; left: 20%;"></div>
+                <div class="creepy-eyes" style="top: 80px; right: 25%; animation-delay: -1s;"></div>
+                <div class="skeleton-hand" style="bottom: 20px; right: 10%;">🖐️</div>
             </div>
         </section>
 
@@ -377,23 +510,27 @@
             </div>
         </section>
 
-        <section id="services" class="section">
+        <section id="services" class="section horror-background-pattern">
             <div class="container">
-                <h2>Our Services</h2>
+                <h2 class="spooky-shadow">Our Services</h2>
                 <div class="services">
-                    <div class="service-card">
+                    <div class="service-card spooky-border">
+                        <div class="horror-card-illustration">💳👻</div>
                         <h3>💳 Payment Processing</h3>
                         <p>Secure payment processing for creator content purchases, subscriptions, and donations. Full PCI compliance and fraud protection.</p>
                     </div>
-                    <div class="service-card">
+                    <div class="service-card spooky-border">
+                        <div class="horror-card-illustration">📊🧛‍♂️</div>
                         <h3>📊 Revenue Analytics</h3>
                         <p>Comprehensive revenue tracking with tier-based multipliers, real-time analytics, and detailed financial reporting.</p>
                     </div>
-                    <div class="service-card">
+                    <div class="service-card spooky-border">
+                        <div class="horror-card-illustration">👑🕷️</div>
                         <h3>👑 Creator Management</h3>
                         <p>Advanced creator ranking system, leaderboards, and performance tracking tools to help creators grow their audience.</p>
                     </div>
-                    <div class="service-card">
+                    <div class="service-card spooky-border">
+                        <div class="horror-card-illustration">🔄💀</div>
                         <h3>🔄 Subscription Management</h3>
                         <p>Flexible subscription models for recurring content, automatic billing, and customer relationship management.</p>
                     </div>

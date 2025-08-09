@@ -44,6 +44,45 @@
             border-color: #DC143C;
         }
         
+        /* Horror course illustrations */
+        .course-illustration {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 10px rgba(139, 0, 0, 0.7));
+            animation: courseFloat 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes courseFloat {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-8px) rotate(2deg); }
+        }
+        
+        .course-hero-illustration {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            animation: heroGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes heroGlow {
+            0% { filter: drop-shadow(0 0 20px rgba(139, 0, 0, 0.5)); }
+            100% { filter: drop-shadow(0 0 30px rgba(220, 20, 60, 0.8)); }
+        }
+        
+        .floating-horror-element {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.6;
+            animation: floatAround 8s ease-in-out infinite;
+        }
+        
+        @keyframes floatAround {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(10px, -10px) rotate(90deg); }
+            50% { transform: translate(-10px, -5px) rotate(180deg); }
+            75% { transform: translate(5px, 10px) rotate(270deg); }
+        }
+        
         .course-level {
             background: #8B0000;
             color: white;
@@ -207,8 +246,13 @@
 
     <main class="courses-container">
         <div class="course-hero">
+            <div class="course-hero-illustration">🏚️📚✍️👻</div>
             <h1>🎓 Master the Art of Horror Writing</h1>
             <p>Transform from beginner to published author with our proven course system</p>
+            <!-- Floating horror elements -->
+            <div class="floating-horror-element" style="top: 20px; left: 10%;">🕷️</div>
+            <div class="floating-horror-element" style="top: 30px; right: 15%; animation-delay: -2s;">🦇</div>
+            <div class="floating-horror-element" style="bottom: 20px; left: 20%; animation-delay: -4s;">🕸️</div>
             <div class="features-highlight">
                 <div class="feature-item">
                     <div class="feature-icon">📚</div>
@@ -236,6 +280,7 @@
         <div class="course-grid">
             <!-- Horror Writing Masterclass -->
             <div class="course-card">
+                <div class="course-illustration">🎃✍️📖</div>
                 <div class="course-level">Comprehensive</div>
                 <h2 class="course-title">🎃 Horror Writing Masterclass</h2>
                 <div class="course-stats">
@@ -265,6 +310,7 @@
 
             <!-- Beginner's Horror Writing -->
             <div class="course-card">
+                <div class="course-illustration">🌱👻📚</div>
                 <div class="course-level">Beginner</div>
                 <h2 class="course-title">🌱 Beginner's Horror Writing</h2>
                 <div class="course-stats">
@@ -292,6 +338,7 @@
 
             <!-- Advanced Horror Techniques -->
             <div class="course-card">
+                <div class="course-illustration">⚡🧛‍♂️🔥</div>
                 <div class="course-level">Advanced</div>
                 <h2 class="course-title">⚡ Advanced Horror Techniques</h2>
                 <div class="course-stats">
@@ -320,6 +367,7 @@
 
             <!-- 1-on-1 Horror Writing Mentorship -->
             <div class="course-card">
+                <div class="course-illustration">👨‍🏫💀📝</div>
                 <div class="course-level">Premium</div>
                 <h2 class="course-title">👨‍🏫 1-on-1 Horror Writing Mentorship</h2>
                 <div class="course-stats">
