@@ -6,13 +6,6 @@
   NODE_VERSION = "18"
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  conditions = {Role = ["admin"]}
-
-# Handle 404s for missing pages
-[[redirects]]
   from = "/shop"
   to = "/shop.html"
   status = 301
@@ -41,6 +34,12 @@
   from = "/contact"
   to = "/contact.html"
   status = 301
+
+# Catch-all redirect for SPA functionality (FIXED - removed admin condition)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 
 # Headers for security
 [[headers]]
