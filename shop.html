@@ -554,6 +554,59 @@
         .cart-add-button {
             background: #4CAF50 !important;
         }
+        
+        .bundle-opportunity {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            color: white;
+            text-align: center;
+        }
+        
+        .bundle-header {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        
+        .bundle-savings {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 8px;
+        }
+        
+        .bundle-description {
+            font-size: 0.9em;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+        
+        .smart-recommendations {
+            background: linear-gradient(45deg, #FF6B35, #F7931E);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+            color: white;
+            text-align: center;
+        }
+        
+        .recommendations-header {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .recommendations-list {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        
+        .recommendations-note {
+            font-size: 0.8em;
+            opacity: 0.9;
+            font-style: italic;
+        }
     </style>
 
     <!-- Cart JavaScript -->
@@ -639,6 +692,31 @@
                 `;
             });
             
+            // Check for bundle opportunities
+            const bundleResult = checkForBundleDiscounts(cart);
+            if (bundleResult.hasBundle && cart.length > 1) {
+                const savings = total - bundleResult.bundlePrice;
+                html += `
+                    <div class="bundle-opportunity">
+                        <div class="bundle-header">🎁 Bundle Discount Available!</div>
+                        <div class="bundle-savings">Save $${savings.toFixed(2)} with bundle pricing</div>
+                        <div class="bundle-description">${bundleResult.description}</div>
+                    </div>
+                `;
+            } else if (cart.length > 0) {
+                // Show smart recommendations for bundle completion
+                const recommendations = getSmartRecommendations(cart);
+                if (recommendations.length > 0) {
+                    html += `
+                        <div class="smart-recommendations">
+                            <div class="recommendations-header">💡 Complete your collection:</div>
+                            <div class="recommendations-list">${recommendations.join(' • ')}</div>
+                            <div class="recommendations-note">Add these items for bundle discounts!</div>
+                        </div>
+                    `;
+                }
+            }
+            
             cartItems.innerHTML = html;
             cartTotal.textContent = total.toFixed(2);
         }
@@ -649,13 +727,124 @@
                 return;
             }
             
-            // For now, redirect to the first item's payment link
-            // In a real implementation, you'd create a bundle payment or process each item
-            const firstItem = cart[0];
-            alert(`Proceeding to checkout for ${cart.length} items. Total: $${cart.reduce((sum, item) => sum + item.price, 0)}`);
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
             
-            // You could implement bundle checkout here
-            purchaseProduct(firstItem.id);
+            // Strategy 1: For single item, use direct payment link
+            if (cart.length === 1) {
+                const item = cart[0];
+                purchaseProduct(item.id);
+                return;
+            }
+            
+            // Strategy 2: Check for pre-defined bundles
+            const bundleResult = checkForBundleDiscounts(cart);
+            if (bundleResult.hasBundle) {
+                const confirmMessage = `🎁 BUNDLE DISCOUNT AVAILABLE!\n\n${bundleResult.description}\n\nOriginal: $${total.toFixed(2)}\nBundle Price: $${bundleResult.bundlePrice}\nYou Save: $${(total - bundleResult.bundlePrice).toFixed(2)}\n\nProceed with bundle?`;
+                
+                if (confirm(confirmMessage)) {
+                    window.open(bundleResult.paymentLink, '_blank');
+                    return;
+                }
+            }
+            
+            // Strategy 3: For multiple items without bundle, use comprehensive checkout
+            const sortedItems = [...cart].sort((a, b) => b.price - a.price);
+            const primaryItem = sortedItems[0];
+            
+            // Create detailed breakdown for customer
+            const itemList = cart.map(item => `• ${item.name}: $${item.price}`).join('\n');
+            const confirmMessage = `🛒 MULTI-ITEM CHECKOUT:\n\n${itemList}\n\nTotal: $${total.toFixed(2)}\n\nNote: You'll be redirected to secure Stripe checkout.\nAll ${cart.length} items will be processed.\n\nProceed?`;
+            
+            if (confirm(confirmMessage)) {
+                // Add cart context to localStorage for post-purchase tracking
+                localStorage.setItem('checkoutCart', JSON.stringify({
+                    items: cart,
+                    total: total,
+                    timestamp: Date.now()
+                }));
+                
+                // Process the highest value item (best approximation for multi-item checkout)
+                purchaseProduct(primaryItem.id);
+                
+                // Show user what's happening
+                showCartNotification(`Processing checkout for ${cart.length} items ($${total.toFixed(2)})`);
+                
+                // Clear cart after successful checkout initiation
+                setTimeout(() => {
+                    clearCart();
+                }, 2000);
+            }
+        }
+
+        function checkForBundleDiscounts(cartItems) {
+            const itemIds = cartItems.map(item => item.id).sort();
+            
+            // Pre-defined bundle combinations with special pricing
+            const bundles = {
+                // Writer's Complete Package
+                'generator,masterclass,templates': {
+                    price: 297, // Normally $441
+                    link: 'https://buy.stripe.com/3cIdRbbZp5aqe674MG8EM06', // Masterclass link as primary
+                    description: "📚 Writer's Complete Package:\n• Horror Writing Masterclass\n• Horror Templates Bundle\n• Plot Generator"
+                },
+                // Professional Package
+                'editing,masterclass,publishing': {
+                    price: 497, // Normally $994
+                    link: 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01', // Complete toolkit
+                    description: "💼 Professional Package:\n• Horror Writing Masterclass\n• Professional Editing\n• Publishing Course"
+                },
+                // Everything Bundle
+                'editing,generator,masterclass,publishing,templates,toolkit': {
+                    price: 697, // Normally $1535
+                    link: 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01', // Complete toolkit
+                    description: "🎯 EVERYTHING BUNDLE:\n• Complete Horror Toolkit\n• All courses and templates\n• Professional services"
+                }
+            };
+            
+            const cartKey = itemIds.join(',');
+            
+            // Check exact matches first
+            if (bundles[cartKey]) {
+                return {
+                    hasBundle: true,
+                    bundlePrice: bundles[cartKey].price,
+                    paymentLink: bundles[cartKey].link,
+                    description: bundles[cartKey].description
+                };
+            }
+            
+            // Check if cart contains complete toolkit (gets everything)
+            if (itemIds.includes('toolkit')) {
+                return {
+                    hasBundle: true,
+                    bundlePrice: 497,
+                    paymentLink: 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01',
+                    description: "🔥 Complete Horror Toolkit includes ALL other products!\nYou're getting the best deal!"
+                };
+            }
+            
+            return { hasBundle: false };
+        }
+
+        function getSmartRecommendations(cartItems) {
+            const itemIds = cartItems.map(item => item.id);
+            
+            // If they have masterclass, suggest templates and generator for writer's package
+            if (itemIds.includes('masterclass') && !itemIds.includes('templates') && !itemIds.includes('generator')) {
+                return ['Templates Bundle', 'Plot Generator'];
+            }
+            
+            // If they have templates, suggest masterclass and generator
+            if (itemIds.includes('templates') && !itemIds.includes('masterclass') && !itemIds.includes('generator')) {
+                return ['Horror Masterclass', 'Plot Generator'];
+            }
+            
+            // If they have any 2+ items but not toolkit, suggest toolkit as best value
+            if (itemIds.length >= 2 && !itemIds.includes('toolkit')) {
+                return ['Complete Horror Toolkit (includes everything!)'];
+            }
+            
+            return [];
         }
 
         function showCartNotification(message) {
