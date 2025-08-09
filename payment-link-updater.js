@@ -67,7 +67,7 @@ function updatePaymentLinks() {
             'patreon': 'https://www.patreon.com/hauntedempire',
             'facebook': 'https://facebook.com/hauntedempire',
             'twitter': 'https://twitter.com/PhantomDp25',
-            'instagram': 'https://instagram.com/hauntedempire',
+            'instagram': 'https://instagram.com/phantomnb_',
             'linkedin': 'https://linkedin.com/company/phantomdp',
             'youtube': 'https://www.youtube.com/@AreaGhost'
         };
