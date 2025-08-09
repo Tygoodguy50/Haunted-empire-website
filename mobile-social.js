@@ -509,6 +509,9 @@ function createSocialMediaWidget() {
                     <button onclick="executePlatformTriggers()" class="monetization-btn triggers">
                         ⚡ Execute Platform Triggers
                     </button>
+                    <button onclick="startAutonomousWealth()" class="monetization-btn autonomous">
+                        🚀 Start Autonomous Wealth
+                    </button>
                 </div>
             </div>
         </div>
@@ -680,6 +683,13 @@ function createSocialMediaWidget() {
             animation: triggersGlow 2s ease-in-out infinite alternate;
         }
         
+        .monetization-btn.autonomous {
+            background: linear-gradient(135deg, #1e90ff, #00bfff);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(30, 144, 255, 0.6);
+            animation: autonomousGlow 3s ease-in-out infinite alternate;
+        }
+        
         @keyframes quantumGlow {
             from { box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); }
             to { box-shadow: 0 0 20px rgba(0, 255, 255, 0.6); }
@@ -698,6 +708,11 @@ function createSocialMediaWidget() {
         @keyframes triggersGlow {
             from { box-shadow: 0 0 15px rgba(255, 69, 0, 0.5); }
             to { box-shadow: 0 0 25px rgba(255, 69, 0, 0.8); }
+        }
+        
+        @keyframes autonomousGlow {
+            from { box-shadow: 0 0 20px rgba(30, 144, 255, 0.6); }
+            to { box-shadow: 0 0 35px rgba(30, 144, 255, 1.0); }
         }
         
         .monetization-btn:hover {
@@ -1030,6 +1045,99 @@ async function executePlatformTriggers() {
         showNotification('❌ Platform trigger system error', 'error');
         console.error('⚡ Platform Trigger System Error:', error);
         updateSocialFeed('⚡', 'Platform trigger system error - check console', 'just now');
+    }
+}
+
+// Autonomous Wealth Cycle Function
+async function startAutonomousWealth() {
+    // Check admin authentication
+    if (!window.adminSession || !window.adminSession.isLoggedIn) {
+        showNotification('🚫 Admin access required for autonomous wealth system', 'error');
+        return;
+    }
+
+    showNotification('🚀 Starting Autonomous Wealth Cycle...', 'info');
+    updateSocialFeed('🚀', 'Initializing autonomous wealth generation system...', 'just now');
+
+    try {
+        // Initialize Autonomous Wealth Cycle Engine
+        if (!window.AutonomousWealthCycle) {
+            showNotification('❌ Autonomous Wealth Engine not loaded', 'error');
+            return;
+        }
+
+        // Check if already running
+        if (window.autonomousWealthInstance && window.autonomousWealthInstance.getStatus().isRunning) {
+            showNotification('⚠️ Autonomous wealth cycle already running', 'warning');
+            
+            // Show current status
+            const status = window.autonomousWealthInstance.getStatus();
+            updateSocialFeed('📊', `Autonomous cycle running: ${status.cycleCount} cycles, $${status.totalEarnings.toFixed(2)} earned`, 'just now');
+            return;
+        }
+
+        // Create new autonomous wealth instance
+        window.autonomousWealthInstance = new window.AutonomousWealthCycle();
+        
+        // Test the system first
+        updateSocialFeed('🧪', 'Testing autonomous wealth system components...', 'just now');
+        const testResult = await window.autonomousWealthInstance.testAutonomousCycle();
+        
+        if (testResult.success) {
+            showNotification(`✅ Test successful: $${testResult.earnings.toFixed(2)} generated`, 'success');
+            updateSocialFeed('✅', `Test cycle complete: $${testResult.earnings.toFixed(2)} earned from ${testResult.scenarios_processed} scenarios`, 'just now');
+            
+            // Start the autonomous cycle
+            updateSocialFeed('🚀', 'Starting autonomous wealth generation...', 'just now');
+            window.autonomousWealthInstance.start();
+            
+            showNotification('🚀 Autonomous wealth cycle started!', 'success');
+            updateSocialFeed('💰', 'Autonomous wealth system is now running continuously', 'just now');
+            
+            // Show system status
+            setTimeout(() => {
+                const status = window.autonomousWealthInstance.getStatus();
+                updateSocialFeed('📊', `System status: ${status.components.syntheticIntent ? '✅' : '❌'} AI, ${status.components.quantumMonetization ? '✅' : '❌'} Quantum, ${status.components.platformTriggers ? '✅' : '❌'} Triggers`, 'just now');
+            }, 2000);
+            
+        } else {
+            showNotification('❌ Autonomous wealth test failed', 'error');
+            updateSocialFeed('❌', 'Autonomous wealth test failed - ' + testResult.message, 'just now');
+        }
+
+    } catch (error) {
+        showNotification('❌ Autonomous wealth system error', 'error');
+        console.error('🚀 Autonomous Wealth System Error:', error);
+        updateSocialFeed('🚀', 'Autonomous wealth system error - check console', 'just now');
+    }
+}
+
+// Stop Autonomous Wealth (for testing)
+function stopAutonomousWealth() {
+    if (window.autonomousWealthInstance) {
+        window.autonomousWealthInstance.stop();
+        showNotification('🛑 Autonomous wealth cycle stopped', 'info');
+        updateSocialFeed('🛑', 'Autonomous wealth cycle stopped', 'just now');
+    } else {
+        showNotification('⚠️ No autonomous wealth cycle running', 'warning');
+    }
+}
+
+// Get Autonomous Wealth Status
+function getAutonomousWealthStatus() {
+    if (window.autonomousWealthInstance) {
+        const status = window.autonomousWealthInstance.getStatus();
+        const metrics = window.autonomousWealthInstance.getMetrics();
+        
+        console.log('🚀 Autonomous Wealth Status:', status);
+        console.log('📊 Autonomous Wealth Metrics:', metrics);
+        
+        updateSocialFeed('📊', `Status: ${status.isRunning ? 'Running' : 'Stopped'} | Cycles: ${status.cycleCount} | Earnings: $${status.totalEarnings.toFixed(2)} | Generation: ${status.strategyGeneration}`, 'just now');
+        
+        return { status, metrics };
+    } else {
+        showNotification('⚠️ Autonomous wealth system not initialized', 'warning');
+        return null;
     }
 }
 
