@@ -497,6 +497,9 @@ function createSocialMediaWidget() {
                     <button onclick="showBackendStatus()" class="monetization-btn backend">
                         🔧 Show Backend
                     </button>
+                    <button onclick="testQuantumNarrative()" class="monetization-btn quantum">
+                        🔬 Test Quantum Engine
+                    </button>
                 </div>
             </div>
         </div>
@@ -640,6 +643,18 @@ function createSocialMediaWidget() {
             color: white;
         }
         
+        .monetization-btn.quantum {
+            background: linear-gradient(135deg, #00ffff, #0099cc);
+            color: #000;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+            animation: quantumGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes quantumGlow {
+            from { box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); }
+            to { box-shadow: 0 0 20px rgba(0, 255, 255, 0.6); }
+        }
+        
         .monetization-btn:hover {
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.4);
@@ -743,6 +758,44 @@ function testStripePayment() {
             updateSocialFeed('💳', 'Payment test failed - check logs', 'just now');
         }
     }, 2000);
+}
+
+function testQuantumNarrative() {
+    // Check admin authentication
+    if (!window.adminSession || !window.adminSession.isLoggedIn) {
+        showNotification('🚫 Admin access required for quantum testing', 'error');
+        return;
+    }
+    
+    if (!window.quantumNarrative) {
+        showNotification('❌ Quantum Narrative Engine not loaded', 'error');
+        return;
+    }
+    
+    showNotification('🔬 Testing Quantum Narrative Engine...', 'info');
+    
+    try {
+        // Initialize quantum engine if not active
+        if (!window.quantumNarrative.isActive) {
+            window.quantumNarrative.initialize();
+        }
+        
+        // Generate quantum state
+        const quantumState = window.quantumNarrative.measureNarrativeState();
+        const suggestions = window.quantumNarrative.getQuantumSuggestions();
+        const storyElements = window.quantumNarrative.generateStoryElements();
+        
+        console.log('🔬 Quantum State:', quantumState);
+        console.log('🔬 Quantum Suggestions:', suggestions);
+        console.log('🔬 Story Elements:', storyElements);
+        
+        showNotification(`✅ Quantum Engine Active! Theme: ${quantumState.horrorTheme}`, 'success');
+        updateSocialFeed('🔬', `Quantum narrative generated: ${quantumState.horrorTheme} (${(quantumState.coherence * 100).toFixed(1)}% coherence)`, 'just now');
+    } catch (error) {
+        showNotification('❌ Quantum narrative test failed', 'error');
+        console.error('🔬 Quantum Test Error:', error);
+        updateSocialFeed('🔬', 'Quantum test failed - check console', 'just now');
+    }
 }
 
 function triggerLoreDrop() {

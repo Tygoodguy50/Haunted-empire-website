@@ -139,7 +139,20 @@ function setupEventListeners() {
 function generateAISuggestion() {
     const currentText = document.getElementById('ai-writing-area').value;
     const suggestions = horrorPrompts[currentMood];
-    const randomSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
+    let randomSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
+    
+    // 🔬 QUANTUM NARRATIVE ENHANCEMENT
+    let quantumEnhanced = false;
+    if (window.quantumNarrative && window.quantumNarrative.isActive) {
+        try {
+            const quantumData = window.quantumNarrative.enhanceAIPrompt(randomSuggestion);
+            randomSuggestion = quantumData.quantumEnhancement;
+            quantumEnhanced = true;
+            console.log('🔬 Quantum-enhanced suggestion generated');
+        } catch (e) {
+            console.log('Quantum enhancement failed, using standard suggestion');
+        }
+    }
     
     // Enhanced AI suggestions based on current text
     let contextualSuggestion = randomSuggestion;
@@ -147,16 +160,34 @@ function generateAISuggestion() {
     if (currentText.length > 100) {
         const lastSentence = currentText.split('.').pop().trim();
         if (lastSentence.includes('door')) {
-            contextualSuggestion = "As the door creaks open, you notice the handle is warm... and wet...";
+            contextualSuggestion = quantumEnhanced ? 
+                "As the door exists in quantum superposition—both open and closed—you realize observation will collapse reality into horror..." :
+                "As the door creaks open, you notice the handle is warm... and wet...";
         } else if (lastSentence.includes('dark')) {
-            contextualSuggestion = "In the darkness, something breathes that shouldn't be alive...";
+            contextualSuggestion = quantumEnhanced ?
+                "In the darkness, quantum uncertainty breathes—something that exists only when unobserved..." :
+                "In the darkness, something breathes that shouldn't be alive...";
         } else if (lastSentence.includes('mirror')) {
-            contextualSuggestion = "The reflection smiles, but your face remains frozen in horror...";
+            contextualSuggestion = quantumEnhanced ?
+                "The reflection exhibits quantum entanglement with your fear—it smiles because you're terrified..." :
+                "The reflection smiles, but your face remains frozen in horror...";
         }
     }
     
     document.getElementById('ai-suggestion').textContent = contextualSuggestion;
     document.getElementById('suggestion-box').style.display = 'block';
+    
+    // Add quantum indicator if enhanced
+    const suggestionBox = document.getElementById('suggestion-box');
+    if (quantumEnhanced) {
+        suggestionBox.style.border = '2px solid #00ffff';
+        suggestionBox.style.boxShadow = '0 0 10px rgba(0, 255, 255, 0.3)';
+        suggestionBox.title = '🔬 Quantum-Enhanced Suggestion';
+    } else {
+        suggestionBox.style.border = '';
+        suggestionBox.style.boxShadow = '';
+        suggestionBox.title = '';
+    }
     
     // Add suggestion to text
     setTimeout(() => {
@@ -240,26 +271,54 @@ function clearVoiceText() {
 
 // ===== CHARACTER GENERATOR =====
 function generateCharacter() {
-    const name = characterTraits.names[Math.floor(Math.random() * characterTraits.names.length)];
-    const appearance = characterTraits.appearances[Math.floor(Math.random() * characterTraits.appearances.length)];
-    const personality = characterTraits.personalities[Math.floor(Math.random() * characterTraits.personalities.length)];
-    const secret = characterTraits.secrets[Math.floor(Math.random() * characterTraits.secrets.length)];
+    let name = characterTraits.names[Math.floor(Math.random() * characterTraits.names.length)];
+    let appearance = characterTraits.appearances[Math.floor(Math.random() * characterTraits.appearances.length)];
+    let personality = characterTraits.personalities[Math.floor(Math.random() * characterTraits.personalities.length)];
+    let secret = characterTraits.secrets[Math.floor(Math.random() * characterTraits.secrets.length)];
+    
+    // 🔬 QUANTUM NARRATIVE ENHANCEMENT
+    let quantumEnhanced = false;
+    let quantumTraits = '';
+    if (window.quantumNarrative && window.quantumNarrative.isActive) {
+        try {
+            const quantumElements = window.quantumNarrative.generateStoryElements();
+            const quantumChar = window.quantumNarrative.generateQuantumCharacter();
+            
+            // Enhance character with quantum properties
+            appearance += ` They seem to exist in multiple states simultaneously.`;
+            personality += ` Their behavior exhibits quantum uncertainty.`;
+            secret = `${secret} Additionally, they're entangled with ${quantumElements.theme} forces.`;
+            quantumTraits = `<p><strong>🔬 Quantum Nature:</strong> ${quantumChar}</p>`;
+            quantumEnhanced = true;
+            
+            console.log('🔬 Quantum-enhanced character generated');
+        } catch (e) {
+            console.log('Quantum character enhancement failed, using standard generation');
+        }
+    }
     
     const character = {
         name,
         appearance,
         personality,
         secret,
+        quantumEnhanced,
         timestamp: new Date().toISOString()
     };
     
+    const quantumStyle = quantumEnhanced ? 
+        'border: 2px solid #00ffff; box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);' : '';
+    
     document.getElementById('character-display').innerHTML = `
-        <h4 style="color: var(--horror-red); margin-bottom: 15px;">💀 ${character.name}</h4>
-        <p><strong>Appearance:</strong> ${character.appearance}</p>
-        <p><strong>Personality:</strong> ${character.personality}</p>
-        <p><strong>Dark Secret:</strong> ${character.secret}</p>
-        <div style="margin-top: 15px; padding: 10px; background: rgba(255,107,107,0.1); border-radius: 5px;">
-            <small style="color: var(--ghost-teal);">💡 Writing Tip: Use this character's secret as a plot twist!</small>
+        <div style="${quantumStyle} padding: 15px; border-radius: 10px;">
+            <h4 style="color: var(--horror-red); margin-bottom: 15px;">💀 ${character.name}${quantumEnhanced ? ' 🔬' : ''}</h4>
+            <p><strong>Appearance:</strong> ${character.appearance}</p>
+            <p><strong>Personality:</strong> ${character.personality}</p>
+            <p><strong>Dark Secret:</strong> ${character.secret}</p>
+            ${quantumTraits}
+            <div style="margin-top: 15px; padding: 10px; background: rgba(255,107,107,0.1); border-radius: 5px;">
+                <small style="color: var(--ghost-teal);">💡 Writing Tip: ${quantumEnhanced ? 'Use quantum uncertainty in their actions and motivations!' : 'Use this character\'s secret as a plot twist!'}</small>
+            </div>
         </div>
     `;
     
