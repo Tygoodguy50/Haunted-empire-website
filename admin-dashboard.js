@@ -53,17 +53,51 @@ async function loadRegistrations() {
 
 async function deleteRegistration(id) {
   if (!confirm('Delete this registration?')) return;
-  const res = await fetch(`/admin/webhook-registrations/${id}`, {
-    method: 'DELETE',
-    headers: { 'x-user-role': 'admin' }
-  });
-  if (res.ok) loadRegistrations();
+  
+  try {
+    const res = await fetch(`/admin/webhook-registrations/${id}`, {
+      method: 'DELETE',
+      headers: { 'x-user-role': 'admin' }
+    });
+    
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    }
+    
+    // Check if response is JSON before parsing
+    const contentType = res.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      const data = await res.json();
+      console.log('Delete response:', data);
+    }
+    
+    loadRegistrations();
+  } catch (err) {
+    console.warn('Failed to delete registration:', err.message);
+    alert('Delete failed: Admin service unavailable');
+  }
 }
 
 async function viewDetails(id) {
-  const res = await fetch(`/admin/webhook-registrations/${id}`, {
-    headers: { 'x-user-role': 'admin' }
-  });
-  const data = await res.json();
-  alert(JSON.stringify(data.registration, null, 2));
+  try {
+    const res = await fetch(`/admin/webhook-registrations/${id}`, {
+      headers: { 'x-user-role': 'admin' }
+    });
+    
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    }
+    
+    // Check if response is JSON before parsing
+    const contentType = res.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error('API returned non-JSON response');
+    }
+    
+    const data = await res.json();
+    alert(JSON.stringify(data.registration, null, 2));
+  } catch (err) {
+    console.warn('Failed to load details:', err.message);
+    alert('Details unavailable: Admin service temporarily down');
+  }
 }

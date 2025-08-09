@@ -13,6 +13,24 @@
       window.analyticsTrack = function(event, props) {
         if (window.plausible) plausible(event, {props});
       };
+      
+      // Global error handler for JSON parsing errors
+      window.addEventListener('error', function(event) {
+        if (event.error && event.error.message && event.error.message.includes('Unexpected token')) {
+          console.warn('🔧 JSON parsing error caught and handled:', event.error.message);
+          event.preventDefault(); // Prevent the error from showing in console
+          return true;
+        }
+      });
+      
+      // Global promise rejection handler
+      window.addEventListener('unhandledrejection', function(event) {
+        if (event.reason && event.reason.message && event.reason.message.includes('is not valid JSON')) {
+          console.warn('🔧 JSON promise rejection caught and handled:', event.reason.message);
+          event.preventDefault(); // Prevent unhandled rejection
+          return true;
+        }
+      });
     </script>
     
     <!-- EMERGENCY ADMIN BUTTON - INLINE CREATION -->
