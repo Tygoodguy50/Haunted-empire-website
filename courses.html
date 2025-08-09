@@ -437,28 +437,6 @@
     </footer>
 
     <script>
-        function enrollInCourse(course) {
-            // Real Stripe Payment Links for courses - replace with your actual Stripe Payment Links
-            const courseLinks = {
-                'beginners': 'https://buy.stripe.com/7sYcN78Nd8mCd233IC8EM0g', // Beginners Horror Writing
-                'advanced': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01', // Complete Horror Toolkit
-                'masterclass': 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC', // Horror Writing Masterclass
-                'publishing': 'https://buy.stripe.com/28E28t3sT8mCfab1Au8EM0e', // From Draft to Published Course
-                'business': 'https://buy.stripe.com/00w7sN2oP6eu8LNa708EM0f', // Horror That Sells
-                'mentorship': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04' // Professional Editing
-            };
-            
-            const paymentUrl = courseLinks[course];
-            if (paymentUrl) {
-                // Redirect to actual Stripe checkout
-                window.location.href = paymentUrl;
-            } else {
-                // Fallback to browse all courses
-                alert('Course not found. Please browse our available courses.');
-                window.location.href = 'courses.html';
-            }
-        }
-
         // Track referrals from promotional posts
         if (document.referrer.includes('bsky.app') || document.referrer.includes('bluesky')) {
             console.log('Course visitor from Bluesky promotional post!');

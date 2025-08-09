@@ -29,6 +29,7 @@ function updatePaymentLinks() {
     
     // Updated course enrollment function
     window.enrollInCourse = function(courseId) {
+        console.log('EXTERNAL enrollInCourse called with:', courseId); // Debug log
         const links = {
             'beginners': 'https://buy.stripe.com/7sYcN78Nd8mCd233IC8EM0g',
             'advanced': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01', 
@@ -39,9 +40,12 @@ function updatePaymentLinks() {
         };
         
         const stripeUrl = links[courseId];
+        console.log('EXTERNAL Payment URL found:', stripeUrl); // Debug log
         if (stripeUrl && stripeUrl !== 'REPLACE_WITH_STRIPE_LINK_FOR_' + courseId.toUpperCase() + '_COURSE') {
+            console.log('EXTERNAL Redirecting to:', stripeUrl); // Debug log
             window.location.href = stripeUrl;  // Use same tab redirect like courses.html
         } else {
+            console.log('EXTERNAL No payment URL found for course:', courseId); // Debug log
             alert('Course not found. Please check our available courses.');
             window.location.href = 'courses.html';
         }
