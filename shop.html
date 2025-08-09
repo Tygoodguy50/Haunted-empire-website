@@ -18,6 +18,151 @@
             gap: 30px;
             margin-top: 30px;
         }
+
+        /* Shop Controls Styling */
+        .shop-controls {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #333;
+        }
+
+        .search-section {
+            margin-bottom: 15px;
+        }
+
+        #product-search {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background: #0a0a0a;
+            color: white;
+            font-size: 16px;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-section select,
+        .sort-section select {
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background: #0a0a0a;
+            color: white;
+            font-size: 14px;
+            min-width: 150px;
+        }
+
+        .sort-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Product Rating System */
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .stars {
+            color: #ffd700;
+            font-size: 18px;
+        }
+
+        .rating-text {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        /* Product Features */
+        .product-features {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+
+        .product-features li {
+            color: #aaa;
+            margin: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .product-features li:before {
+            content: "✓";
+            color: #4CAF50;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Quick View & Wishlist */
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .quick-view-btn,
+        .wishlist-btn {
+            padding: 8px 12px;
+            border: 1px solid #333;
+            background: transparent;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .quick-view-btn:hover {
+            background: #333;
+        }
+
+        .wishlist-btn:hover {
+            background: #ff4757;
+            border-color: #ff4757;
+        }
+
+        /* Reviews Section */
+        .product-reviews {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 3px solid #4CAF50;
+        }
+
+        .review-text {
+            font-style: italic;
+            color: #ddd;
+            margin-bottom: 8px;
+        }
+
+        .review-author {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .filter-section {
+                flex-direction: column;
+            }
+            
+            .filter-section select,
+            .sort-section select {
+                min-width: 100%;
+            }
+        }
         
         .product-card {
             background: #1a1a1a;
@@ -187,7 +332,37 @@
             🚨 FLASH SALE: 70% OFF ALL PRODUCTS - ENDS IN <span class="countdown" id="countdown">24:00:00</span>
         </div>
 
-        <div class="product-grid">
+        <!-- Search and Filter Controls -->
+        <div class="shop-controls">
+            <div class="search-section">
+                <input type="text" id="product-search" placeholder="🔍 Search products..." onkeyup="filterProducts()">
+            </div>
+            <div class="filter-section">
+                <select id="category-filter" title="Filter by category" onchange="filterProducts()">
+                    <option value="all">All Categories</option>
+                    <option value="courses">Courses</option>
+                    <option value="tools">Tools</option>
+                    <option value="services">Services</option>
+                    <option value="bundles">Bundles</option>
+                </select>
+                <select id="price-filter" title="Filter by price range" onchange="filterProducts()">
+                    <option value="all">All Prices</option>
+                    <option value="under-100">Under $100</option>
+                    <option value="100-300">$100 - $300</option>
+                    <option value="over-300">Over $300</option>
+                </select>
+            </div>
+            <div class="sort-section">
+                <select id="sort-products" title="Sort products" onchange="sortProducts()">
+                    <option value="featured">Featured</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="rating">Highest Rated</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="product-grid" id="product-grid">
             <!-- Horror Writing Masterclass -->
             <div class="product-card">
                 <div class="sale-badge">70% OFF</div>
@@ -608,6 +783,232 @@
             font-style: italic;
         }
     </style>
+
+    <!-- Enhanced Product Data and Search/Filter JavaScript -->
+    <script>
+        // Enhanced product database with search and filter capabilities
+        const enhancedProductData = {
+            'masterclass': {
+                name: 'Horror Writing Masterclass',
+                price: 297,
+                originalPrice: 997,
+                category: 'courses',
+                rating: 4.9,
+                reviews: 147,
+                features: ['10+ Video Modules', 'Downloadable Resources', 'Email Support', 'Lifetime Access'],
+                description: 'Master the art of horror writing with proven techniques used by bestselling authors.',
+                badge: 'BESTSELLER',
+                testimonial: 'This course transformed my writing completely!' // - Sarah M.'
+            },
+            'templates': {
+                name: 'Horror Templates Bundle',
+                price: 97,
+                originalPrice: 297,
+                category: 'tools',
+                rating: 4.8,
+                reviews: 89,
+                features: ['50+ Templates', 'Character Sheets', 'Plot Outlines', 'Instant Download'],
+                description: 'Professional templates to structure your horror stories like a pro.',
+                badge: 'POPULAR',
+                testimonial: 'These templates saved me hours of planning time!' // - Mike R.'
+            },
+            'editing': {
+                name: 'Professional Editing Service',
+                price: 500,
+                originalPrice: 1500,
+                category: 'services',
+                rating: 5.0,
+                reviews: 34,
+                features: ['Line Editing', 'Developmental Feedback', '2-Week Turnaround', 'Revision Included'],
+                description: 'Get your manuscript professionally edited by horror writing experts.',
+                badge: 'PREMIUM',
+                testimonial: 'The editing feedback was incredibly detailed and helpful!' // - Lisa K.'
+            },
+            'generator': {
+                name: 'Horror Plot Generator',
+                price: 47,
+                originalPrice: 97,
+                category: 'tools',
+                rating: 4.7,
+                reviews: 203,
+                features: ['1000+ Plot Combinations', 'Character Generator', 'Setting Ideas', 'Mobile Friendly'],
+                description: 'Never run out of horror story ideas with our AI-powered generator.',
+                badge: 'NEW',
+                testimonial: 'Generated the perfect plot for my next novel!' // - Tom D.'
+            },
+            'publishing': {
+                name: 'From Draft to Published Course',
+                price: 197,
+                originalPrice: 497,
+                category: 'courses',
+                rating: 4.8,
+                reviews: 76,
+                features: ['Publishing Strategy', 'Marketing Guide', 'Cover Design Tips', 'Live Q&A Sessions'],
+                description: 'Complete guide to publishing and marketing your horror fiction.',
+                badge: 'COMPLETE',
+                testimonial: 'Published my first book using these exact strategies!' // - Emma S.'
+            },
+            'toolkit': {
+                name: 'Complete Horror Toolkit',
+                price: 497,
+                originalPrice: 1535,
+                category: 'bundles',
+                rating: 4.9,
+                reviews: 65,
+                features: ['All Products Included', 'Bonus Content', 'Priority Support', 'Future Updates'],
+                description: 'Everything you need to become a successful horror writer in one package.',
+                badge: 'BEST VALUE',
+                testimonial: 'The most comprehensive horror writing resource available!' // - David P.'
+            }
+        };
+
+        // Global variables for filtering
+        let currentFilteredProducts = Object.keys(enhancedProductData);
+        let currentSort = 'featured';
+
+        // Search and filter functionality
+        function filterProducts() {
+            const searchTerm = document.getElementById('product-search').value.toLowerCase();
+            const categoryFilter = document.getElementById('category-filter').value;
+            const priceFilter = document.getElementById('price-filter').value;
+
+            currentFilteredProducts = Object.keys(enhancedProductData).filter(productId => {
+                const product = enhancedProductData[productId];
+                
+                // Search filter
+                const matchesSearch = product.name.toLowerCase().includes(searchTerm) ||
+                                    product.description.toLowerCase().includes(searchTerm) ||
+                                    product.features.some(feature => feature.toLowerCase().includes(searchTerm));
+                
+                // Category filter
+                const matchesCategory = categoryFilter === 'all' || product.category === categoryFilter;
+                
+                // Price filter
+                let matchesPrice = true;
+                if (priceFilter === 'under-100') {
+                    matchesPrice = product.price < 100;
+                } else if (priceFilter === '100-300') {
+                    matchesPrice = product.price >= 100 && product.price <= 300;
+                } else if (priceFilter === 'over-300') {
+                    matchesPrice = product.price > 300;
+                }
+                
+                return matchesSearch && matchesCategory && matchesPrice;
+            });
+
+            sortProducts();
+        }
+
+        function sortProducts() {
+            const sortBy = document.getElementById('sort-products').value;
+            
+            currentFilteredProducts.sort((a, b) => {
+                const productA = enhancedProductData[a];
+                const productB = enhancedProductData[b];
+                
+                switch(sortBy) {
+                    case 'price-low':
+                        return productA.price - productB.price;
+                    case 'price-high':
+                        return productB.price - productA.price;
+                    case 'rating':
+                        return productB.rating - productA.rating;
+                    case 'featured':
+                    default: {
+                        // Custom featured order (you can modify this)
+                        const featuredOrder = ['toolkit', 'masterclass', 'templates', 'publishing', 'generator', 'editing'];
+                        return featuredOrder.indexOf(a) - featuredOrder.indexOf(b);
+                    }
+                }
+            });
+
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const productGrid = document.getElementById('product-grid');
+            
+            if (currentFilteredProducts.length === 0) {
+                productGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #888;">
+                        <h3>No products found</h3>
+                        <p>Try adjusting your search or filters</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const productsHTML = currentFilteredProducts.map(productId => {
+                const product = enhancedProductData[productId];
+                const discount = Math.round((1 - product.price / product.originalPrice) * 100);
+                const stars = '★'.repeat(Math.floor(product.rating)) + (product.rating % 1 ? '☆' : '');
+                
+                return `
+                    <div class="product-card" data-product="${productId}">
+                        <div class="product-badge">${product.badge}</div>
+                        <h3>${product.name}</h3>
+                        
+                        <div class="product-rating">
+                            <span class="stars">${stars}</span>
+                            <span class="rating-text">${product.rating} (${product.reviews} reviews)</span>
+                        </div>
+                        
+                        <p class="product-description">${product.description}</p>
+                        
+                        <ul class="product-features">
+                            ${product.features.map(feature => `<li>${feature}</li>`).join('')}
+                        </ul>
+                        
+                        <div class="product-reviews">
+                            <div class="review-text">"${product.testimonial}"</div>
+                            <div class="review-author">- Verified Customer</div>
+                        </div>
+                        
+                        <div class="price-container">
+                            <span class="price">$${product.price}</span>
+                            <span class="original-price">$${product.originalPrice}</span>
+                            <span class="discount">${discount}% OFF</span>
+                        </div>
+                        
+                        <div class="product-actions">
+                            <button class="quick-view-btn" onclick="quickView('${productId}')">Quick View</button>
+                            <button class="wishlist-btn" onclick="toggleWishlist('${productId}')">♡ Save</button>
+                        </div>
+                        
+                        <a href="#" class="buy-button add-to-cart-btn" onclick="addToCart('${productId}')">Add to Cart</a>
+                    </div>
+                `;
+            }).join('');
+
+            productGrid.innerHTML = productsHTML;
+        }
+
+        // Quick view functionality
+        function quickView(productId) {
+            const product = enhancedProductData[productId];
+            alert(`${product.name}\n\n${product.description}\n\nKey Features:\n${product.features.join('\n• ')}\n\nPrice: $${product.price} (${Math.round((1 - product.price / product.originalPrice) * 100)}% off!)`);
+        }
+
+        // Wishlist functionality (basic implementation)
+        function toggleWishlist(productId) {
+            let wishlist = JSON.parse(localStorage.getItem('hauntedEmpireWishlist')) || [];
+            
+            if (wishlist.includes(productId)) {
+                wishlist = wishlist.filter(id => id !== productId);
+                showCartNotification('Removed from wishlist');
+            } else {
+                wishlist.push(productId);
+                showCartNotification('Added to wishlist ♡');
+            }
+            
+            localStorage.setItem('hauntedEmpireWishlist', JSON.stringify(wishlist));
+        }
+
+        // Initialize products display when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProducts();
+        });
+    </script>
 
     <!-- Cart JavaScript -->
     <script>
