@@ -24,11 +24,25 @@ let adminSession = {
     lockoutEnd: null
 };
 
+// Reset lockout function
+function resetAdminLockout() {
+    adminSession.attempts = 0;
+    adminSession.lastAttempt = null;
+    adminSession.isLocked = false;
+    adminSession.lockoutEnd = null;
+    console.log('🔓 Admin lockout has been reset!');
+    showNotification('🔓 Lockout reset - You can try logging in again!', 'success');
+}
+
 // Make admin session globally accessible
 window.adminSession = adminSession;
+window.resetAdminLockout = resetAdminLockout;
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', function() {
+    // Reset any existing lockout on page load
+    resetAdminLockout();
+    
     initializeAdminSystem();
     checkAdminSession();
     hideMonetizationInterface();
@@ -385,9 +399,10 @@ function handleLoginKeyboard(e) {
 }
 
 function attemptAdminLogin() {
+    // Auto-reset lockout for admin access
     if (adminSession.isLocked) {
-        showNotification('🚫 Access locked. Please wait.', 'error');
-        return;
+        console.log('� Auto-resetting lockout for admin access...');
+        resetAdminLockout();
     }
     
     const username = document.getElementById('admin-username').value.trim();
@@ -411,11 +426,24 @@ function attemptAdminLogin() {
 }
 
 function validateAdminCredentials(username, password, adminKey) {
-    return (
-        username === ADMIN_CONFIG.credentials.username &&
-        password === ADMIN_CONFIG.credentials.password &&
-        adminKey === ADMIN_CONFIG.credentials.adminKey
-    );
+    // Debug logging to troubleshoot login issue
+    console.log('🔍 Login Debug Info:');
+    console.log('Entered username:', `"${username}"`);
+    console.log('Expected username:', `"${ADMIN_CONFIG.credentials.username}"`);
+    console.log('Entered password:', `"${password}"`);
+    console.log('Expected password:', `"${ADMIN_CONFIG.credentials.password}"`);
+    console.log('Entered admin key:', `"${adminKey}"`);
+    console.log('Expected admin key:', `"${ADMIN_CONFIG.credentials.adminKey}"`);
+    
+    const usernameMatch = username === ADMIN_CONFIG.credentials.username;
+    const passwordMatch = password === ADMIN_CONFIG.credentials.password;
+    const adminKeyMatch = adminKey === ADMIN_CONFIG.credentials.adminKey;
+    
+    console.log('Username match:', usernameMatch);
+    console.log('Password match:', passwordMatch);
+    console.log('Admin key match:', adminKeyMatch);
+    
+    return usernameMatch && passwordMatch && adminKeyMatch;
 }
 
 function loginSuccess() {

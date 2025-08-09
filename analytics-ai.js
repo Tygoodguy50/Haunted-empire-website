@@ -657,11 +657,16 @@ function updateAnalyticsDashboard() {
     const now = new Date();
     const sessionTime = Math.round((now - writingSession.startTime) / 1000 / 60);
     
-    // Update metric cards
-    document.getElementById('session-time').textContent = `${sessionTime}m`;
-    document.getElementById('word-count').textContent = writingSession.totalWords;
-    document.getElementById('wpm').textContent = writingSession.wpm;
-    document.getElementById('streak').textContent = writingSession.streakDays;
+    // Update metric cards - check if elements exist first
+    const sessionTimeEl = document.getElementById('session-time');
+    const wordCountEl = document.getElementById('word-count');
+    const wpmEl = document.getElementById('wpm');
+    const streakEl = document.getElementById('streak');
+    
+    if (sessionTimeEl) sessionTimeEl.textContent = `${sessionTime}m`;
+    if (wordCountEl) wordCountEl.textContent = writingSession.totalWords;
+    if (wpmEl) wpmEl.textContent = writingSession.wpm;
+    if (streakEl) streakEl.textContent = writingSession.streakDays;
     
     // Update creativity metrics
     const today = new Date().toDateString();
