@@ -58,13 +58,13 @@ function updatePaymentLinks() {
         }
         
         // Redirect to Patreon page
-        window.open('https://www.patreon.com/hauntedempire', '_blank');
+        window.open('https://www.patreon.com/PhantomDp', '_blank');
     };
     
     // Social media integration
     window.openSocialLink = function(platform) {
         const socialLinks = {
-            'patreon': 'https://www.patreon.com/hauntedempire',
+            'patreon': 'https://www.patreon.com/PhantomDp',
             'facebook': 'https://facebook.com/hauntedempire',
             'twitter': 'https://twitter.com/PhantomDp25',
             'instagram': 'https://instagram.com/phantomnb_',
