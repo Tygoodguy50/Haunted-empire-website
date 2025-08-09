@@ -249,19 +249,25 @@
         }
         
         .product-card {
-            background: #1a1a1a;
-            border: 2px solid #8B0000;
-            border-radius: 10px;
-            padding: 25px;
+            background: linear-gradient(145deg, rgba(26, 26, 26, 0.95), rgba(42, 10, 42, 0.8));
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            border-radius: 20px;
+            padding: 30px;
             text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         
         .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(139, 0, 0, 0.3);
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--horror-red);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.4),
+                0 0 40px rgba(255, 107, 107, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
         
         .product-card::before {
@@ -271,32 +277,301 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(139, 0, 0, 0.1), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 107, 0.15), transparent);
+            transition: left 0.6s ease;
         }
         
         .product-card:hover::before {
             left: 100%;
         }
         
+        /* Enhanced product card elements */
+        .product-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 107, 107, 0.1) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.6s ease-out;
+            z-index: 1;
+        }
+        
+        .product-card:hover::after {
+            transform: scale(1);
+        }
+        
+        .product-card-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(45deg, var(--horror-red), var(--blood-dark));
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            z-index: 3;
+            animation: badgePulse 2s infinite;
+        }
+        
+        @keyframes badgePulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7);
+            }
+            50% { 
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
+            }
+        }
+        
         .product-title {
-            color: #8B0000;
-            font-size: 1.5em;
+            color: var(--horror-red);
+            font-size: 1.6rem;
             margin-bottom: 15px;
             font-weight: bold;
+            font-family: 'Butcherman', serif;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            line-height: 1.3;
         }
         
         .product-description {
-            color: #ccc;
+            color: var(--bone-white);
             margin-bottom: 20px;
-            line-height: 1.6;
+            line-height: 1.7;
+            font-size: 1rem;
+            opacity: 0.9;
         }
         
         .product-price {
-            font-size: 2em;
-            color: #FF6B6B;
+            font-size: 2.2rem;
+            color: var(--ghost-teal);
             font-weight: bold;
             margin: 20px 0;
+            font-family: 'Butcherman', serif;
+            text-shadow: 0 0 15px rgba(76, 205, 196, 0.5);
+            position: relative;
+        }
+        
+        .product-price::before {
+            content: '$';
+            font-size: 1.2rem;
+            vertical-align: top;
+            opacity: 0.7;
+        }
+        
+        .price-original {
+            font-size: 1.2rem;
+            color: #888;
+            text-decoration: line-through;
+            margin-right: 10px;
+            opacity: 0.6;
+        }
+        
+        .price-discount {
+            background: linear-gradient(45deg, #ff4757, #ff3838);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+            animation: discountGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes discountGlow {
+            from { box-shadow: 0 0 5px rgba(255, 71, 87, 0.5); }
+            to { box-shadow: 0 0 20px rgba(255, 71, 87, 0.8); }
+        }
+        
+        /* Enhanced Product Card Components */
+        .testimonial-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid var(--ghost-teal);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-style: italic;
+        }
+        
+        .testimonial-text {
+            color: var(--bone-white);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .testimonial-author {
+            color: var(--ghost-teal);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .product-guarantees {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .guarantee-item {
+            font-size: 0.85rem;
+            color: var(--ghost-teal);
+            opacity: 0.8;
+            text-align: center;
+            flex: 1;
+        }
+        
+        /* Enhanced buttons in product cards */
+        .product-actions {
+            display: flex;
+            gap: 12px;
+            margin: 25px 0 20px;
+            justify-content: center;
+        }
+        
+        .product-actions .horror-btn,
+        .product-actions .ghost-btn {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            border-radius: 8px;
+        }
+        
+        /* Product rating styling */
+        .product-rating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .stars {
+            color: #ffd700;
+            font-size: 18px;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+        
+        .rating-text {
+            color: #ccc;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        /* Enhanced product features list */
+        .product-features {
+            text-align: left;
+            margin: 20px 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .product-features li {
+            color: var(--bone-white);
+            margin: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .product-features li:before {
+            content: "✓";
+            color: var(--ghost-teal);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(76, 205, 196, 0.5);
+        }
+        
+        /* Urgent banner styling */
+        .urgent-banner {
+            background: linear-gradient(45deg, #ff4757, #ff3838);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: bold;
+            animation: urgentPulse 2s infinite;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+        }
+        
+        @keyframes urgentPulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+            }
+            50% { 
+                transform: scale(1.02);
+                box-shadow: 0 6px 20px rgba(255, 71, 87, 0.6);
+            }
+        }
+        
+        .countdown {
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+        
+        /* Enhanced shop hero */
+        .shop-hero {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(42, 10, 42, 0.8));
+            border: 3px solid var(--horror-red);
+            border-radius: 20px;
+            padding: 50px 40px;
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+        
+        .shop-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 107, 107, 0.1) 0%, transparent 70%);
+            animation: heroRotate 20s linear infinite;
+        }
+        
+        @keyframes heroRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .shop-hero h1 {
+            font-family: 'Nosifer', cursive;
+            font-size: 3rem;
+            color: var(--horror-red);
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255, 107, 107, 0.6);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .shop-hero p {
+            font-size: 1.3rem;
+            color: var(--bone-white);
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
         }
         
         .original-price {
@@ -455,28 +730,56 @@
 
         <div class="product-grid" id="product-grid">
             <!-- Horror Writing Masterclass -->
-            <div class="product-card">
-                <div class="product-card-illustration">🎃📚✨</div>
-                <div class="sale-badge">70% OFF</div>
-                <h3 class="product-title">🎃 Horror Writing Masterclass</h3>
-                <div class="product-description">
-                    Complete video course covering atmosphere, character psychology, and plot structure
+            <div class="product-card enhanced-card hover-lift">
+                <div class="product-badge">BESTSELLER</div>
+                <div class="product-card-content">
+                    <div class="product-card-illustration">🎃📚✨</div>
+                    <h3 class="product-title">🎃 Horror Writing Masterclass</h3>
+                    
+                    <div class="product-rating">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <span class="rating-text">(127 reviews)</span>
+                    </div>
+                    
+                    <div class="product-description">
+                        Complete video course covering atmosphere, character psychology, and plot structure. Transform your horror writing with professional techniques.
+                    </div>
+                    
+                    <ul class="product-features">
+                        <li>12 hours of HD video content</li>
+                        <li>50+ interactive writing exercises</li>
+                        <li>Private community access</li>
+                        <li>Certificate of completion</li>
+                        <li>Lifetime access + updates</li>
+                        <li>30-day money-back guarantee</li>
+                    </ul>
+                    
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">"This course transformed my writing completely!"</div>
+                        <div class="testimonial-author">- Sarah M., Published Author</div>
+                    </div>
+                    
+                    <div class="product-price">
+                        <span class="price-original">$297</span>
+                        89
+                        <span class="price-discount">70% OFF</span>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <button class="horror-btn hover-glow" onclick="purchaseProduct('masterclass')">
+                            💰 Buy Now
+                        </button>
+                        <button class="ghost-btn" onclick="addToCart('masterclass')">
+                            🛒 Add to Cart
+                        </button>
+                    </div>
+                    
+                    <div class="product-guarantees">
+                        <span class="guarantee-item">🔒 Secure Payment</span>
+                        <span class="guarantee-item">⚡ Instant Access</span>
+                        <span class="guarantee-item">🎯 Expert Support</span>
+                    </div>
                 </div>
-                <ul class="features-list">
-                    <li>12 hours of video content</li>
-                    <li>50+ writing exercises</li>
-                    <li>Community access</li>
-                    <li>Certificate of completion</li>
-                    <li>Lifetime access</li>
-                </ul>
-                <div class="testimonial">
-                    "This course transformed my writing completely!" - Sarah M.
-                </div>
-                <div class="product-price">
-                    <span class="original-price">$297</span>$89
-                </div>
-                <a href="#" class="buy-button" onclick="purchaseProduct('masterclass')">Buy Now</a>
-                <a href="#" class="buy-button" style="background: #4CAF50;" onclick="addToCart('masterclass')">Add to Cart</a>
             </div>
 
             <!-- Beginners Horror Writing Course -->

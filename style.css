@@ -308,5 +308,820 @@ header {
     display: none;
 }
 
-/* Haunted Empire - Main Stylesheet */
+/* Haunted Empire - Enhanced UI/UX Stylesheet */
+
+/* ===== MODERN UI ENHANCEMENTS ===== */
+
+/* Improved Typography with Horror-themed fonts */
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&family=Butcherman&family=Eater&family=Chiller&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* CSS Variables for consistent theming */
+:root {
+    --horror-red: #ff6b6b;
+    --ghost-teal: #4ecdc4;
+    --phantom-blue: #45b7d1;
+    --shadow-black: #0a0a0a;
+    --mist-gray: #1a1a1a;
+    --bone-white: #e0e0e0;
+    --blood-dark: #8b0000;
+    --glow-purple: #9d4edd;
+    
+    /* Animation durations */
+    --fast: 0.2s;
+    --medium: 0.3s;
+    --slow: 0.5s;
+    
+    /* Shadows */
+    --glow-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+    --phantom-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    --floating-shadow: 0 5px 15px rgba(76, 205, 196, 0.2);
+}
+
+/* Enhanced body styling with particle background */
+body {
+    font-family: 'Inter', 'Arial', sans-serif;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 25%, #2a0a2a 50%, #1a0a1a 75%, #0a0a0a 100%);
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Animated background particles */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(76, 205, 196, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(157, 78, 221, 0.1) 0%, transparent 50%);
+    animation: floatingParticles 20s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes floatingParticles {
+    0%, 100% { 
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 0.3;
+    }
+    25% { 
+        transform: translate(50px, -30px) rotate(90deg);
+        opacity: 0.5;
+    }
+    50% { 
+        transform: translate(-30px, 50px) rotate(180deg);
+        opacity: 0.3;
+    }
+    75% { 
+        transform: translate(-50px, -50px) rotate(270deg);
+        opacity: 0.4;
+    }
+}
+
+/* Enhanced hover animations */
+.hover-lift {
+    transition: transform var(--medium), box-shadow var(--medium);
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--floating-shadow);
+}
+
+.hover-glow {
+    transition: box-shadow var(--medium), filter var(--medium);
+}
+
+.hover-glow:hover {
+    box-shadow: var(--glow-shadow);
+    filter: brightness(1.1);
+}
+
+/* Improved card designs */
+.enhanced-card {
+    background: linear-gradient(145deg, rgba(26, 26, 26, 0.9), rgba(42, 10, 42, 0.7));
+    border: 1px solid rgba(255, 107, 107, 0.2);
+    border-radius: 15px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.enhanced-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 107, 107, 0.1), transparent);
+    transition: left 0.6s;
+}
+
+.enhanced-card:hover::before {
+    left: 100%;
+}
+
+/* Glitch text effect for horror elements */
+.glitch-text {
+    position: relative;
+    font-family: 'Creepster', cursive;
+    color: var(--horror-red);
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 
+        0.05em 0 0 var(--ghost-teal),
+        -0.05em -0.025em 0 var(--phantom-blue),
+        0.025em 0.05em 0 var(--glow-purple);
+    animation: glitch 2s linear infinite;
+}
+
+@keyframes glitch {
+    0%, 95%, 100% {
+        filter: none;
+        opacity: 0.99;
+        transform: translate3d(0, 0, 0);
+    }
+    96% {
+        filter: hue-rotate(90deg);
+        transform: translate3d(-2px, 0, 0);
+    }
+    97% {
+        filter: invert(1) hue-rotate(90deg);
+        transform: translate3d(2px, 0, 0);
+    }
+    98% {
+        filter: none;
+        transform: translate3d(-1px, 1px, 0);
+    }
+    99% {
+        filter: sepia(1) hue-rotate(90deg);
+        transform: translate3d(1px, -1px, 0);
+    }
+}
+
+/* Enhanced buttons with horror styling */
+.horror-btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: linear-gradient(45deg, var(--horror-red), var(--blood-dark));
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--medium);
+    border: 2px solid var(--horror-red);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.horror-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.horror-btn:hover::before {
+    left: 100%;
+}
+
+.horror-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+    filter: brightness(1.2);
+}
+
+.ghost-btn {
+    background: linear-gradient(45deg, var(--ghost-teal), var(--phantom-blue));
+    border-color: var(--ghost-teal);
+    box-shadow: 0 4px 15px rgba(76, 205, 196, 0.3);
+}
+
+.ghost-btn:hover {
+    box-shadow: 0 8px 25px rgba(76, 205, 196, 0.5);
+}
+
+/* Spooky loading animations */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 107, 107, 0.3);
+    border-top: 3px solid var(--horror-red);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 1rem auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Floating elements animation */
+.floating {
+    animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Enhanced modal styling */
+.enhanced-modal {
+    background: linear-gradient(145deg, #1a1a1a, #2a0a2a);
+    border: 2px solid var(--horror-red);
+    border-radius: 20px;
+    box-shadow: 
+        var(--phantom-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    animation: modalAppear 0.5s ease-out;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Typography enhancements */
+.horror-title {
+    font-family: 'Nosifer', cursive;
+    font-size: 3.5rem;
+    background: linear-gradient(45deg, var(--horror-red), var(--glow-purple), var(--ghost-teal));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
+    margin-bottom: 1rem;
+    animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+    from { filter: drop-shadow(0 0 5px rgba(255, 107, 107, 0.5)); }
+    to { filter: drop-shadow(0 0 20px rgba(255, 107, 107, 0.8)); }
+}
+
+/* Enhanced form styling */
+.horror-input {
+    background: rgba(26, 26, 26, 0.8);
+    border: 2px solid rgba(255, 107, 107, 0.3);
+    border-radius: 10px;
+    padding: 1rem;
+    color: var(--bone-white);
+    font-size: 1.1rem;
+    transition: all var(--medium);
+    width: 100%;
+}
+
+.horror-input:focus {
+    outline: none;
+    border-color: var(--horror-red);
+    box-shadow: 0 0 15px rgba(255, 107, 107, 0.3);
+    transform: scale(1.02);
+}
+
+.horror-input::placeholder {
+    color: rgba(224, 224, 224, 0.5);
+}
+
+/* Responsive enhancements */
+@media (max-width: 768px) {
+    .glitch-text {
+        font-size: 2rem;
+    }
+    
+    .horror-title {
+        font-size: 2.5rem;
+    }
+    
+    .enhanced-card {
+        padding: 1.5rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bone-white: #f0f0f0;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .enhanced-card {
+        border-width: 3px;
+    }
+    
+    .horror-btn {
+        border-width: 3px;
+    }
+}
+
+/* ===== ENHANCED HERO SECTION ===== */
+
+.hero-content {
+    position: relative;
+    text-align: center;
+    z-index: 2;
+}
+
+.hero-description {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    max-width: 700px;
+    margin: 2rem auto;
+    color: var(--bone-white);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin: 3rem 0;
+    flex-wrap: wrap;
+}
+
+.horror-btn-outline {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: transparent;
+    color: var(--ghost-teal);
+    text-decoration: none;
+    border: 2px solid var(--ghost-teal);
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all var(--medium);
+    position: relative;
+    overflow: hidden;
+}
+
+.horror-btn-outline:hover {
+    background: var(--ghost-teal);
+    color: var(--shadow-black);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(76, 205, 196, 0.4);
+}
+
+.btn-shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s;
+}
+
+.horror-btn:hover .btn-shine,
+.ghost-btn:hover .btn-shine {
+    left: 100%;
+}
+
+/* ===== HERO STATS SECTION ===== */
+
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 800px;
+    margin: 4rem auto 0;
+    padding: 0 1rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border-radius: 15px;
+    position: relative;
+    transition: transform var(--medium);
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--horror-red);
+    margin-bottom: 0.5rem;
+    font-family: 'Butcherman', serif;
+    text-shadow: 0 2px 10px rgba(255, 107, 107, 0.5);
+}
+
+.stat-label {
+    font-size: 1.1rem;
+    color: var(--bone-white);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.stat-icon {
+    font-size: 2rem;
+    opacity: 0.7;
+    margin-top: 0.5rem;
+}
+
+/* ===== ENHANCED SERVICE CARDS ===== */
+
+.service-card {
+    background: linear-gradient(145deg, rgba(26, 26, 26, 0.9), rgba(42, 10, 42, 0.7));
+    border: 1px solid rgba(255, 107, 107, 0.2);
+    border-radius: 15px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    transition: all var(--medium);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 107, 107, 0.1), transparent);
+    transition: left 0.6s;
+}
+
+.service-card:hover::before {
+    left: 100%;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--horror-red);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(255, 107, 107, 0.2);
+}
+
+.service-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    display: block;
+    filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.3));
+    animation: subtlePulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes subtlePulse {
+    from { 
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.3));
+    }
+    to { 
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 15px rgba(255, 107, 107, 0.5));
+    }
+}
+
+.service-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--ghost-teal);
+    font-family: 'Butcherman', serif;
+}
+
+.service-card p {
+    color: var(--bone-white);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+/* ===== ENHANCED FEATURES SECTION ===== */
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.feature-card {
+    background: linear-gradient(145deg, rgba(26, 26, 26, 0.95), rgba(42, 10, 42, 0.8));
+    border: 1px solid rgba(76, 205, 196, 0.3);
+    border-radius: 20px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--medium);
+}
+
+.feature-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(76, 205, 196, 0.1) 0%, transparent 70%);
+    transform: scale(0);
+    transition: transform 0.6s ease-out;
+}
+
+.feature-card:hover::after {
+    transform: scale(1);
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--ghost-teal);
+    box-shadow: 0 15px 35px rgba(76, 205, 196, 0.2);
+}
+
+.feature-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    display: block;
+    color: var(--ghost-teal);
+    text-align: center;
+}
+
+.feature-title {
+    font-size: 1.4rem;
+    color: var(--horror-red);
+    margin-bottom: 1rem;
+    font-family: 'Butcherman', serif;
+    text-align: center;
+}
+
+.feature-description {
+    color: var(--bone-white);
+    line-height: 1.7;
+    text-align: center;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+@media (max-width: 768px) {
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .hero-stats {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+    
+    .hero-description {
+        font-size: 1.1rem;
+        padding: 0 1rem;
+    }
+    
+    .service-card,
+    .feature-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== ENHANCED ANIMATIONS =====*/
+
+/* Particle animations */
+@keyframes floatParticle {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Slide in animations */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Scroll reveal animations */
+.animate-in {
+    animation: slideInUp 0.6s ease-out forwards;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Enhanced modal styling */
+.enhanced-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.enhanced-modal {
+    background: linear-gradient(145deg, #1a1a1a, #2a0a2a);
+    border: 2px solid var(--horror-red);
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 90%;
+    max-height: 90%;
+    transform: scale(0.8) translateY(-50px);
+    transition: transform 0.3s ease;
+    box-shadow: 
+        var(--phantom-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.modal-header h3 {
+    color: var(--horror-red);
+    font-family: 'Butcherman', serif;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--bone-white);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: color var(--fast);
+}
+
+.modal-close:hover {
+    color: var(--horror-red);
+}
+
+.modal-content {
+    color: var(--bone-white);
+    line-height: 1.6;
+}
+
+/* Enhanced notification styling */
+.notification {
+    border-left: 4px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification-icon {
+    font-size: 1.2rem;
+}
+
+.notification-message {
+    flex: 1;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity var(--fast);
+}
+
+.notification-close:hover {
+    opacity: 1;
+}
+
+/* Loading button states */
+.horror-btn.loading,
+.ghost-btn.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Typewriter effect */
+.typewriter {
+    display: inline-block;
+    border-right: 2px solid var(--horror-red);
+    animation: blink-caret 1s step-end infinite;
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: var(--horror-red); }
+}
+
+/* Enhanced parallax */
+.parallax {
+    will-change: transform;
+}
+
+/* Responsive enhancements for new components */
+@media (max-width: 768px) {
+    .enhanced-modal {
+        padding: 20px;
+        margin: 20px;
+    }
+    
+    .notification {
+        margin: 10px;
+        max-width: calc(100% - 20px);
+    }
+    
+    .hero-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .product-actions {
+        flex-direction: column;
+    }
+    
+    .product-guarantees {
+        flex-direction: column;
+        text-align: center;
+        gap: 5px;
+    }
+}
 

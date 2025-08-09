@@ -1,25 +1,275 @@
-// Haunted Empire - Main JavaScript
-// Add interactivity as needed
+// Haunted Empire - Enhanced Main JavaScript
+// Modern UI/UX interactions and animations
 
-
-// Smooth scroll for nav links
+// ===== ENHANCED UI INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (href.startsWith('#')) {
-                e.preventDefault();
-                const target = document.querySelector(href);
-                if (target) {
-                    window.scrollTo({
-                        top: target.offsetTop - 60,
-                        behavior: 'smooth'
-                    });
-                }
+    initializeEnhancedUI();
+    initializeSmoothScroll();
+    initializeScrollAnimations();
+    initializeParticleEffects();
+    initializeTypewriterEffect();
+    initializeCountdown();
+    initializeParallax();
+});
+
+// ===== ENHANCED UI COMPONENTS =====
+
+function initializeEnhancedUI() {
+    // Add loading spinner to buttons on click
+    document.querySelectorAll('.horror-btn, .ghost-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (!this.classList.contains('loading')) {
+                this.classList.add('loading');
+                const originalText = this.innerHTML;
+                this.innerHTML = '<div class="loading-spinner"></div>';
+                
+                setTimeout(() => {
+                    this.classList.remove('loading');
+                    this.innerHTML = originalText;
+                }, 2000);
             }
         });
     });
-});
+
+    // Enhanced hover effects for cards
+    document.querySelectorAll('.enhanced-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+}
+
+// ===== TYPEWRITER EFFECT =====
+function initializeTypewriterEffect() {
+    const elements = document.querySelectorAll('.typewriter');
+    elements.forEach(element => {
+        const text = element.textContent;
+        element.textContent = '';
+        element.style.borderRight = '2px solid #ff6b6b';
+        
+        let i = 0;
+        const timer = setInterval(() => {
+            element.textContent += text[i];
+            i++;
+            if (i >= text.length) {
+                clearInterval(timer);
+                setTimeout(() => {
+                    element.style.borderRight = 'none';
+                }, 1000);
+            }
+        }, 100);
+    });
+}
+
+// ===== SCROLL ANIMATIONS =====
+function initializeScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+                
+                // Counter animation for stats
+                if (entry.target.classList.contains('stat-number')) {
+                    animateCounter(entry.target);
+                }
+            }
+        });
+    }, observerOptions);
+
+    // Observe elements for animation
+    document.querySelectorAll('.enhanced-card, .stat-item, .feature-card').forEach(el => {
+        observer.observe(el);
+    });
+}
+
+// ===== COUNTER ANIMATION =====
+function animateCounter(element) {
+    const target = parseInt(element.textContent.replace(/[^\d]/g, ''));
+    const duration = 2000;
+    const step = target / (duration / 16);
+    let current = 0;
+    
+    const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+            element.textContent = element.textContent.replace(/\d+/, target);
+            clearInterval(timer);
+        } else {
+            element.textContent = element.textContent.replace(/\d+/, Math.floor(current));
+        }
+    }, 16);
+}
+
+// ===== PARTICLE EFFECTS =====
+function initializeParticleEffects() {
+    // Create floating particles
+    const particleContainer = document.createElement('div');
+    particleContainer.className = 'particle-container';
+    particleContainer.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+    `;
+    document.body.appendChild(particleContainer);
+
+    // Generate particles
+    for (let i = 0; i < 20; i++) {
+        createParticle(particleContainer);
+    }
+}
+
+function createParticle(container) {
+    const particle = document.createElement('div');
+    const symbols = ['👻', '🦇', '🕷️', '⚡', '💀', '🔮'];
+    
+    particle.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+    particle.style.cssText = `
+        position: absolute;
+        font-size: ${Math.random() * 20 + 10}px;
+        left: ${Math.random() * 100}%;
+        top: ${Math.random() * 100}%;
+        opacity: ${Math.random() * 0.5 + 0.1};
+        animation: floatParticle ${Math.random() * 10 + 5}s infinite linear;
+    `;
+    
+    container.appendChild(particle);
+    
+    // Remove and recreate after animation
+    setTimeout(() => {
+        if (particle.parentNode) {
+            particle.parentNode.removeChild(particle);
+            createParticle(container);
+        }
+    }, (Math.random() * 10 + 5) * 1000);
+}
+
+// ===== COUNTDOWN TIMER =====
+function initializeCountdown() {
+    const countdownElement = document.getElementById('countdown');
+    if (!countdownElement) return;
+    
+    // Set target date (24 hours from now)
+    const targetDate = new Date().getTime() + (24 * 60 * 60 * 1000);
+    
+    const timer = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+        
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        countdownElement.innerHTML = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (distance < 0) {
+            clearInterval(timer);
+            countdownElement.innerHTML = "EXPIRED";
+        }
+    }, 1000);
+}
+
+// ===== PARALLAX SCROLLING =====
+function initializeParallax() {
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const parallaxElements = document.querySelectorAll('.parallax');
+        
+        parallaxElements.forEach(element => {
+            const speed = element.dataset.speed || 0.5;
+            element.style.transform = `translateY(${scrolled * speed}px)`;
+        });
+    });
+}
+
+// ===== ENHANCED MODAL SYSTEM =====
+function showModal(title, content, type = 'info') {
+    const modal = document.createElement('div');
+    modal.className = 'enhanced-modal-overlay';
+    modal.innerHTML = `
+        <div class="enhanced-modal ${type}">
+            <div class="modal-header">
+                <h3>${title}</h3>
+                <button class="modal-close" onclick="closeModal(this)">&times;</button>
+            </div>
+            <div class="modal-content">
+                ${content}
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Animate in
+    setTimeout(() => {
+        modal.style.opacity = '1';
+        modal.querySelector('.enhanced-modal').style.transform = 'scale(1) translateY(0)';
+    }, 10);
+}
+
+function closeModal(button) {
+    const modal = button.closest('.enhanced-modal-overlay');
+    modal.style.opacity = '0';
+    modal.querySelector('.enhanced-modal').style.transform = 'scale(0.8) translateY(-50px)';
+    
+    setTimeout(() => {
+        document.body.removeChild(modal);
+    }, 300);
+}
+
+// ===== NOTIFICATION SYSTEM =====
+function showNotification(message, type = 'success', duration = 5000) {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <span class="notification-icon">${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span>
+            <span class="notification-message">${message}</span>
+            <button class="notification-close" onclick="this.parentNode.parentNode.remove()">&times;</button>
+        </div>
+    `;
+    
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        z-index: 10000;
+        animation: slideInRight 0.3s ease-out;
+        max-width: 400px;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    if (duration > 0) {
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.style.animation = 'slideOutRight 0.3s ease-out';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }
+        }, duration);
+    }
+}
 
 // Backend integration
 // Always use backend public API domain for API calls
