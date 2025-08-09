@@ -173,6 +173,7 @@
                     <li><a href="courses.html">Courses</a></li>
                     <li><a href="subscribe.html">Subscribe</a></li>
                     <li><a href="contact.html">Contact</a></li>
+                    <li><a href="#" onclick="openCart()" class="cart-icon">🛒 <span id="cart-count">0</span></a></li>
                 </ul>
             </div>
         </nav>
@@ -388,15 +389,306 @@
             }
         }
 
-        function addToCart(product) {
-            alert(`${product} added to cart!`);
-            // Implement cart functionality
-        }
-
         // Track page views for promotional posts
         if (document.referrer.includes('bsky.app') || document.referrer.includes('bluesky')) {
             console.log('Visitor from Bluesky promotional post!');
             // Track conversion
+        }
+    </script>
+    
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="cart-modal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h2>🛒 Shopping Cart</h2>
+                <span class="cart-close" onclick="closeCart()">&times;</span>
+            </div>
+            <div id="cart-items" class="cart-items">
+                <!-- Cart items will be inserted here -->
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <strong>Total: $<span id="cart-total">0.00</span></strong>
+                </div>
+                <button class="checkout-btn" onclick="checkoutCart()">Checkout All Items</button>
+                <button class="clear-cart-btn" onclick="clearCart()">Clear Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Styles -->
+    <style>
+        .cart-icon {
+            position: relative;
+            font-size: 1.2em;
+        }
+        
+        #cart-count {
+            background: #8B0000;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.8em;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            min-width: 18px;
+            text-align: center;
+        }
+        
+        .cart-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+        }
+        
+        .cart-content {
+            background-color: #1a1a1a;
+            margin: 5% auto;
+            padding: 20px;
+            border: 2px solid #8B0000;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .cart-close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .cart-close:hover {
+            color: #8B0000;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #333;
+        }
+        
+        .cart-item-info {
+            flex: 1;
+        }
+        
+        .cart-item-name {
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .cart-item-price {
+            color: #8B0000;
+            font-size: 1.1em;
+        }
+        
+        .cart-item-remove {
+            background: #8B0000;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .cart-footer {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            text-align: center;
+        }
+        
+        .cart-total {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .checkout-btn, .clear-cart-btn {
+            background: linear-gradient(45deg, #8B0000, #DC143C);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .checkout-btn:hover, .clear-cart-btn:hover {
+            background: linear-gradient(45deg, #DC143C, #FF6B6B);
+            transform: scale(1.05);
+        }
+        
+        .clear-cart-btn {
+            background: linear-gradient(45deg, #555, #777);
+        }
+        
+        .empty-cart {
+            text-align: center;
+            color: #aaa;
+            padding: 40px;
+            font-style: italic;
+        }
+        
+        .cart-add-button {
+            background: #4CAF50 !important;
+        }
+    </style>
+
+    <!-- Cart JavaScript -->
+    <script>
+        // Cart management
+        let cart = JSON.parse(localStorage.getItem('hauntedEmpireCart')) || [];
+        
+        const productInfo = {
+            'masterclass': { name: 'Horror Writing Masterclass', price: 297 },
+            'templates': { name: 'Horror Templates Bundle', price: 97 },
+            'editing': { name: 'Professional Editing Service', price: 500 },
+            'generator': { name: 'Horror Plot Generator', price: 47 },
+            'publishing': { name: 'From Draft to Published Course', price: 197 },
+            'toolkit': { name: 'Complete Horror Toolkit', price: 497 }
+        };
+
+        function updateCartCount() {
+            document.getElementById('cart-count').textContent = cart.length;
+        }
+
+        function addToCart(productId) {
+            const product = productInfo[productId];
+            if (product) {
+                cart.push({
+                    id: productId,
+                    name: product.name,
+                    price: product.price,
+                    timestamp: Date.now()
+                });
+                
+                localStorage.setItem('hauntedEmpireCart', JSON.stringify(cart));
+                updateCartCount();
+                showCartNotification(`${product.name} added to cart!`);
+            }
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('hauntedEmpireCart', JSON.stringify(cart));
+            updateCartCount();
+            displayCart();
+        }
+
+        function clearCart() {
+            cart = [];
+            localStorage.setItem('hauntedEmpireCart', JSON.stringify(cart));
+            updateCartCount();
+            displayCart();
+        }
+
+        function openCart() {
+            displayCart();
+            document.getElementById('cart-modal').style.display = 'block';
+        }
+
+        function closeCart() {
+            document.getElementById('cart-modal').style.display = 'none';
+        }
+
+        function displayCart() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="empty-cart">Your cart is empty<br>🎭 Add some horror writing products!</div>';
+                cartTotal.textContent = '0.00';
+                return;
+            }
+            
+            let total = 0;
+            let html = '';
+            
+            cart.forEach((item, index) => {
+                total += item.price;
+                html += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">$${item.price}</div>
+                        </div>
+                        <button class="cart-item-remove" onclick="removeFromCart(${index})">Remove</button>
+                    </div>
+                `;
+            });
+            
+            cartItems.innerHTML = html;
+            cartTotal.textContent = total.toFixed(2);
+        }
+
+        function checkoutCart() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            
+            // For now, redirect to the first item's payment link
+            // In a real implementation, you'd create a bundle payment or process each item
+            const firstItem = cart[0];
+            alert(`Proceeding to checkout for ${cart.length} items. Total: $${cart.reduce((sum, item) => sum + item.price, 0)}`);
+            
+            // You could implement bundle checkout here
+            purchaseProduct(firstItem.id);
+        }
+
+        function showCartNotification(message) {
+            // Simple notification - you can enhance this
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #4CAF50;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 5px;
+                z-index: 1001;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 3000);
+        }
+
+        // Initialize cart count on page load
+        updateCartCount();
+
+        // Close cart when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('cart-modal');
+            if (event.target === modal) {
+                closeCart();
+            }
         }
     </script>
     
