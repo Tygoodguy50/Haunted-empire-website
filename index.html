@@ -848,5 +848,91 @@
         <h2>Refund Policy</h2>
         <p>Refunds are processed according to our 30-day return policy...</p>
     </div>
+
+    <!-- Enhanced JavaScript -->
+    <script src="main.js"></script>
+    <script src="enhanced-features.js"></script>
+    <script src="analytics-ai.js"></script>
+    <script src="ai-writing-tools.js"></script>
+    <script src="mobile-social.js"></script>
+    
+    <!-- Initialize all features -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Haunted Empire - All Systems Loading...');
+            
+            // Initialize notification system
+            window.showNotification = function(message, type = 'info', duration = 5000) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
+                
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${type === 'success' ? '#4caf50' : type === 'error' ? '#f44336' : '#2196f3'};
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                    z-index: 10005;
+                    animation: slideIn 0.3s ease;
+                `;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.3s ease';
+                    setTimeout(() => notification.remove(), 300);
+                }, duration);
+            };
+            
+            // Add notification animations
+            const notificationStyles = document.createElement('style');
+            notificationStyles.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(notificationStyles);
+            
+            // Add navigation to AI Writing Tools
+            const navigation = document.querySelector('nav ul');
+            if (navigation && !document.getElementById('ai-tools-nav')) {
+                const aiToolsLink = document.createElement('li');
+                aiToolsLink.id = 'ai-tools-nav';
+                aiToolsLink.innerHTML = '<a href="writing-tools.html" class="nav-link">🤖 AI Writing Tools</a>';
+                navigation.appendChild(aiToolsLink);
+            }
+            
+            // Initialize progress dashboard function
+            window.showProgressDashboard = function() {
+                toggleAnalyticsDashboard();
+            };
+            
+            // Initialize sound system function
+            window.toggleSoundSystem = function() {
+                soundEnabled = !soundEnabled;
+                localStorage.setItem('soundEnabled', soundEnabled);
+                showNotification(soundEnabled ? '🔊 Sound enabled!' : '🔇 Sound disabled!', 'info');
+                userPreferences.soundEnabled = soundEnabled;
+                localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+            };
+            
+            // Welcome message
+            setTimeout(() => {
+                showNotification('🎃 Welcome to Haunted Empire! All systems ready.', 'success');
+            }, 1000);
+            
+            console.log('✅ All features loaded successfully!');
+        });
+    </script>
 </body>
 </html>

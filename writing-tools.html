@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Writing Tools - Haunted Empire</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .tools-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .tool-card {
+            background: linear-gradient(145deg, rgba(26, 26, 26, 0.95), rgba(42, 10, 42, 0.8));
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--horror-red);
+            box-shadow: 0 20px 40px rgba(255, 107, 107, 0.3);
+        }
+        
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .tool-icon {
+            font-size: 3rem;
+            filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.5));
+        }
+        
+        .tool-title {
+            font-size: 1.5rem;
+            color: var(--horror-red);
+            font-family: 'Butcherman', serif;
+        }
+        
+        .writing-area {
+            min-height: 200px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            color: var(--bone-white);
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+            width: 100%;
+            margin: 15px 0;
+        }
+        
+        .suggestion-box {
+            background: rgba(76, 205, 196, 0.1);
+            border: 1px solid var(--ghost-teal);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            display: none;
+        }
+        
+        .suggestion-title {
+            color: var(--ghost-teal);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .character-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid var(--horror-red);
+        }
+        
+        .plot-element {
+            background: linear-gradient(45deg, rgba(255, 107, 107, 0.1), rgba(76, 205, 196, 0.1));
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .plot-element:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .timer-display {
+            font-size: 3rem;
+            text-align: center;
+            color: var(--horror-red);
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 107, 107, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--horror-red), var(--ghost-teal));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .word-count {
+            text-align: right;
+            color: var(--ghost-teal);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .voice-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .voice-btn {
+            background: linear-gradient(45deg, var(--ghost-teal), var(--phantom-blue));
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .voice-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(76, 205, 196, 0.4);
+        }
+        
+        .voice-btn.recording {
+            background: linear-gradient(45deg, var(--horror-red), #ff4757);
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .collaboration-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .user-cursor {
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background: var(--ghost-teal);
+            animation: blink 1s infinite;
+        }
+        
+        .mood-selector {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .mood-btn {
+            padding: 8px 15px;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            background: transparent;
+            color: var(--bone-white);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .mood-btn.active {
+            background: var(--horror-red);
+            border-color: var(--horror-red);
+        }
+        
+        .achievement-popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #ffd700, #ffed4a);
+            color: #333;
+            padding: 15px 20px;
+            border-radius: 10px;
+            transform: translateX(100%);
+            transition: transform 0.5s ease;
+            z-index: 10000;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+        }
+        
+        .achievement-popup.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0;">
+                <div class="logo">🏰 Haunted Empire</div>
+                <div style="display: flex; gap: 2rem;">
+                    <a href="index.html" style="color: #e0e0e0; text-decoration: none;">Home</a>
+                    <a href="shop.html" style="color: #e0e0e0; text-decoration: none;">Shop</a>
+                    <a href="courses.html" style="color: #e0e0e0; text-decoration: none;">Courses</a>
+                    <a href="writing-tools.html" style="color: #ff6b6b; text-decoration: none;">AI Tools</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tools-container">
+        <div class="shop-hero">
+            <div class="horror-card-illustration">🤖🖋️✨</div>
+            <h1 class="horror-title glitch-text">AI Writing Tools</h1>
+            <p>Unleash the power of artificial intelligence to enhance your horror writing with cutting-edge tools and features.</p>
+        </div>
+
+        <div class="tool-grid">
+            <!-- AI Writing Assistant -->
+            <div class="tool-card enhanced-card">
+                <div class="tool-header">
+                    <div class="tool-icon">🤖</div>
+                    <div class="tool-title">AI Writing Assistant</div>
+                </div>
+                <textarea class="writing-area" id="ai-writing-area" placeholder="Start writing your horror story here... The AI will provide suggestions as you type."></textarea>
+                <div class="word-count" id="word-count">Words: 0</div>
+                <div class="suggestion-box" id="suggestion-box">
+                    <div class="suggestion-title">💡 AI Suggestion:</div>
+                    <div id="ai-suggestion"></div>
+                </div>
+                <div class="mood-selector">
+                    <button class="mood-btn active" data-mood="suspense">🔪 Suspense</button>
+                    <button class="mood-btn" data-mood="gothic">🏰 Gothic</button>
+                    <button class="mood-btn" data-mood="psychological">🧠 Psychological</button>
+                    <button class="mood-btn" data-mood="supernatural">👻 Supernatural</button>
+                </div>
+                <button class="horror-btn" onclick="generateAISuggestion()">Get AI Suggestion</button>
+            </div>
+
+            <!-- Voice-to-Text Writing -->
+            <div class="tool-card enhanced-card">
+                <div class="tool-header">
+                    <div class="tool-icon">🎤</div>
+                    <div class="tool-title">Voice Writing</div>
+                </div>
+                <textarea class="writing-area" id="voice-writing-area" placeholder="Click 'Start Recording' and speak your story aloud..."></textarea>
+                <div class="voice-controls">
+                    <button class="voice-btn" id="start-recording" onclick="startVoiceRecording()">🎤 Start Recording</button>
+                    <button class="voice-btn" id="stop-recording" onclick="stopVoiceRecording()" disabled>⏹️ Stop</button>
+                    <button class="voice-btn" onclick="clearVoiceText()">🗑️ Clear</button>
+                </div>
+                <div class="word-count" id="voice-word-count">Words: 0</div>
+            </div>
+
+            <!-- Character Generator -->
+            <div class="tool-card enhanced-card">
+                <div class="tool-header">
+                    <div class="tool-icon">👤</div>
+                    <div class="tool-title">Character Generator</div>
+                </div>
+                <div class="character-card" id="character-display">
+                    <h4>Click "Generate Character" to create a new horror character</h4>
+                </div>
+                <button class="horror-btn" onclick="generateCharacter()">Generate Character</button>
+                <button class="ghost-btn" onclick="saveCharacter()">💾 Save Character</button>
+            </div>
+
+            <!-- Plot Twist Generator -->
+            <div class="tool-card enhanced-card">
+                <div class="tool-header">
+                    <div class="tool-icon">🎲</div>
+                    <div class="tool-title">Plot Twist Generator</div>
+                </div>
+                <div id="plot-elements">
+                    <div class="plot-element" onclick="addToStory(this)">
+                        <strong>Setting:</strong> An abandoned Victorian mansion during a thunderstorm
+                    </div>
+                    <div class="plot-element" onclick="addToStory(this)">
+                        <strong>Twist:</strong> The protagonist discovers they've been dead all along
+                    </div>
+                    <div class="plot-element" onclick="addToStory(this)">
+                        <strong>Character:</strong> A mysterious caretaker with glowing eyes
+                    </div>
+                </div>
+                <button class="horror-btn" onclick="generatePlotTwist()">Generate New Twist</button>
+                <button class="ghost-btn" onclick="shufflePlotElements()">🔀 Shuffle All</button>
+            </div>
+
+            <!-- Writing Sprint Timer -->
+            <div class="tool-card enhanced-card">
+                <div class="tool-header">
+                    <div class="tool-icon">⏱️</div>
+                    <div class="tool-title">Writing Sprint Timer</div>
+                </div>
+                <div class="timer-display" id="timer-display">25:00</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="timer-progress"></div>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button class="horror-btn" onclick="startWritingSprint()">▶️ Start Sprint</button>
+                    <button class="ghost-btn" onclick="pauseWritingSprint()">⏸️ Pause</button>
+                    <button class="ghost-btn" onclick="resetWritingSprint()">🔄 Reset</button>
+                </div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <label style="color: var(--bone-white);">Sprint Duration:</label>
+                    <select id="sprint-duration" style="margin-left: 10px; padding: 5px; background: #1a1a1a; color: white; border: 1px solid #333;">
+                        <option value="15">15 minutes</option>
+                        <option value="25" selected>25 minutes</option>
+                        <option value="45">45 minutes</option>
+                        <option value="60">60 minutes</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Story Builder -->
+            <div class="tool-card enhanced-card">
+                <div class="tool-header">
+                    <div class="tool-icon">🧩</div>
+                    <div class="tool-title">Interactive Story Builder</div>
+                </div>
+                <div class="story-builder" id="story-builder">
+                    <div class="story-section" draggable="true" ondragstart="drag(event)" id="intro">
+                        <strong>Opening:</strong> <span contenteditable="true">It was a dark and stormy night...</span>
+                    </div>
+                    <div class="story-section" draggable="true" ondragstart="drag(event)" id="conflict">
+                        <strong>Conflict:</strong> <span contenteditable="true">Strange noises echoed through the halls...</span>
+                    </div>
+                    <div class="story-section" draggable="true" ondragstart="drag(event)" id="climax">
+                        <strong>Climax:</strong> <span contenteditable="true">The truth was more terrifying than imagined...</span>
+                    </div>
+                    <div class="story-section" draggable="true" ondragstart="drag(event)" id="resolution">
+                        <strong>Resolution:</strong> <span contenteditable="true">But the nightmare was far from over...</span>
+                    </div>
+                </div>
+                <button class="horror-btn" onclick="exportStory()">📄 Export Story</button>
+                <button class="ghost-btn" onclick="addStorySection()">➕ Add Section</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievement Popup -->
+    <div class="achievement-popup" id="achievement-popup">
+        <div style="font-weight: bold; margin-bottom: 5px;">🏆 Achievement Unlocked!</div>
+        <div id="achievement-text">First words written!</div>
+    </div>
+
+    <script src="ai-writing-tools.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
