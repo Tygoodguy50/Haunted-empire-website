@@ -14,11 +14,23 @@ async function loadRegistrations() {
     if (platform) url += `platform=${platform}&`;
     if (creatorId) url += `creatorId=${creatorId}`;
   }
-  const res = await fetch(url, { headers: { 'x-user-role': 'admin' } });
-  const data = await res.json();
-  const tbody = document.querySelector('#registrations tbody');
-  tbody.innerHTML = '';
-  (data.registrations || []).forEach(r => {
+  
+  try {
+    const res = await fetch(url, { headers: { 'x-user-role': 'admin' } });
+    
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    }
+    
+    const contentType = res.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error('API returned non-JSON response');
+    }
+    
+    const data = await res.json();
+    const tbody = document.querySelector('#registrations tbody');
+    tbody.innerHTML = '';
+    (data.registrations || []).forEach(r => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${r.platform}</td>
@@ -32,6 +44,11 @@ async function loadRegistrations() {
     `;
     tbody.appendChild(tr);
   });
+  } catch (err) {
+    console.warn('Failed to load registrations:', err.message);
+    const tbody = document.querySelector('#registrations tbody');
+    tbody.innerHTML = '<tr><td colspan="8">Admin service temporarily unavailable</td></tr>';
+  }
 }
 
 async function deleteRegistration(id) {

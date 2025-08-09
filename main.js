@@ -283,6 +283,16 @@ async function triggerStripePayment() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
         });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error('API returned non-JSON response');
+        }
+        
         const data = await response.json();
         if (data.clientSecret) {
             showAlert('Stripe payment intent created!');
@@ -290,7 +300,8 @@ async function triggerStripePayment() {
             showAlert('Stripe payment failed.');
         }
     } catch (err) {
-        showAlert('Stripe payment error: ' + err.message);
+        console.warn('Stripe payment error:', err.message);
+        showAlert('Stripe payment service temporarily unavailable');
     }
 }
 
@@ -301,6 +312,16 @@ async function triggerLoreDrop() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
         });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error('API returned non-JSON response');
+        }
+        
         const data = await response.json();
         if (data.status === 'lore drop triggered') {
             showAlert('Live lore drop triggered!');
@@ -308,7 +329,8 @@ async function triggerLoreDrop() {
             showAlert('Lore drop failed.');
         }
     } catch (err) {
-        showAlert('Lore drop error: ' + err.message);
+        console.warn('Lore drop error:', err.message);
+        showAlert('Lore drop service temporarily unavailable');
     }
 }
 
@@ -316,6 +338,16 @@ async function triggerLoreDrop() {
 async function fetchStats() {
     try {
         const response = await fetch(`${API_BASE_URL}/test-connect`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error('API returned non-JSON response');
+        }
+        
         const data = await response.json();
         if (data.status === 'ok') {
             updateStats('Backend: ' + data.env);
@@ -323,7 +355,8 @@ async function fetchStats() {
             updateStats('Backend unavailable');
         }
     } catch (err) {
-        updateStats('Error: ' + err.message);
+        console.warn('Backend connection error:', err.message);
+        updateStats('Backend: Offline (Demo Mode)');
     }
 }
 
