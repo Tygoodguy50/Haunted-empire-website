@@ -175,6 +175,7 @@
                     <li><a href="subscribe.html">Subscribe</a></li>
                     <li><a href="books.html" class="active">Books</a></li>
                     <li><a href="contact.html">Contact</a></li>
+                    <li><a href="#" onclick="openCart()" class="cart-icon">🛒 <span id="cart-count">0</span></a></li>
                 </ul>
             </div>
         </nav>
@@ -417,6 +418,27 @@
             console.log('Books visitor from Bluesky promotional post!');
             // Track conversion
         }
+    </script>
+    
+    <!-- Cart Integration -->
+    <script>
+        // Cart integration for books page
+        let cart = JSON.parse(localStorage.getItem('hauntedEmpireCart')) || [];
+        
+        function updateCartCount() {
+            const cartCountElement = document.getElementById('cart-count');
+            if (cartCountElement) {
+                cartCountElement.textContent = cart.length;
+            }
+        }
+        
+        function openCart() {
+            // Redirect to shop page with cart open
+            window.location.href = 'shop.html#cart';
+        }
+        
+        // Initialize cart count on page load
+        updateCartCount();
     </script>
     
     <!-- Real Stripe Payment Links -->

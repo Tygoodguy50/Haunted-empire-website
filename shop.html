@@ -690,6 +690,11 @@
                 closeCart();
             }
         }
+        
+        // Auto-open cart if URL has #cart
+        if (window.location.hash === '#cart') {
+            openCart();
+        }
     </script>
     
     <!-- Real Stripe Payment Links -->
