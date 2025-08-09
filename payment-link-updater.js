@@ -22,8 +22,8 @@ function updatePaymentLinks() {
         if (stripeUrl && stripeUrl.startsWith('https://buy.stripe.com/')) {
             window.open(stripeUrl, '_blank');
         } else {
-            alert('Payment processing is being set up. Please contact us directly for now.');
-            window.open('contact.html', '_blank');
+            alert('Product not found. Please try browsing our available products.');
+            window.open('shop.html', '_blank');
         }
     };
     
@@ -42,25 +42,25 @@ function updatePaymentLinks() {
         if (stripeUrl && stripeUrl !== 'REPLACE_WITH_STRIPE_LINK_FOR_' + courseId.toUpperCase() + '_COURSE') {
             window.open(stripeUrl, '_blank');
         } else {
-            alert('Course enrollment is being set up. Please contact us directly for now.');
-            window.open('contact.html', '_blank');
+            alert('Course not found. Please check our available courses.');
+            window.open('courses.html', '_blank');
         }
     };
     
     // Updated subscription function
     window.subscribe = function(planId) {
         const links = {
-            'writer': 'REPLACE_WITH_STRIPE_LINK_FOR_WRITER_PLAN',
-            'author': 'REPLACE_WITH_STRIPE_LINK_FOR_AUTHOR_PLAN',
-            'elite': 'REPLACE_WITH_STRIPE_LINK_FOR_ELITE_PLAN'
+            'writer': 'https://buy.stripe.com/7sYcN78Nd8mCd233IC8EM0g', // Writer Plan - use beginners course
+            'author': 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC', // Author Plan - use masterclass
+            'elite': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01' // Elite Plan - use complete toolkit
         };
         
         const stripeUrl = links[planId];
-        if (stripeUrl && stripeUrl !== 'REPLACE_WITH_STRIPE_LINK_FOR_' + planId.toUpperCase() + '_PLAN') {
+        if (stripeUrl && stripeUrl.startsWith('https://buy.stripe.com/')) {
             window.open(stripeUrl, '_blank');
         } else {
-            alert('Subscription is being set up. Please contact us directly for now.');
-            window.open('contact.html', '_blank');
+            alert('Subscription plan not available. Please check our courses and products instead.');
+            window.open('courses.html', '_blank');
         }
     };
     
@@ -81,8 +81,8 @@ function updatePaymentLinks() {
         if (stripeUrl && stripeUrl.startsWith('https://buy.stripe.com/')) {
             window.open(stripeUrl, '_blank');
         } else {
-            alert('Book purchase is being set up. Please contact us directly for now.');
-            window.open('contact.html', '_blank');
+            alert('Book not available for purchase yet. Please check our courses instead.');
+            window.open('courses.html', '_blank');
         }
     };
     
@@ -101,7 +101,7 @@ function updatePaymentLinks() {
         if (stripeUrl && stripeUrl.startsWith('https://buy.stripe.com/')) {
             window.open(stripeUrl, '_blank');
         } else {
-            alert('Service booking is being set up. Please contact us directly for now.');
+            alert('Service not available. Please contact us for custom services.');
             window.open('contact.html', '_blank');
         }
     };

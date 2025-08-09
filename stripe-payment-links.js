@@ -26,9 +26,9 @@ const STRIPE_PAYMENT_LINKS = {
     
     // Subscription Plans
     subscriptions: {
-        'writer': 'REPLACE_WITH_YOUR_STRIPE_LINK',      // Writer Plan - $9/month
-        'author': 'REPLACE_WITH_YOUR_STRIPE_LINK',      // Author Plan - $29/month
-        'elite': 'REPLACE_WITH_YOUR_STRIPE_LINK'        // Elite Plan - $99/month
+        'writer': 'https://buy.stripe.com/7sYcN78Nd8mCd233IC8EM0g',      // Writer Plan - links to beginners course
+        'author': 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC',          // Author Plan - links to masterclass
+        'elite': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01'       // Elite Plan - links to complete toolkit
     },
     
     // Books (different formats)
