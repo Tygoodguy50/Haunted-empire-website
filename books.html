@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horror Books - Haunted Empire</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .books-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .book-card {
+            background: #1a1a1a;
+            border: 2px solid #8B0000;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(139, 0, 0, 0.4);
+        }
+        
+        .book-cover {
+            width: 200px;
+            height: 300px;
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            border: 3px solid #8B0000;
+            border-radius: 10px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            color: #8B0000;
+        }
+        
+        .book-title {
+            color: #8B0000;
+            font-size: 1.5em;
+            margin: 20px 0 10px 0;
+            font-weight: bold;
+        }
+        
+        .book-author {
+            color: #FF6B6B;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        
+        .book-description {
+            color: #ccc;
+            line-height: 1.6;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+        
+        .book-price {
+            font-size: 2em;
+            color: #FF6B6B;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .book-formats {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .format-btn {
+            background: rgba(139, 0, 0, 0.2);
+            color: #8B0000;
+            border: 1px solid #8B0000;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .format-btn:hover, .format-btn.active {
+            background: #8B0000;
+            color: white;
+        }
+        
+        .buy-button {
+            background: linear-gradient(45deg, #8B0000, #DC143C);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 5px;
+        }
+        
+        .buy-button:hover {
+            background: linear-gradient(45deg, #DC143C, #FF6B6B);
+            transform: scale(1.05);
+        }
+        
+        .bestseller-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #FFD700;
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .rating {
+            color: #FFD700;
+            margin: 15px 0;
+            font-size: 1.2em;
+        }
+        
+        .book-preview {
+            background: rgba(139, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+            font-style: italic;
+            color: #ccc;
+        }
+        
+        .genre-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .genre-tag {
+            background: rgba(139, 0, 0, 0.3);
+            color: #FF6B6B;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <h1>🏚️ Haunted Empire</h1>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="subscribe.html">Subscribe</a></li>
+                    <li><a href="books.html" class="active">Books</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="books-container">
+        <h1>📚 Horror Books Collection</h1>
+        <p class="subtitle">Dive into terrifying tales that will haunt your dreams</p>
+
+        <div class="book-grid">
+            <!-- Book 1 -->
+            <div class="book-card">
+                <div class="bestseller-badge">📈 BESTSELLER</div>
+                <div class="book-cover">👻</div>
+                <h3 class="book-title">The Shadows Between</h3>
+                <p class="book-author">by Elena Darkwood</p>
+                <div class="rating">⭐⭐⭐⭐⭐ (4.8/5)</div>
+                <div class="genre-tags">
+                    <span class="genre-tag">Psychological Horror</span>
+                    <span class="genre-tag">Supernatural</span>
+                </div>
+                <div class="book-description">
+                    A therapist discovers her patients' nightmares are bleeding into reality. As the line between dreams and waking life dissolves, she must confront the ancient evil that feeds on human fears.
+                </div>
+                <div class="book-preview">
+                    "The screaming started at 3:33 AM, just like it had every night for the past week. But tonight, Dr. Sarah Chen wasn't dreaming..."
+                </div>
+                <div class="book-formats">
+                    <button class="format-btn active" onclick="selectFormat(this, 'ebook')">E-book</button>
+                    <button class="format-btn" onclick="selectFormat(this, 'paperback')">Paperback</button>
+                    <button class="format-btn" onclick="selectFormat(this, 'audiobook')">Audiobook</button>
+                </div>
+                <div class="book-price">$12.99</div>
+                <a href="#" class="buy-button" onclick="buyBook('shadows-between', 'ebook')">Buy Now</a>
+                <a href="#" class="buy-button" onclick="previewBook('shadows-between')">Preview</a>
+            </div>
+
+            <!-- Book 2 -->
+            <div class="book-card">
+                <div class="book-cover">🏚️</div>
+                <h3 class="book-title">Haunted Empire: Origins</h3>
+                <p class="book-author">by Marcus Grimm</p>
+                <div class="rating">⭐⭐⭐⭐⭐ (4.9/5)</div>
+                <div class="genre-tags">
+                    <span class="genre-tag">Gothic Horror</span>
+                    <span class="genre-tag">Historical</span>
+                </div>
+                <div class="book-description">
+                    Uncover the dark history behind the Haunted Empire. Follow the bloodline of cursed architects who built monuments to madness across centuries.
+                </div>
+                <div class="book-preview">
+                    "The blueprints were drawn in blood, each line a conduit for something that should never have been awakened..."
+                </div>
+                <div class="book-formats">
+                    <button class="format-btn active" onclick="selectFormat(this, 'ebook')">E-book</button>
+                    <button class="format-btn" onclick="selectFormat(this, 'paperback')">Paperback</button>
+                    <button class="format-btn" onclick="selectFormat(this, 'hardcover')">Hardcover</button>
+                </div>
+                <div class="book-price">$15.99</div>
+                <a href="#" class="buy-button" onclick="buyBook('haunted-origins', 'ebook')">Buy Now</a>
+                <a href="#" class="buy-button" onclick="previewBook('haunted-origins')">Preview</a>
+            </div>
+
+            <!-- Book 3 -->
+            <div class="book-card">
+                <div class="book-cover">🌙</div>
+                <h3 class="book-title">Midnight Whispers</h3>
+                <p class="book-author">by Victoria Nightfall</p>
+                <div class="rating">⭐⭐⭐⭐⭐ (4.7/5)</div>
+                <div class="genre-tags">
+                    <span class="genre-tag">Short Stories</span>
+                    <span class="genre-tag">Cosmic Horror</span>
+                </div>
+                <div class="book-description">
+                    Thirteen spine-chilling short stories that explore the boundaries between our world and the vast unknown. Each tale more terrifying than the last.
+                </div>
+                <div class="book-preview">
+                    "They say if you listen carefully at midnight, you can hear the universe whispering its darkest secrets..."
+                </div>
+                <div class="book-formats">
+                    <button class="format-btn active" onclick="selectFormat(this, 'ebook')">E-book</button>
+                    <button class="format-btn" onclick="selectFormat(this, 'paperback')">Paperback</button>
+                    <button class="format-btn" onclick="selectFormat(this, 'audiobook')">Audiobook</button>
+                </div>
+                <div class="book-price">$9.99</div>
+                <a href="#" class="buy-button" onclick="buyBook('midnight-whispers', 'ebook')">Buy Now</a>
+                <a href="#" class="buy-button" onclick="previewBook('midnight-whispers')">Preview</a>
+            </div>
+
+            <!-- Book 4 -->
+            <div class="book-card">
+                <div class="book-cover">🕯️</div>
+                <h3 class="book-title">The Candle Maker's Curse</h3>
+                <p class="book-author">by Damien Cross</p>
+                <div class="rating">⭐⭐⭐⭐⭐ (4.6/5)</div>
+                <div class="genre-tags">
+                    <span class="genre-tag">Folk Horror</span>
+                    <span class="genre-tag">Mystery</span>
+                </div>
+                <div class="book-description">
+                    In a small town where candles burn with an otherworldly flame, an investigator uncovers a generations-old pact with forces beyond human understanding.
+                </div>
+                <div class="book-preview">
+                    "The flame never flickered, no matter how fierce the wind. That should have been our first warning..."
+                </div>
+                <div class="book-formats">
+                    <button class="format-btn active" onclick="selectFormat(this, 'ebook')">E-book</button>
+                    <button class="format-btn" onclick="selectFormat(this, 'paperback')">Paperback</button>
+                </div>
+                <div class="book-price">$11.99</div>
+                <a href="#" class="buy-button" onclick="buyBook('candle-curse', 'ebook')">Buy Now</a>
+                <a href="#" class="buy-button" onclick="previewBook('candle-curse')">Preview</a>
+            </div>
+
+            <!-- Book 5 -->
+            <div class="book-card">
+                <div class="book-cover">👁️</div>
+                <h3 class="book-title">What Watches From Within</h3>
+                <p class="book-author">by Raven Blackthorne</p>
+                <div class="rating">⭐⭐⭐⭐⭐ (4.8/5)</div>
+                <div class="genre-tags">
+                    <span class="genre-tag">Body Horror</span>
+                    <span class="genre-tag">Thriller</span>
+                </div>
+                <div class="book-description">
+                    A medical researcher's groundbreaking discovery about human consciousness attracts attention from entities that exist in the spaces between thoughts.
+                </div>
+                <div class="book-preview">
+                    "The MRI showed something impossible - a second presence sharing the patient's skull, watching through borrowed eyes..."
+                </div>
+                <div class="book-formats">
+                    <button class="format-btn active" onclick="selectFormat(this, 'ebook')">E-book</button>
+                    <button class="format-btn" onclick="selectFormat(this, 'paperback')">Paperback</button>
+                    <button class="format-btn" onclick="selectFormat(this, 'audiobook')">Audiobook</button>
+                </div>
+                <div class="book-price">$13.99</div>
+                <a href="#" class="buy-button" onclick="buyBook('watches-within', 'ebook')">Buy Now</a>
+                <a href="#" class="buy-button" onclick="previewBook('watches-within')">Preview</a>
+            </div>
+
+            <!-- Book 6 -->
+            <div class="book-card">
+                <div class="book-cover">🦇</div>
+                <h3 class="book-title">Horror Writer's Handbook</h3>
+                <p class="book-author">by The Haunted Empire Team</p>
+                <div class="rating">⭐⭐⭐⭐⭐ (5.0/5)</div>
+                <div class="genre-tags">
+                    <span class="genre-tag">Non-Fiction</span>
+                    <span class="genre-tag">Writing Guide</span>
+                </div>
+                <div class="book-description">
+                    The ultimate guide to writing horror fiction. Learn from published authors, master the craft, and discover the secrets to creating truly terrifying stories.
+                </div>
+                <div class="book-preview">
+                    "Fear is an art form, and like all art, it requires technique, practice, and an understanding of your audience's deepest vulnerabilities..."
+                </div>
+                <div class="book-formats">
+                    <button class="format-btn active" onclick="selectFormat(this, 'ebook')">E-book</button>
+                    <button class="format-btn" onclick="selectFormat(this, 'paperback')">Paperback</button>
+                </div>
+                <div class="book-price">$19.99</div>
+                <a href="#" class="buy-button" onclick="buyBook('writers-handbook', 'ebook')">Buy Now</a>
+                <a href="#" class="buy-button" onclick="previewBook('writers-handbook')">Preview</a>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 50px 0; background: rgba(139, 0, 0, 0.1); padding: 30px; border-radius: 15px;">
+            <h2>📖 Bundle Deals</h2>
+            <p>Get all 6 books for just <strong style="color: #FF6B6B; font-size: 1.5em;">$49.99</strong></p>
+            <p><span style="text-decoration: line-through; color: #666;">Regular price: $83.94</span> - Save 40%!</p>
+            <a href="#" class="buy-button" onclick="buyBundle()" style="font-size: 1.3em; padding: 20px 40px;">Buy Complete Collection</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Haunted Empire. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function selectFormat(button, format) {
+            // Remove active class from all format buttons in this card
+            const card = button.closest('.book-card');
+            const formatButtons = card.querySelectorAll('.format-btn');
+            formatButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            button.classList.add('active');
+            
+            // Update price based on format
+            const priceElement = card.querySelector('.book-price');
+            const prices = {
+                'ebook': '$12.99',
+                'paperback': '$16.99',
+                'hardcover': '$24.99',
+                'audiobook': '$19.99'
+            };
+            
+            if (prices[format]) {
+                priceElement.textContent = prices[format];
+            }
+        }
+
+        function buyBook(bookId, format) {
+            alert(`Purchasing ${bookId} in ${format} format...`);
+            // Redirect to payment processor
+            window.location.href = `https://buy.stripe.com/haunted-empire-book-${bookId}-${format}`;
+        }
+
+        function previewBook(bookId) {
+            alert(`Opening preview for ${bookId}...`);
+            // In real implementation, open book preview
+        }
+
+        function buyBundle() {
+            alert('Purchasing complete book collection...');
+            // Redirect to payment processor
+            window.location.href = 'https://buy.stripe.com/haunted-empire-book-bundle';
+        }
+
+        // Track referrals from promotional posts
+        if (document.referrer.includes('bsky.app') || document.referrer.includes('bluesky')) {
+            console.log('Books visitor from Bluesky promotional post!');
+            // Track conversion
+        }
+    </script>
+</body>
+</html>

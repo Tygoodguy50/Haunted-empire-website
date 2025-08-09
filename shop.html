@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horror Writing Shop - Haunted Empire</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .shop-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .product-card {
+            background: #1a1a1a;
+            border: 2px solid #8B0000;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(139, 0, 0, 0.3);
+        }
+        
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 0, 0, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .product-card:hover::before {
+            left: 100%;
+        }
+        
+        .product-title {
+            color: #8B0000;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .product-description {
+            color: #ccc;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .product-price {
+            font-size: 2em;
+            color: #FF6B6B;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: #666;
+            font-size: 0.8em;
+            margin-right: 10px;
+        }
+        
+        .sale-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #8B0000;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .buy-button {
+            background: linear-gradient(45deg, #8B0000, #DC143C);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 5px;
+        }
+        
+        .buy-button:hover {
+            background: linear-gradient(45deg, #DC143C, #FF6B6B);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.4);
+        }
+        
+        .urgent-banner {
+            background: linear-gradient(45deg, #8B0000, #DC143C);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        .features-list {
+            text-align: left;
+            color: #ccc;
+            margin: 20px 0;
+        }
+        
+        .features-list li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .features-list li::before {
+            content: "🎃";
+            position: absolute;
+            left: 0;
+        }
+        
+        .testimonial {
+            background: rgba(139, 0, 0, 0.1);
+            border-left: 4px solid #8B0000;
+            padding: 15px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #ccc;
+        }
+        
+        .countdown {
+            font-size: 1.2em;
+            color: #FF6B6B;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <h1>🏚️ Haunted Empire</h1>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html" class="active">Shop</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="subscribe.html">Subscribe</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="shop-container">
+        <h1>🛒 Horror Writing Shop</h1>
+        <p class="subtitle">Transform Your Writing with Professional Resources</p>
+        
+        <div class="urgent-banner">
+            🚨 FLASH SALE: 70% OFF ALL PRODUCTS - ENDS IN <span class="countdown" id="countdown">24:00:00</span>
+        </div>
+
+        <div class="product-grid">
+            <!-- Horror Writing Masterclass -->
+            <div class="product-card">
+                <div class="sale-badge">70% OFF</div>
+                <h3 class="product-title">🎃 Horror Writing Masterclass</h3>
+                <div class="product-description">
+                    Complete video course covering atmosphere, character psychology, and plot structure
+                </div>
+                <ul class="features-list">
+                    <li>12 hours of video content</li>
+                    <li>50+ writing exercises</li>
+                    <li>Community access</li>
+                    <li>Certificate of completion</li>
+                    <li>Lifetime access</li>
+                </ul>
+                <div class="testimonial">
+                    "This course transformed my writing completely!" - Sarah M.
+                </div>
+                <div class="product-price">
+                    <span class="original-price">$297</span>$89
+                </div>
+                <a href="#" class="buy-button" onclick="purchaseProduct('masterclass')">Buy Now</a>
+                <a href="#" class="buy-button" style="background: #4CAF50;" onclick="addToCart('masterclass')">Add to Cart</a>
+            </div>
+
+            <!-- Horror Templates Bundle -->
+            <div class="product-card">
+                <div class="sale-badge">BESTSELLER</div>
+                <h3 class="product-title">📚 Horror Templates Bundle</h3>
+                <div class="product-description">
+                    200+ professional templates, outlines, and story structures
+                </div>
+                <ul class="features-list">
+                    <li>Character development sheets</li>
+                    <li>Plot outline templates</li>
+                    <li>Dialogue frameworks</li>
+                    <li>Scene structure guides</li>
+                    <li>Instant download</li>
+                </ul>
+                <div class="testimonial">
+                    "Saved me months of work!" - John D.
+                </div>
+                <div class="product-price">
+                    <span class="original-price">$147</span>$47
+                </div>
+                <a href="#" class="buy-button" onclick="purchaseProduct('templates')">Buy Now</a>
+                <a href="#" class="buy-button" style="background: #4CAF50;" onclick="addToCart('templates')">Add to Cart</a>
+            </div>
+
+            <!-- Professional Editing Service -->
+            <div class="product-card">
+                <h3 class="product-title">✏️ Professional Editing</h3>
+                <div class="product-description">
+                    Get your manuscript professionally edited by published horror authors
+                </div>
+                <ul class="features-list">
+                    <li>Line-by-line editing</li>
+                    <li>Structure analysis</li>
+                    <li>Character development notes</li>
+                    <li>2-week turnaround</li>
+                    <li>Revision consultation</li>
+                </ul>
+                <div class="testimonial">
+                    "My book got published after their editing!" - Maria K.
+                </div>
+                <div class="product-price">Starting at $150</div>
+                <a href="#" class="buy-button" onclick="purchaseProduct('editing')">Book Now</a>
+                <a href="contact.html" class="buy-button" style="background: #2196F3;">Get Quote</a>
+            </div>
+
+            <!-- Horror Plot Generator -->
+            <div class="product-card">
+                <div class="sale-badge">NEW</div>
+                <h3 class="product-title">🎲 Horror Plot Generator</h3>
+                <div class="product-description">
+                    AI-powered tool generating endless horror story ideas and plot twists
+                </div>
+                <ul class="features-list">
+                    <li>Unlimited plot ideas</li>
+                    <li>Character generators</li>
+                    <li>Setting suggestions</li>
+                    <li>Twist generators</li>
+                    <li>Mobile app included</li>
+                </ul>
+                <div class="testimonial">
+                    "Never run out of ideas again!" - Alex R.
+                </div>
+                <div class="product-price">
+                    <span class="original-price">$97</span>$29
+                </div>
+                <a href="#" class="buy-button" onclick="purchaseProduct('generator')">Buy Now</a>
+                <a href="#" class="buy-button" style="background: #4CAF50;" onclick="addToCart('generator')">Add to Cart</a>
+            </div>
+
+            <!-- From Draft to Published Course -->
+            <div class="product-card">
+                <div class="sale-badge">GUARANTEED</div>
+                <h3 class="product-title">🏆 From Draft to Published</h3>
+                <div class="product-description">
+                    Complete publishing course with money-back guarantee if you don't get published
+                </div>
+                <ul class="features-list">
+                    <li>Query letter templates</li>
+                    <li>Agent contact database</li>
+                    <li>Self-publishing guide</li>
+                    <li>Marketing strategies</li>
+                    <li>1-on-1 coaching calls</li>
+                </ul>
+                <div class="testimonial">
+                    "Got my book deal in 3 months!" - Robert L.
+                </div>
+                <div class="product-price">
+                    <span class="original-price">$497</span>$197
+                </div>
+                <a href="#" class="buy-button" onclick="purchaseProduct('publishing')">Buy Now</a>
+                <a href="#" class="buy-button" style="background: #4CAF50;" onclick="addToCart('publishing')">Add to Cart</a>
+            </div>
+
+            <!-- Horror Writing Toolkit -->
+            <div class="product-card">
+                <h3 class="product-title">🧰 Complete Horror Toolkit</h3>
+                <div class="product-description">
+                    Everything you need: courses, templates, tools, and community access
+                </div>
+                <ul class="features-list">
+                    <li>All courses included</li>
+                    <li>All template bundles</li>
+                    <li>Plot generator tool</li>
+                    <li>Private Discord community</li>
+                    <li>Monthly group calls</li>
+                </ul>
+                <div class="testimonial">
+                    "Best investment I've made in my writing!" - Emma T.
+                </div>
+                <div class="product-price">
+                    <span class="original-price">$997</span>$297
+                </div>
+                <a href="#" class="buy-button" onclick="purchaseProduct('toolkit')">Buy Complete Bundle</a>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 50px 0;">
+            <h2>🛡️ 30-Day Money-Back Guarantee</h2>
+            <p>Not satisfied? Get a full refund, no questions asked.</p>
+            <div style="margin: 30px 0;">
+                <span style="font-size: 2em;">🔒</span> Secure payment processing
+                <span style="margin: 0 20px;">💳</span> All major cards accepted
+                <span style="margin: 0 20px;">⚡</span> Instant access
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Haunted Empire. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Countdown timer
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            
+            const distance = tomorrow - now;
+            
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById("countdown").innerHTML = 
+                String(hours).padStart(2, '0') + ":" + 
+                String(minutes).padStart(2, '0') + ":" + 
+                String(seconds).padStart(2, '0');
+        }
+        
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Purchase functions
+        function purchaseProduct(product) {
+            // Redirect to payment processor
+            alert(`Redirecting to secure checkout for ${product}...`);
+            // In real implementation, redirect to Stripe/PayPal
+            window.location.href = `https://buy.stripe.com/haunted-empire-${product}`;
+        }
+
+        function addToCart(product) {
+            alert(`${product} added to cart!`);
+            // Implement cart functionality
+        }
+
+        // Track page views for promotional posts
+        if (document.referrer.includes('bsky.app') || document.referrer.includes('bluesky')) {
+            console.log('Visitor from Bluesky promotional post!');
+            // Track conversion
+        }
+    </script>
+</body>
+</html>

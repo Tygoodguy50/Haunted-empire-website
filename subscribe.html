@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Subscription - Haunted Empire</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .subscription-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 3px solid #8B0000;
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .hero-title {
+            font-size: 3em;
+            color: #8B0000;
+            margin-bottom: 20px;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3em;
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+        
+        .pricing-card {
+            background: #1a1a1a;
+            border: 3px solid #8B0000;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(139, 0, 0, 0.4);
+            border-color: #DC143C;
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, #8B0000, #DC143C);
+            color: white;
+            padding: 10px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
+        }
+        
+        .plan-name {
+            font-size: 2em;
+            color: #8B0000;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .plan-price {
+            font-size: 4em;
+            color: #FF6B6B;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .plan-price .currency {
+            font-size: 0.6em;
+            vertical-align: top;
+        }
+        
+        .plan-price .period {
+            font-size: 0.4em;
+            color: #ccc;
+        }
+        
+        .plan-description {
+            color: #ccc;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+        
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .features-list li {
+            padding: 12px 0;
+            color: #ccc;
+            border-bottom: 1px solid rgba(139, 0, 0, 0.2);
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .features-list li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+        }
+        
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .subscribe-button {
+            background: linear-gradient(45deg, #8B0000, #DC143C);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 30px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            margin: 30px auto;
+            width: fit-content;
+        }
+        
+        .subscribe-button:hover {
+            background: linear-gradient(45deg, #DC143C, #FF6B6B);
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(139, 0, 0, 0.5);
+        }
+        
+        .member-benefits {
+            background: rgba(139, 0, 0, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 50px 0;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .benefit-item {
+            text-align: center;
+            padding: 30px;
+            background: #1a1a1a;
+            border: 2px solid #8B0000;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .benefit-item:hover {
+            transform: translateY(-5px);
+            border-color: #DC143C;
+        }
+        
+        .benefit-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        
+        .testimonials-section {
+            margin: 50px 0;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .testimonial {
+            background: #1a1a1a;
+            border: 2px solid #8B0000;
+            border-radius: 15px;
+            padding: 25px;
+            color: #ccc;
+            font-style: italic;
+            position: relative;
+        }
+        
+        .testimonial::before {
+            content: '"';
+            font-size: 4em;
+            color: #8B0000;
+            position: absolute;
+            top: -10px;
+            left: 20px;
+        }
+        
+        .testimonial-author {
+            color: #FF6B6B;
+            font-weight: bold;
+            margin-top: 20px;
+            font-style: normal;
+        }
+        
+        .guarantee-section {
+            background: linear-gradient(45deg, #8B0000, #DC143C);
+            color: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin: 50px 0;
+        }
+        
+        .faq-section {
+            margin: 50px 0;
+        }
+        
+        .faq-item {
+            background: #1a1a1a;
+            border: 2px solid #8B0000;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        
+        .faq-question {
+            color: #8B0000;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .faq-answer {
+            color: #ccc;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <h1>🏚️ Haunted Empire</h1>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="subscribe.html" class="active">Subscribe</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="subscription-container">
+        <div class="hero-section">
+            <h1 class="hero-title">👑 Join the Elite</h1>
+            <p class="hero-subtitle">Get exclusive access to premium content, community, and mentorship</p>
+            <p>500+ published authors started here. Your story begins now.</p>
+        </div>
+
+        <div class="pricing-grid">
+            <!-- Monthly Plan -->
+            <div class="pricing-card">
+                <h2 class="plan-name">📖 Writer</h2>
+                <div class="plan-price">
+                    <span class="currency">$</span>9<span class="period">/month</span>
+                </div>
+                <p class="plan-description">Perfect for getting started with daily writing practice</p>
+                <ul class="features-list">
+                    <li>Daily horror writing prompts</li>
+                    <li>Community Discord access</li>
+                    <li>Monthly writing challenges</li>
+                    <li>Basic feedback on submissions</li>
+                    <li>Resource library access</li>
+                    <li>Email support</li>
+                </ul>
+                <a href="#" class="subscribe-button" onclick="subscribe('writer')">Start Writing</a>
+            </div>
+
+            <!-- Premium Plan -->
+            <div class="pricing-card">
+                <div class="popular-badge">🔥 MOST POPULAR</div>
+                <h2 class="plan-name">🏆 Author</h2>
+                <div class="plan-price">
+                    <span class="currency">$</span>29<span class="period">/month</span>
+                </div>
+                <p class="plan-description">For serious writers ready to get published</p>
+                <ul class="features-list">
+                    <li>Everything in Writer plan</li>
+                    <li>Weekly 1-on-1 mentorship calls</li>
+                    <li>Professional manuscript reviews</li>
+                    <li>Agent contact database</li>
+                    <li>Publishing strategy sessions</li>
+                    <li>Priority community support</li>
+                    <li>Live monthly workshops</li>
+                    <li>Success tracking & analytics</li>
+                </ul>
+                <a href="#" class="subscribe-button" onclick="subscribe('author')">Get Published</a>
+            </div>
+
+            <!-- Elite Plan -->
+            <div class="pricing-card">
+                <h2 class="plan-name">👑 Elite</h2>
+                <div class="plan-price">
+                    <span class="currency">$</span>99<span class="period">/month</span>
+                </div>
+                <p class="plan-description">Maximum success with unlimited support</p>
+                <ul class="features-list">
+                    <li>Everything in Author plan</li>
+                    <li>Unlimited 1-on-1 mentorship</li>
+                    <li>Direct line to published authors</li>
+                    <li>Custom marketing strategies</li>
+                    <li>Book launch support</li>
+                    <li>Industry connections</li>
+                    <li>Revenue optimization</li>
+                    <li>Guaranteed response times</li>
+                    <li>VIP Discord channel</li>
+                </ul>
+                <a href="#" class="subscribe-button" onclick="subscribe('elite')">Go Elite</a>
+            </div>
+        </div>
+
+        <div class="member-benefits">
+            <h2>🌟 Member Exclusive Benefits</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">💬</div>
+                    <h3>Private Community</h3>
+                    <p>Connect with 500+ published horror authors in our exclusive Discord server</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">📚</div>
+                    <h3>Master Library</h3>
+                    <p>Access 1000+ resources: templates, guides, industry insights, and more</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🎯</div>
+                    <h3>Personal Coaching</h3>
+                    <p>Get personalized feedback and guidance from bestselling horror authors</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">📈</div>
+                    <h3>Success Tracking</h3>
+                    <p>Monitor your progress with detailed analytics and milestone celebrations</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🚀</div>
+                    <h3>Fast-Track Publishing</h3>
+                    <p>Skip years of trial and error with our proven publishing shortcuts</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">💰</div>
+                    <h3>Revenue Strategies</h3>
+                    <p>Learn to monetize your writing with multiple income streams</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="testimonials-section">
+            <h2>🗣️ What Members Are Saying</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial">
+                    The mentorship changed everything. I went from rejected manuscripts to a three-book deal in 8 months!
+                    <div class="testimonial-author">- Sarah Chen, Elite Member</div>
+                </div>
+                <div class="testimonial">
+                    The community alone is worth the price. I found my critique partner and we both got agents!
+                    <div class="testimonial-author">- Marcus Williams, Author Member</div>
+                </div>
+                <div class="testimonial">
+                    Made $12,000 last month from horror stories using their revenue strategies. Best investment ever!
+                    <div class="testimonial-author">- Jennifer Lopez, Elite Member</div>
+                </div>
+                <div class="testimonial">
+                    As a beginner, the daily prompts and feedback helped me complete my first novel in 3 months.
+                    <div class="testimonial-author">- David Park, Writer Member</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="guarantee-section">
+            <h2>🛡️ Risk-Free Guarantee</h2>
+            <p><strong>Cancel anytime</strong> - No long-term commitments</p>
+            <p><strong>7-day free trial</strong> - Experience the value before you pay</p>
+            <p><strong>Success guarantee</strong> - If you don't see improvement in 90 days, we'll refund your money</p>
+        </div>
+
+        <div class="faq-section">
+            <h2>❓ Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">Can I cancel anytime?</div>
+                <div class="faq-answer">Yes! You can cancel your subscription at any time with no penalties or fees. You'll continue to have access until your current billing period ends.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Do you offer a free trial?</div>
+                <div class="faq-answer">Absolutely! All plans come with a 7-day free trial so you can experience the full value before committing.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">What if I'm a complete beginner?</div>
+                <div class="faq-answer">Perfect! Our Writer plan is designed specifically for beginners. You'll get daily prompts, basic feedback, and community support to build your skills.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">How quickly will I see results?</div>
+                <div class="faq-answer">Most members see improvement in their writing within the first week. Publishing success varies, but our average member gets their first publication within 6 months.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Is there a money-back guarantee?</div>
+                <div class="faq-answer">Yes! If you don't see measurable improvement in your writing within 90 days, we'll refund your subscription fees. No questions asked.</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Haunted Empire. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function subscribe(plan) {
+            alert(`Starting subscription for ${plan} plan...`);
+            // Redirect to payment processor
+            window.location.href = `https://buy.stripe.com/haunted-empire-subscribe-${plan}`;
+        }
+
+        // Track referrals from promotional posts
+        if (document.referrer.includes('bsky.app') || document.referrer.includes('bluesky')) {
+            console.log('Subscription visitor from Bluesky promotional post!');
+            // Track conversion
+        }
+    </script>
+</body>
+</html>

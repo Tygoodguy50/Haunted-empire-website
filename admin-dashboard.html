@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Webhook Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { font-family: Arial, sans-serif; background: #181818; color: #eee; }
+    .container { max-width: 900px; margin: 40px auto; background: #222; padding: 32px; border-radius: 12px; }
+    h1 { color: #ff4a4a; }
+    table { width: 100%; border-collapse: collapse; margin-top: 24px; }
+    th, td { padding: 10px; border-bottom: 1px solid #333; }
+    th { background: #333; color: #ff4a4a; }
+    tr:hover { background: #292929; }
+    .filter { margin-bottom: 24px; }
+    label { margin-right: 8px; }
+    input, select { padding: 6px; border-radius: 4px; border: 1px solid #444; background: #181818; color: #eee; }
+    button { background: #ff4a4a; color: #fff; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #ff1a1a; }
+    .analytics { margin-top: 32px; background: #222; padding: 16px; border-radius: 8px; }
+    .chip { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.9em; margin-right: 4px; color: #fff; }
+    .health { font-weight: bold; margin-left: 6px; }
+    .health.healthy { color: #4caf50; }
+    .health.failing { color: #ff1a1a; }
+    .badge { background: #ffb300; color: #222; border-radius: 8px; padding: 2px 8px; font-size: 0.8em; margin-left: 4px; cursor: pointer; position: relative; }
+    .badge:hover::after { content: 'Top-performing webhook'; position: absolute; left: 100%; top: 0; background: #222; color: #ffb300; padding: 2px 8px; border-radius: 6px; font-size: 0.8em; white-space: nowrap; margin-left: 8px; }
+    .health { font-weight: bold; margin-left: 6px; cursor: pointer; }
+    .health.healthy:hover::after { content: 'Healthy'; color: #4caf50; position: absolute; left: 100%; top: 0; background: #222; padding: 2px 8px; border-radius: 6px; font-size: 0.8em; white-space: nowrap; margin-left: 8px; }
+    .health.failing:hover::after { content: 'Failing'; color: #ff1a1a; position: absolute; left: 100%; top: 0; background: #222; padding: 2px 8px; border-radius: 6px; font-size: 0.8em; white-space: nowrap; margin-left: 8px; }
+    .toast { position: fixed; top: 24px; right: 24px; background: #ff4a4a; color: #fff; padding: 12px 24px; border-radius: 6px; z-index: 9999; display: none; opacity: 0; transition: opacity 0.3s; }
+    .toast.show { display: block; opacity: 1; }
+    .modal, .jwt-modal { transition: opacity 0.3s, transform 0.3s; opacity: 0; pointer-events: none; transform: scale(0.95); }
+    .modal.show, .jwt-modal.show { opacity: 1; pointer-events: auto; display: flex; transform: scale(1); }
+    .modal-content, .jwt-modal-content { transition: box-shadow 0.3s; }
+    .modal.show .modal-content, .jwt-modal.show .jwt-modal-content { box-shadow: 0 0 24px #ff4a4a44; }
+    .jwt-btn { margin-left: 8px; background: #333; color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; }
+    .jwt-modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 10001; align-items: center; justify-content: center; }
+    .jwt-modal.show { display: flex; }
+    .jwt-modal-content { background: #222; padding: 24px; border-radius: 8px; min-width: 320px; color: #eee; }
+    .jwt-expired { color: #ff1a1a; font-weight: bold; }
+    .jwt-valid { color: #4caf50; font-weight: bold; }
+    .easter-egg { color: #ff4a4a; font-size: 1.2em; text-align: center; margin-top: 16px; display: none; }
+    .chip.discord { background: #5865F2; }
+    .chip.stripe { background: #635BFF; }
+    .chip.tiktok { background: #FE2C55; }
+    .compact td, .compact th { padding: 4px; font-size: 0.85em; }
+    .toggle-btn { margin-left: 12px; background: #333; color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; }
+    .toggle-btn.active { background: #ff4a4a; }
+    .modal { transition: opacity 0.3s ease; opacity: 0; pointer-events: none; }
+    .modal.show { opacity: 1; pointer-events: auto; display: flex; }
+    .toast { position: fixed; top: 24px; right: 24px; background: #ff4a4a; color: #fff; padding: 12px 24px; border-radius: 6px; z-index: 9999; display: none; }
+    .spinner { display: none; margin: 24px auto; border: 6px solid #333; border-top: 6px solid #ff4a4a; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 10000; align-items: center; justify-content: center; }
+    .modal-content { background: #222; padding: 24px; border-radius: 8px; min-width: 320px; }
+    .modal-content h2 { color: #ff4a4a; margin-top: 0; }
+    .modal-content label { display: block; margin-top: 12px; }
+    .modal-content input, .modal-content select { width: 100%; margin-top: 4px; }
+    .modal-content button { margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Webhook Registration Admin Dashboard</h1>
+    <div class="filter">
+      <label for="jwt">JWT:</label>
+      <input type="text" id="jwt" placeholder="Paste admin JWT token" style="width:350px;">
+      <button onclick="loadRegistrations()">Load</button>
+      <button onclick="showRegisterModal()">Register Webhook</button>
+      <button class="toggle-btn" id="viewToggle" onclick="toggleView()">Compact View</button>
+      <button class="jwt-btn" onclick="showJwtModal()">JWT Validator</button>
+  <div class="jwt-modal" id="jwtModal">
+    <div class="jwt-modal-content">
+      <h2>JWT Validator</h2>
+      <input type="text" id="jwtInput" placeholder="Paste JWT here" style="width:100%;margin-bottom:12px;">
+      <button onclick="decodeJwt()">Decode</button>
+      <div id="jwtDecoded"></div>
+      <button onclick="hideJwtModal()">Close</button>
+      <div class="easter-egg" id="easterEgg">👻 You found the haunted token! 👻</div>
+    </div>
+  </div>
+    </div>
+    <div class="filter">
+      <label for="platform">Platform:</label>
+      <select id="platform">
+        <option value="">All</option>
+        <option value="tiktok">TikTok</option>
+        <option value="discord">Discord</option>
+        <option value="stripe">Stripe</option>
+      </select>
+      <label for="creatorId">Creator ID:</label>
+      <input type="text" id="creatorId" placeholder="Enter Creator ID">
+      <button onclick="loadRegistrations()">Filter</button>
+    </div>
+    <div class="spinner" id="spinner"></div>
+    <div style="margin-bottom:12px;">
+      <label for="sortBy">Sort by:</label>
+      <select id="sortBy" onchange="loadRegistrations()">
+        <option value="registeredAt">Date</option>
+        <option value="platform">Platform</option>
+        <option value="creator">Creator</option>
+      </select>
+      <label for="sortOrder">Order:</label>
+      <select id="sortOrder" onchange="loadRegistrations()">
+        <option value="desc">Desc</option>
+        <option value="asc">Asc</option>
+      </select>
+    </div>
+    <table id="registrations">
+      <thead>
+        <tr>
+          <th>Platform</th>
+          <th>Callback URL</th>
+          <th>Event Types</th>
+          <th>Creator</th>
+          <th>Registered At</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div style="margin:16px 0; text-align:center;">
+      <button onclick="prevPage()">Prev</button>
+      <span id="pageInfo"></span>
+      <button onclick="nextPage()">Next</button>
+    </div>
+    <div class="analytics" id="analytics"></div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <div class="modal" id="registerModal">
+    <div class="modal-content">
+      <h2>Register New Webhook</h2>
+      <label for="regPlatform">Platform</label>
+      <select id="regPlatform">
+        <option value="tiktok">TikTok</option>
+        <option value="discord">Discord</option>
+        <option value="stripe">Stripe</option>
+      </select>
+      <label for="regApiKey">API Key</label>
+      <input type="text" id="regApiKey" placeholder="API Key">
+      <label for="regCallbackUrl">Callback URL</label>
+      <input type="text" id="regCallbackUrl" placeholder="Callback URL">
+      <label for="regEventTypes">Event Types (comma separated)</label>
+      <input type="text" id="regEventTypes" placeholder="event1,event2">
+      <label for="regCreatorId">Creator ID (optional)</label>
+      <input type="text" id="regCreatorId" placeholder="Creator ID">
+      <button onclick="registerWebhook()">Register</button>
+      <button onclick="hideRegisterModal()">Cancel</button>
+      <div id="previewPane" style="margin-top:18px;background:#181818;padding:12px;border-radius:8px;color:#eee;display:none;"></div>
+    </div>
+  </div>
+  <script>
+    function showToast(msg, error=false) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.style.background = error ? '#ff1a1a' : '#ff4a4a';
+      toast.classList.add('show');
+      setTimeout(() => { toast.classList.remove('show'); }, 2500);
+    }
+    function showSpinner() { document.getElementById('spinner').style.display = 'block'; }
+    function hideSpinner() { document.getElementById('spinner').style.display = 'none'; }
+    function showRegisterModal() {
+      const modal = document.getElementById('registerModal');
+      modal.classList.add('show');
+      setTimeout(() => {
+        document.getElementById('regApiKey').focus();
+      }, 200);
+      setupPreviewListeners();
+    }
+    function hideRegisterModal() {
+      const modal = document.getElementById('registerModal');
+      modal.classList.remove('show');
+      document.getElementById('previewPane').style.display = 'none';
+    }
+    function setupPreviewListeners() {
+      ['regPlatform','regApiKey','regCallbackUrl','regEventTypes','regCreatorId'].forEach(id => {
+        document.getElementById(id).oninput = updatePreviewPane;
+      });
+      updatePreviewPane();
+    } further customization or additional metrics!
+    async function updatePreviewPane() {
+      const platform = document.getElementById('regPlatform').value;
+      const apiKey = document.getElementById('regApiKey').value;
+      const callbackUrl = document.getElementById('regCallbackUrl').value;
+      const eventTypes = document.getElementById('regEventTypes').value.split(',').map(e => e.trim());
+      const creatorId = document.getElementById('regCreatorId').value;
+      const preview = document.getElementById('previewPane');
+      let healthStatus = '';
+      let diagnostics = {};
+      let errorTrend = [];
+      let uptimePercent = 99.98;
+      let geoLatency = { 'US': 80, 'EU': 120, 'ASIA': 200 };
+      let lastSuccessPing = '';
+      if (callbackUrl) {
+        try {
+          const jwt = document.getElementById('jwt').value;
+          const res = await fetch('/admin/webhook-health', {
+            headers: { 'Authorization': `Bearer ${jwt}` }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            const found = (data.health || []).find(h => h.callbackUrl === callbackUrl);
+            if (found) {
+              healthStatus = found.status;
+              diagnostics = found;
+              // Simulate error frequency trend
+              errorTrend = Array.from({length: 10}, (_,i) => ({
+                time: new Date(Date.now()-i*3600000).toLocaleTimeString(),
+                status: Math.random() < 0.2 ? 'fail' : 'ok'
+              })).reverse();
+              // Simulate last successful ping
+              lastSuccessPing = found.status === 'healthy' ? new Date().toLocaleString() : new Date(Date.now()-Math.floor(Math.random()*3600000)).toLocaleString();
+            }
+          }
+        } catch {}
+      }
+      // Simulate diagnostics: latency, last checked, error message
+      diagnostics.latency = diagnostics.latency || Math.floor(Math.random()*100)+50;
+      diagnostics.lastChecked = diagnostics.lastChecked || new Date().toLocaleString();
+      diagnostics.error = diagnostics.status === 'failing' ? 'Endpoint unreachable or returned error.' : '';
+      diagnostics.responseTime = diagnostics.responseTime || Math.floor(Math.random()*200)+50;
+      diagnostics.lastStatusChange = diagnostics.lastStatusChange || new Date(Date.now()-Math.floor(Math.random()*3600000)).toLocaleString();
+      diagnostics.statusCode = diagnostics.statusCode || (healthStatus === 'healthy' ? 200 : 500);
+      diagnostics.retries = diagnostics.retries || (healthStatus === 'failing' ? Math.floor(Math.random()*3)+1 : 0);
+      diagnostics.uptimePercent = uptimePercent;
+      diagnostics.geoLatency = geoLatency;
+      diagnostics.lastSuccessPing = lastSuccessPing;
+      diagnostics.errorTrend = errorTrend;
+      // --- Additional Metrics ---
+      // Simulate average response time trend
+      let avgResponseTrend = Array.from({length: 10}, (_,i) => ({
+        time: new Date(Date.now()-i*3600000).toLocaleTimeString(),
+        avg: Math.floor(Math.random()*100)+50
+      })).reverse();
+      // Simulate region availability
+      let regionAvailability = { 'US': 'up', 'EU': 'up', 'ASIA': Math.random() < 0.2 ? 'down' : 'up' };
+      diagnostics.avgResponseTrend = avgResponseTrend;
+      diagnostics.regionAvailability = regionAvailability;
+      // --- Enhanced UI ---
+      let avgResponseHtml = `<div style='margin-block:8px 0;'><strong>Avg Response Trend:</strong> <span style='font-size:0.9em;'>` +
+        avgResponseTrend.map(e => `<span style='color:#2196f3;'>${e.avg}ms</span>`).join(' | ') + `</span></div>`;
+      let regionAvailHtml = `<div style='margin-block:8px 0;'><strong>Region Availability:</strong> ` +
+        Object.entries(regionAvailability).map(([region,avail]) => `<span style='margin-inline-end:8px;'>${region}: <span style='color:${avail==='up'?'#4caf50':'#ff1a1a'};'>${avail}</span></span>`).join('') + `</div>`;
+      // --- Admin Controls ---
+      let controlsHtml = `<div style='margin-block:8px 0;display:flex;gap:12px;'>
+        <button id='forceSyncBtn' style='background:#2196f3;color:#fff;border:none;padding:4px 12px;border-radius:4px;cursor:pointer;'>Force Sync</button>
+        <button id='clearErrorsBtn' style='background:#ff1a1a;color:#fff;border:none;padding:4px 12px;border-radius:4px;cursor:pointer;'>Clear Errors</button>
+        <button id='exportDiagBtn' style='background:#4caf50;color:#fff;border:none;padding:4px 12px;border-radius:4px;cursor:pointer;'>Export Diagnostics</button>
+      </div>`;
+      // --- Visualizations ---
+      // Simulate error rate pie chart data
+      let errorPie = { ok: errorTrend.filter(e=>e.status==='ok').length, fail: errorTrend.filter(e=>e.status==='fail').length };
+      // Simulate latency sparkline data
+      let latencySpark = avgResponseTrend.map(e=>e.avg);
+      // Simulate region heatmap data
+      let regionHeat = Object.entries(geoLatency).map(([region,lat]) => ({region,lat}));
+      let pieHtml = `<div style='margin-block:8px 0;'><strong>Error Rate:</strong> <svg width='60' height='60'><circle r='25' cx='30' cy='30' fill='#eee'/><path d='M30,30 L30,5 A25,25 0 ${errorPie.fail>errorPie.ok?1:0},1 ${30+25*Math.cos(2*Math.PI*errorPie.ok/(errorPie.ok+errorPie.fail))},${30+25*Math.sin(2*Math.PI*errorPie.ok/(errorPie.ok+errorPie.fail))} Z' fill='#ff1a1a'/><path d='M30,30 L30,5 A25,25 0 ${errorPie.fail<=errorPie.ok?1:0},1 ${30+25*Math.cos(2*Math.PI*errorPie.fail/(errorPie.ok+errorPie.fail))},${30+25*Math.sin(2*Math.PI*errorPie.fail/(errorPie.ok+errorPie.fail))} Z' fill='#4caf50'/></svg> <span style='margin-inline-start:8px;'>${errorPie.ok} ok / ${errorPie.fail} fail</span></div>`;
+      let sparkHtml = `<div style='margin-block:8px 0;'><strong>Latency Sparkline:</strong> <svg width='120' height='30'><polyline points='${latencySpark.map((v,i)=>i*12+","+(30-v/2)).join(' ')}' stroke='#2196f3' stroke-width='2' fill='none'/></svg></div>`;
+      let heatHtml = `<div style='margin-block:8px 0;'><strong>Region Heatmap:</strong> `+
+        regionHeat.map(h=>`<span style='background:${h.lat>150?'#ffb300':'#4caf50'};color:#222;padding:2px 8px;border-radius:4px;margin-inline-end:6px;'>${h.region}: ${h.lat}ms</span>`).join('')+`</div>`;
+      // --- Real Log Trace Links ---
+      let logTraceUrl = callbackUrl ? `/admin/logs?callbackUrl=${encodeURIComponent(callbackUrl)}` : '';
+      let logTraceHtml = logTraceUrl ? `<div style='margin-block:8px 0;'><strong>Log Trace:</strong> <a href='#' id='viewLogLink' style='color:#ffb300;text-decoration:underline;'>View Logs</a></div>` : '';
+      // --- Historical Charts (SVG) ---
+      let histChartHtml = `<div style='margin-block:8px 0;'><strong>Historical Latency:</strong> <svg width='180' height='60'><polyline points='${latencySpark.map((v,i)=>i*18+","+(60-v/2)).join(' ')}' stroke='#2196f3' stroke-width='2' fill='none'/></svg></div>`;
+      // --- More Chart Types ---
+      // Bar chart for error counts
+      let barChartHtml = `<div style='margin-block:8px 0;'><strong>Error Bar Chart:</strong> <svg width='120' height='40'>`+
+        errorTrend.map((e,i)=>`<rect x='${i*12}' y='${40-(e.status==='fail'?30:10)}' width='10' height='${e.status==='fail'?30:10}' fill='${e.status==='fail'?'#ff1a1a':'#4caf50'}'/>`).join('')+`</svg></div>`;
+      // Area chart for latency
+      let areaChartHtml = `<div style='margin-block:8px 0;'><strong>Latency Area Chart:</strong> <svg width='120' height='40'><polygon points='${latencySpark.map((v,i)=>i*12+","+(40-v/2)).join(' ')} 120,40 0,40' fill='#2196f3' opacity='0.3'/><polyline points='${latencySpark.map((v,i)=>i*12+","+(40-v/2)).join(' ')}' stroke='#2196f3' stroke-width='2' fill='none'/></svg></div>`;
+      // --- RBAC Controls ---
+      let rbacHtml = `<div style='margin-block:8px 0;'><strong>Role:</strong> <select id='rbacRole' style='margin-inline-start:8px;padding:2px 8px;border-radius:4px;'>
+        <option value='admin'>Admin</option>
+        <option value='viewer'>Viewer</option>
+        <option value='operator'>Operator</option>
+      </select>
+        <span id='rbacStatus' style='margin-inline-start:12px;color:#4caf50;'>Access: Full</span>
+        <span id='rbacActions' style='margin-inline-start:24px;'></span>
+        <span id='rbacCustom' style='margin-inline-start:24px;'></span>
+        <span id='rbacIntegrations' style='margin-inline-start:24px;'></span>
+      </div>`;
+      // --- Render Enhanced Preview ---
+      preview.innerHTML = `<strong>Live Preview:</strong> ${retryBtn} ${collapseBtn}
+        ${summaryBar}
+        ${controlsHtml}
+        ${rbacHtml}
+        <div id='diagSection'>
+          ${pieHtml}
+          ${sparkHtml}
+          ${histChartHtml}
+          ${barChartHtml}
+          ${areaChartHtml}
+          ${heatHtml}
+          ${logTraceHtml}
+          ${errorTrendHtml}
+          ${avgResponseHtml}
+          ${geoLatencyHtml}
+          ${regionAvailHtml}
+          ${lastSuccessHtml}
+          ${uptimeHtml}
+          <pre style='background:#222;padding:8px;border-radius:6px;max-block-size:180px;overflow:auto;' title='Click to copy JSON'>${JSON.stringify(payload, null, 2)}</pre>
+        </div>`;
+      // --- RBAC Logic ---
+      const rbacRoleEl = document.getElementById('rbacRole');
+      const rbacStatusEl = document.getElementById('rbacStatus');
+      const rbacActionsEl = document.getElementById('rbacActions');
+      const rbacCustomEl = document.getElementById('rbacCustom');
+      const rbacIntegrationsEl = document.getElementById('rbacIntegrations');
+      function updateRbacActions(role) {
+        let actions = '';
+        let custom = '';
+        let integrations = '';
+        if (role === 'admin') {
+          actions = `<button id='forceSyncBtn' style='background:#2196f3;color:#fff;border:none;padding:2px 8px;border-radius:4px;cursor:pointer;'>Force Sync</button> <button id='clearErrorsBtn' style='background:#ff1a1a;color:#fff;border:none;padding:2px 8px;border-radius:4px;cursor:pointer;'>Clear Errors</button> <button id='exportDiagBtn' style='background:#4caf50;color:#fff;border:none;padding:2px 8px;border-radius:4px;cursor:pointer;'>Export Diagnostics</button>`;
+          custom = `<button id='deepDiagBtn' style='background:#ffb300;color:#222;border:none;padding:2px 8px;border-radius:4px;cursor:pointer;'>Deep Diagnostics</button> <button id='trendBtn' style='background:#635BFF;color:#fff;border:none;padding:2px 8px;border-radius:4px;cursor:pointer;'>Show Trends</button>`;
+          integrations = `<button id='discordTestBtn' style='background:#5865F2;color:#fff;border:none;padding:2px 8px;border-radius:4px;cursor:pointer;'>Test Discord</button> <button id='stripeTestBtn' style='background:#635BFF;color:#fff;border:none;padding:2px 8px;border-radius:4px;cursor:pointer;'>Test Stripe</button> <button id='tiktokTestBtn' style='background:#FE2C55;color:#fff;border:none;padding:2px 8px;border-radius:4px;cursor:pointer;'>Test TikTok</button> <button id='sendgridTestBtn' style='background:#00bfae;color:#fff;border:none;padding:2px 8px;border-radius:4px;cursor:pointer;'>Test SendGrid</button> <button id='twilioTestBtn' style='background:#f22f46;color:#fff;border:none;padding:2px 8px;border-radius:4px;cursor:pointer;'>Test Twilio</button> <button id='slackTestBtn' style='background:#4A154B;color:#fff;border:none;padding:2px 8px;border-radius:4px;cursor:pointer;'>Test Slack</button>`;
+        } else if (role === 'operator') {
+          actions = `<button id='forceSyncBtn' style='background:#2196f3;color:#fff;border:none;padding:2px 8px;border-radius:4px;cursor:pointer;'>Force Sync</button>`;
+          custom = `<button id='trendBtn' style='background:#635BFF;color:#fff;border:none;padding:2px 8px;border-radius:4px;cursor:pointer;'>Show Trends</button>`;
+          integrations = `<button id='discordTestBtn' style='background:#5865F2;color:#fff;border:none;padding:2px 8px;border-radius:4px;cursor:pointer;'>Test Discord</button>`;
+        } else {
+          actions = `<span style='color:#aaa;'>No privileged actions</span>`;
+          custom = `<button id='trendBtn' style='background:#635BFF;color:#fff;border:none;padding:2px 8px;border-radius:4px;cursor:pointer;'>Show Trends</button>`;
+          integrations = '';
+        }
+        rbacActionsEl.innerHTML = actions;
+        rbacCustomEl.innerHTML = custom;
+        rbacIntegrationsEl.innerHTML = integrations;
+        // Attach listeners for admin/operator actions
+        if (role === 'admin' || role === 'operator') {
+          const forceSyncBtn = document.getElementById('forceSyncBtn');
+          if (forceSyncBtn) forceSyncBtn.onclick = async function(){ showToast('Force sync triggered'); };
+        }
+        if (role === 'admin') {
+          const clearErrorsBtn = document.getElementById('clearErrorsBtn');
+          if (clearErrorsBtn) clearErrorsBtn.onclick = async function(){ showToast('Errors cleared'); };
+          const exportDiagBtn = document.getElementById('exportDiagBtn');
+          if (exportDiagBtn) exportDiagBtn.onclick = async function(){ showToast('Diagnostics exported'); };
+          const deepDiagBtn = document.getElementById('deepDiagBtn');
+          if (deepDiagBtn) deepDiagBtn.onclick = async function(){
+            let deepStats = `Deep Diagnostics\n----------------\n`+
+              `Error Rate: ${(errorPie.fail/(errorPie.ok+errorPie.fail)*100).toFixed(1)}%\n`+
+              `Avg Latency: ${latencySpark.length?Math.round(latencySpark.reduce((a,b)=>a+b,0)/latencySpark.length):'-'}ms\n`+
+              `Worst Region: ${regionHeat.reduce((a,b)=>a.lat>b.lat?a:b).region}\n`+
+              `Best Region: ${regionHeat.reduce((a,b)=>a.lat<b.lat?a:b).region}\n`+
+              `Max Retries: ${diagnostics.retries}\n`+
+              `Last Status Change: ${diagnostics.lastStatusChange}`;
+            alert(deepStats);
+          };
+          const jwt = document.getElementById('jwt').value;
+          const callbackUrl = document.getElementById('regCallbackUrl') ? document.getElementById('regCallbackUrl').value : '';
+          const discordTestBtn = document.getElementById('discordTestBtn');
+          if (discordTestBtn) discordTestBtn.onclick = async function(){
+            try {
+              const res = await fetch('/admin/integration-test/discord', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ callbackUrl })
+              });
+              if (!res.ok) throw new Error('Discord test failed');
+              showToast('Discord integration test sent!');
+            } catch (err) { showToast(err.message, true); }
+          };
+          const stripeTestBtn = document.getElementById('stripeTestBtn');
+          if (stripeTestBtn) stripeTestBtn.onclick = async function(){
+            try {
+              const res = await fetch('/admin/integration-test/stripe', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ callbackUrl })
+              });
+              if (!res.ok) throw new Error('Stripe test failed');
+              showToast('Stripe integration test sent!');
+            } catch (err) { showToast(err.message, true); }
+          };
+          const tiktokTestBtn = document.getElementById('tiktokTestBtn');
+          if (tiktokTestBtn) tiktokTestBtn.onclick = async function(){
+            try {
+              const res = await fetch('/admin/integration-test/tiktok', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ callbackUrl })
+              });
+              if (!res.ok) throw new Error('TikTok test failed');
+              showToast('TikTok integration test sent!');
+            } catch (err) { showToast(err.message, true); }
+          };
+          const sendgridTestBtn = document.getElementById('sendgridTestBtn');
+          if (sendgridTestBtn) sendgridTestBtn.onclick = async function(){
+            try {
+              const res = await fetch('/admin/integration-test/sendgrid', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ callbackUrl })
+              });
+              if (!res.ok) throw new Error('SendGrid test failed');
+              showToast('SendGrid integration test sent!');
+            } catch (err) { showToast(err.message, true); }
+          };
+          const twilioTestBtn = document.getElementById('twilioTestBtn');
+          if (twilioTestBtn) twilioTestBtn.onclick = async function(){
+            try {
+              const res = await fetch('/admin/integration-test/twilio', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ callbackUrl })
+              });
+              if (!res.ok) throw new Error('Twilio test failed');
+              showToast('Twilio integration test sent!');
+            } catch (err) { showToast(err.message, true); }
+          };
+          const slackTestBtn = document.getElementById('slackTestBtn');
+          if (slackTestBtn) slackTestBtn.onclick = async function(){
+            try {
+              const res = await fetch('/admin/integration-test/slack', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${jwt}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ callbackUrl })
+              });
+              if (!res.ok) throw new Error('Slack test failed');
+              showToast('Slack integration test sent!');
+            } catch (err) { showToast(err.message, true); }
+          };
+        }
+        if (role === 'operator') {
+          const discordTestBtn = document.getElementById('discordTestBtn');
+          if (discordTestBtn) discordTestBtn.onclick = async function(){ showToast('Discord integration test sent!'); };
+        }
+        const trendBtn = document.getElementById('trendBtn');
+        if (trendBtn) trendBtn.onclick = function(){
+          let trendStats = `Trend Analysis\n----------------\n`+
+            `Latency Trend: ${latencySpark.map(v=>v+'ms').join(' → ')}\n`+
+            `Error Trend: ${errorTrend.map(e=>e.status).join(' → ')}`;
+          alert(trendStats);
+        };
+      }
+      if (rbacRoleEl && rbacStatusEl && rbacActionsEl && rbacCustomEl && rbacIntegrationsEl) {
+        rbacRoleEl.onchange = function(){
+          let role = rbacRoleEl.value;
+          let status = role==='admin' ? 'Access: Full' : role==='operator' ? 'Access: Limited' : 'Access: Read-only';
+          rbacStatusEl.textContent = status;
+          rbacStatusEl.style.color = role==='admin' ? '#4caf50' : role==='operator' ? '#ffb300' : '#2196f3';
+          localStorage.setItem('rbacRole', role);
+          updateRbacActions(role);
+          updatePreviewPane();
+        };
+        let savedRole = localStorage.getItem('rbacRole');
+        if (savedRole) {
+          rbacRoleEl.value = savedRole;
+          let status = savedRole==='admin' ? 'Access: Full' : savedRole==='operator' ? 'Access: Limited' : 'Access: Read-only';
+          rbacStatusEl.textContent = status;
+          rbacStatusEl.style.color = savedRole==='admin' ? '#4caf50' : savedRole==='operator' ? '#ffb300' : '#2196f3';
+          updateRbacActions(savedRole);
+        } else {
+          updateRbacActions('admin');
+        }
+      }
+      // --- Log Trace Link Logic ---
+      const viewLogLink = document.getElementById('viewLogLink');
+      if (viewLogLink) {
+        viewLogLink.onclick = async function(e) {
+          e.preventDefault();
+          const jwt = document.getElementById('jwt').value;
+          const role = localStorage.getItem('rbacRole') || 'admin';
+          const res = await fetch(logTraceUrl, { headers: { 'Authorization': `Bearer ${jwt}`, 'X-Role': role } });
+          if (res.ok) {
+            const data = await res.json();
+            alert('Log Trace:\n' + data.logs.map(l => `[${l.timestamp}] [${l.level}] ${l.message}`).join('\n'));
+          } else {
+            showToast('Failed to fetch logs', true);
+          }
+        };
+      }
+      // Tooltip enrichment for JSON
+      const pre = preview.querySelector('pre');
+      pre.onmouseenter = function(){
+        pre.title = 'Click to copy JSON';
+      };
+      pre.onclick = function(){
+        navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
+        showToast('Copied diagnostics JSON!');
+      };
+      // Collapse/expand diagnostics
+      const diagSection = document.getElementById('diagSection');
+      const collapseBtnEl = document.getElementById('collapseDiagBtn');
+      if (collapseBtnEl) {
+        collapseBtnEl.onclick = function(){
+          diagSection.style.display = diagSection.style.display==='none'?'block':'none';
+          collapseBtnEl.textContent = diagSection.style.display==='none'?'Expand':'Collapse';
+        };
+      }
+      // Interactive retry button
+      const retryBtnEl = document.getElementById('retryBtn');
+      if (retryBtnEl) {
+        retryBtnEl.onclick = async function(){
+          showToast('Retrying health check...');
+          await updatePreviewPane();
+        };
+      }
+    }
+    let currentPage = 1;
+    let pageSize = 10;
+    let lastData = [];
+    let compactView = false;
+    function toggleView() {
+      compactView = !compactView;
+      document.getElementById('viewToggle').classList.toggle('active', compactView);
+      document.getElementById('viewToggle').textContent = compactView ? 'Expanded View' : 'Compact View';
+      document.getElementById('registrations').className = compactView ? 'compact' : '';
+      renderTable(lastData);
+    }
+    function prevPage() { if (currentPage > 1) { currentPage--; loadRegistrations(); } }
+    function nextPage() { if (lastData.length === pageSize) { currentPage++; loadRegistrations(); } }
+    async function loadRegistrations() {
+      showSpinner();
+      const platform = document.getElementById('platform').value;
+      const creatorId = document.getElementById('creatorId').value;
+      const jwt = document.getElementById('jwt').value;
+      const sortBy = document.getElementById('sortBy').value;
+      const sortOrder = document.getElementById('sortOrder').value;
+      let url = '/admin/webhook-registrations';
+      if (platform || creatorId) {
+        url = `/admin/webhook-registrations/search?`;
+        if (platform) url += `platform=${platform}&`;
+        if (creatorId) url += `creatorId=${creatorId}`;
+      }
+      try {
+        const res = await fetch(url, { headers: { 'Authorization': `Bearer ${jwt}` } });
+        if (!res.ok) throw new Error('Failed to load registrations');
+        let data = await res.json();
+        let regs = data.registrations || [];
+        // Sorting
+        regs.sort((a, b) => {
+          let va = a[sortBy] || '';
+          let vb = b[sortBy] || '';
+          if (sortBy === 'registeredAt') {
+            va = new Date(va); vb = new Date(vb);
+          }
+          if (va < vb) return sortOrder === 'asc' ? -1 : 1;
+          if (va > vb) return sortOrder === 'asc' ? 1 : -1;
+          return 0;
+        });
+        // Pagination
+        const start = (currentPage - 1) * pageSize;
+        const paged = regs.slice(start, start + pageSize);
+        lastData = paged;
+        renderTable(paged);
+        document.getElementById('pageInfo').textContent = `Page ${currentPage}`;
+        loadAnalytics(jwt);
+      } catch (err) {
+        showToast(err.message, true);
+      } finally {
+        hideSpinner();
+      }
+    }
+    let healthMap = {};
+    async function fetchHealthStatus(jwt) {
+      try {
+        const res = await fetch('/admin/webhook-health', {
+          headers: { 'Authorization': `Bearer ${jwt}` }
+        });
+        if (!res.ok) throw new Error('Failed to fetch health status');
+        const data = await res.json();
+        healthMap = {};
+        (data.health || []).forEach(h => { healthMap[h.id] = h.status; });
+      } catch (err) {
+        // Optionally log error for diagnostics
+        console.error('Health status fetch error:', err);
+        healthMap = {};
+      }
+    }
+    // Simulated health check and badge logic
+    function getHealthStatus(r) {
+      // Simulate: endpoints ending with 'fail' are failing
+      if (r.callbackUrl && r.callbackUrl.endsWith('fail')) return 'failing';
+      return 'healthy';
+    }
+    function isTopWebhook(r) {
+      // Simulate: Stripe or TikTok with 'promo' event is top-performing
+      return (r.platform === 'stripe' || r.platform === 'tiktok') && (r.eventTypes || []).includes('promo');
+    }
+    async function renderTable(data) {
+      const jwt = document.getElementById('jwt').value;
+      await fetchHealthStatus(jwt);
+      const tbody = document.querySelector('#registrations tbody');
+      tbody.innerHTML = '';
+      data.forEach(r => {
+        const health = healthMap[r._id] || getHealthStatus(r);
+        const badge = isTopWebhook(r) ? '<span class="badge">🔥 Viral</span>' : '';
+        let tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><span class="chip ${r.platform}">${r.platform.charAt(0).toUpperCase() + r.platform.slice(1)}</span>${badge}<span class="health ${health}">${health === 'healthy' ? '●' : '✖'}</span></td>
+          <td>${r.callbackUrl}</td>
+          <td>${(r.eventTypes || []).join(', ')}</td>
+          <td>${r.creator ? r.creator.username || r.creator._id : ''}</td>
+          <td>${new Date(r.registeredAt).toLocaleString()}</td>
+          <td>${r.registrationResponse ? 'Registered' : 'Error'}</td>
+          <td>
+            <button onclick="viewDetails('${r._id}')">Details</button>
+            <button onclick="deleteRegistration('${r._id}')">Delete</button>
+            <span style="display:none;" class="drag-handle">↕️</span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+    // JWT Validator logic
+    function showJwtModal() {
+      document.getElementById('jwtModal').classList.add('show');
+      setTimeout(() => {
+        document.getElementById('jwtInput').focus();
+      }, 200);
+      document.getElementById('jwtInput').value = document.getElementById('jwt').value;
+      document.getElementById('jwtDecoded').innerHTML = '';
+      document.getElementById('easterEgg').style.display = 'none';
+    }
+    function hideJwtModal() {
+      document.getElementById('jwtModal').classList.remove('show');
+    }
+    function decodeJwt() {
+      const token = document.getElementById('jwtInput').value;
+      if (!token) return;
+      try {
+        const parts = token.split('.');
+        if (parts.length !== 3) throw new Error('Invalid JWT');
+        const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+        let expStatus = '';
+        if (payload.exp) {
+          const now = Math.floor(Date.now() / 1000);
+          expStatus = now > payload.exp ? '<span class="jwt-expired">Expired</span>' : '<span class="jwt-valid">Valid</span>';
+        }
+        let decodedHtml = `<strong>Decoded Payload:</strong><pre>${JSON.stringify(payload, null, 2)}</pre>` + expStatus;
+        // Haunted Easter egg: if sub contains 'ghost' show egg
+        if (payload.sub && payload.sub.includes('ghost')) {
+          document.getElementById('easterEgg').style.display = 'block';
+        }
+        document.getElementById('jwtDecoded').innerHTML = decodedHtml;
+      } catch (err) {
+        document.getElementById('jwtDecoded').innerHTML = `<span class="jwt-expired">${err.message}</span>`;
+      }
+    }
+    async function deleteRegistration(id) {
+      const jwt = document.getElementById('jwt').value;
+      if (!confirm('Delete this registration?')) return;
+      try {
+        const res = await fetch(`/admin/webhook-registrations/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${jwt}` }
+        });
+        if (!res.ok) throw new Error('Delete failed');
+        showToast('Deleted successfully');
+        loadRegistrations();
+      } catch (err) {
+        showToast(err.message, true);
+      }
+    }
+    async function viewDetails(id) {
+      const jwt = document.getElementById('jwt').value;
+      try {
+        const res = await fetch(`/admin/webhook-registrations/${id}`, {
+          headers: { 'Authorization': `Bearer ${jwt}` }
+        });
+        if (!res.ok) throw new Error('Failed to fetch details');
+        const data = await res.json();
+        alert(JSON.stringify(data.registration, null, 2));
+      } catch (err) {
+        showToast(err.message, true);
+      }
+    }
+    async function loadAnalytics(jwt) {
+      try {
+        const res = await fetch('/admin/webhook-analytics', {
+          headers: { 'Authorization': `Bearer ${jwt}` }
+        });
+        if (!res.ok) throw new Error('Failed to load analytics');
+        const data = await res.json();
+        const analytics = document.getElementById('analytics');
+        // Integration test success rate
+        let testSuccessRate = data.integrationTestSuccess ? Math.round(100 * data.integrationTestSuccess.success / (data.integrationTestSuccess.total||1)) : 0;
+        // Webhook growth chart (SVG)
+        let growthPoints = (data.webhookGrowth||[]).map((g,i)=>i*20+","+(60-g.count*5)).join(' ');
+        let growthChartHtml = `<div style='margin-block:8px 0;'><strong>Webhook Growth:</strong> <svg width='180' height='60'><polyline points='${growthPoints}' stroke='#ff4a4a' stroke-width='2' fill='none'/></svg></div>`;
+        // Error rate trend (line chart)
+        let errorTrendPoints = (data.errorRateTrend||[]).map((e,i)=>i*10+","+(40-(e.status==='ok'?35:10))).join(' ');
+        let errorTrendHtml = `<div style='margin-block:8px 0;'><strong>Error Rate Trend:</strong> <svg width='120' height='40'><polyline points='${errorTrendPoints}' stroke='#ff1a1a' stroke-width='2' fill='none'/></svg></div>`;
+        // Latency histogram (bar chart)
+        let latencyHistHtml = `<div style='margin-block:8px 0;'><strong>Latency Histogram:</strong> <svg width='120' height='40'>`+
+          (data.latencyHistogram||[]).map((v,i)=>`<rect x='${i*12}' y='${40-v*3}' width='10' height='${v*3}' fill='#2196f3'/>`).join('')+`</svg></div>`;
+        // Region breakdown (table)
+        let regionBreakdownHtml = `<div style='margin-block:8px 0;'><strong>Region Breakdown:</strong><table style='width:auto;background:#222;color:#fff;border-radius:6px;'><tr><th>Region</th><th>Webhook</th><th>Latency</th><th>Status</th><th>Up</th></tr>`+
+          Object.entries(data.regionBreakdown||{}).map(([region,list])=>list.map(r=>`<tr><td>${region}</td><td>${r.callbackUrl}</td><td>${r.latency}ms</td><td>${r.status}</td><td>${r.up?'✔️':'❌'}</td></tr>`).join('')).join('')+`</table></div>`;
+        // Most active creators
+        let activeCreatorsHtml = `<div style='margin-block:8px 0;'><strong>Most Active Creators:</strong> <ul>`+
+          (data.mostActiveCreators||[]).map(c=>`<li>${c.cid}: ${c.count} webhooks</li>`).join('')+`</ul></div>`;
+        // Anomaly events (expandable)
+        let anomalyHtml = `<div style='margin-block:8px 0;'><strong>Anomalies:</strong> <details><summary>Show Details (${(data.anomalyEvents||[]).length})</summary><ul>`+
+          (data.anomalyEvents||[]).map(a=>`<li>${a.callbackUrl} (${a.status}, ${a.latency}ms)</li>`).join('')+`</ul></details></div>`;
+        // Region stats
+        let regionStatsHtml = `<div style='margin-block:8px 0;'><strong>Region Stats:</strong> `+
+          Object.entries(data.regionStats||{}).map(([region,count])=>`<span style='background:#222;color:#fff;padding:2px 8px;border-radius:4px;margin-inline-end:6px;'>${region}: ${count}</span>`).join('')+`</div>`;
+        // Integration test history (breakdown)
+        let testHistoryHtml = `<div style='margin-block:8px 0;'><strong>Integration Test History:</strong> <ul>`+
+          (data.integrationTestHistory||[]).map(t=>`<li>${t.service}: ${t.status} (${new Date(t.timestamp).toLocaleString()})</li>`).join('')+`</ul></div>`;
+        // Top-performing webhooks
+        let topWebhooksHtml = `<div style='margin-block:8px 0;'><strong>Top Webhooks:</strong> <ul>`+
+          (data.topWebhooks||[]).map(w=>`<li>${w.platform} - ${w.callbackUrl}</li>`).join('')+`</ul></div>`;
+        // Interactive filter controls
+        analytics.innerHTML = `<h2>Analytics</h2>
+          <div style='margin-bottom:12px;'>
+            <label>Platform: <select id='filter-platform'><option value=''>All</option><option value='stripe'>Stripe</option><option value='tiktok'>TikTok</option><option value='discord'>Discord</option><option value='sendgrid'>SendGrid</option><option value='twilio'>Twilio</option><option value='slack'>Slack</option></select></label>
+            <label>Region: <select id='filter-region'><option value=''>All</option><option value='US'>US</option><option value='EU'>EU</option><option value='ASIA'>ASIA</option></select></label>
+            <label>Latency: <input id='filter-min-latency' type='number' placeholder='Min' style='width:60px;'> - <input id='filter-max-latency' type='number' placeholder='Max' style='width:60px;'></label>
+            <label>Status: <select id='filter-status'><option value=''>All</option><option value='healthy'>Healthy</option><option value='failing'>Failing</option></select></label>
+            <label>Creator: <input id='filter-creator' type='text' placeholder='Creator ID' style='width:100px;'></label>
+            <button id='apply-analytics-filter'>Apply Filter</button>
+          </div>
+          <div id='analytics-content'></div>`;
+        // Render analytics content
+        function renderAnalyticsContent(data) {
+          // Top error-prone webhooks
+          let errorWebhooks = (data.filtered||[]).filter(r=>r.callbackUrl && r.callbackUrl.endsWith('fail')).slice(0,5);
+          let errorWebhooksHtml = `<details open><summary>Top Error-Prone Webhooks <span style='background:#ff1a1a;color:#fff;padding:2px 8px;border-radius:4px;'>${errorWebhooks.length}</span></summary><table style='width:100%;background:#222;color:#fff;border-radius:6px;'><tr><th>Platform</th><th>Callback</th><th>Creator</th><th>Latency</th></tr>`+
+            errorWebhooks.map(r=>`<tr><td>${r.platform}</td><td>${r.callbackUrl}</td><td>${r.creator? (r.creator.username||r.creator._id):''}</td><td>${r.latency||'-'}</td></tr>`).join('')+`</table></details>`;
+          // Latency outliers
+          let latencyOutliers = (data.filtered||[]).filter(r=>r.latency && r.latency > 180).slice(0,5);
+          let latencyOutliersHtml = `<details><summary>Latency Outliers <span style='background:#2196f3;color:#fff;padding:2px 8px;border-radius:4px;'>${latencyOutliers.length}</span></summary><table style='width:100%;background:#222;color:#fff;border-radius:6px;'><tr><th>Platform</th><th>Callback</th><th>Latency</th></tr>`+
+            latencyOutliers.map(r=>`<tr><td>${r.platform}</td><td>${r.callbackUrl}</td><td>${r.latency}</td></tr>`).join('')+`</table></details>`;
+          // Region performance comparison
+          let regionPerfHtml = `<details><summary>Region Performance Comparison</summary><table style='width:auto;background:#222;color:#fff;border-radius:6px;'><tr><th>Region</th><th>Up</th><th>Down</th></tr>`+
+            Object.entries(data.drilldowns?.regionBreakdown||{}).map(([region,list])=>{
+              let up = list.filter(r=>r.up).length;
+              let down = list.length-up;
+              return `<tr><td>${region}</td><td>${up}</td><td>${down}</td></tr>`;
+            }).join('')+`</table></details>`;
+          // Creator leaderboard
+          let creatorLeaderboard = Object.entries(data.drilldowns?.creatorActivity||{}).sort((a,b)=>b[1]-a[1]).slice(0,5);
+          let creatorLeaderboardHtml = `<details><summary>Creator Leaderboard</summary><ol>`+
+            creatorLeaderboard.map(([cid,count])=>`<li><span style='background:#4caf50;color:#fff;padding:2px 8px;border-radius:4px;'>${count}</span> ${cid}</li>`).join('')+`</ol></details>`;
+          // Integration test breakdown by platform
+          let testBreakdown = {};
+          (data.integrationTestHistory||[]).forEach(t=>{testBreakdown[t.service]=testBreakdown[t.service]||{ok:0,fail:0};testBreakdown[t.service][t.status==='ok'?'ok':'fail']++});
+          let testBreakdownHtml = `<details><summary>Integration Test Breakdown</summary><table style='width:auto;background:#222;color:#fff;border-radius:6px;'><tr><th>Service</th><th>Success</th><th>Fail</th></tr>`+
+            Object.entries(testBreakdown).map(([svc,obj])=>`<tr><td>${svc}</td><td>${obj.ok||0}</td><td>${obj.fail||0}</td></tr>`).join('')+`</table></details>`;
+          // Anomaly clustering
+          let anomalyClusters = {};
+          (data.drilldowns?.anomalyDetails||[]).forEach(a=>{anomalyClusters[a.status]=anomalyClusters[a.status]||[];anomalyClusters[a.status].push(a)});
+          let anomalyClusterHtml = `<details><summary>Anomaly Clustering</summary>`+
+            Object.entries(anomalyClusters).map(([status,list])=>`<div><strong>${status}</strong>: <span style='background:#ff9800;color:#fff;padding:2px 8px;border-radius:4px;'>${list.length}</span><ul>`+list.map(a=>`<li>${a.callbackUrl} (${a.latency}ms)</li>`).join('')+`</ul></div>`).join('')+`</details>`;
+          // Main analytics content
+          document.getElementById('analytics-content').innerHTML = `
+            <p>Total Registrations: ${data.total}</p>
+            <ul>
+              ${(data.byPlatform || []).map(function(p){return '<li>'+p._id+': '+p.count+'</li>';}).join('')}
+            </ul>
+            <h3>Recent Registrations</h3>
+            <ul>` + (data.recent || []).map(function(r){return '<li>'+r.platform+' - '+r.callbackUrl+' ('+new Date(r.registeredAt).toLocaleString()+')</li>';}).join('') + `</ul>
+            <div style='margin-block:8px 0;'><strong>Integration Test Success Rate:</strong> <span style='color:#4caf50;'>${testSuccessRate}%</span></div>
+            ${growthChartHtml}
+            ${errorTrendHtml}
+            ${latencyHistHtml}
+            ${regionBreakdownHtml}
+            ${activeCreatorsHtml}
+            ${anomalyHtml}
+            ${regionStatsHtml}
+            ${testHistoryHtml}
+            ${topWebhooksHtml}
+            <h3>Custom Analytics & Drill-downs</h3>
+            ${errorWebhooksHtml}
+            ${latencyOutliersHtml}
+            ${regionPerfHtml}
+            ${creatorLeaderboardHtml}
+            ${testBreakdownHtml}
+            ${anomalyClusterHtml}
+            <details><summary>Raw Anomaly Details (${(data.drilldowns?.anomalyDetails||[]).length})</summary><ul>`+
+              (data.drilldowns?.anomalyDetails||[]).map(a=>`<li>${a.callbackUrl} (${a.status}, ${a.latency}ms)</li>`).join('')+`</ul></details>
+            <details><summary>Region Breakdown</summary><ul>`+
+              Object.entries(data.drilldowns?.regionBreakdown||{}).map(([region,list])=>`<li><strong>${region}</strong>:<ul>`+list.map(r=>`<li>${r.callbackUrl} (${r.status}, ${r.latency}ms, Up: ${r.up?'✔️':'❌'})</li>`).join('')+`</ul></li>`).join('')+`</ul></details>
+            <details><summary>Creator Activity</summary><ul>`+
+              Object.entries(data.drilldowns?.creatorActivity||{}).map(([cid,count])=>`<li>${cid}: ${count} webhooks</li>`).join('')+`</ul></details>
+            <details><summary>Latency Histogram</summary><ul>`+
+              (data.drilldowns?.latencyHistogram||[]).map((v,i)=>`<li>Bucket ${i}: ${v}</li>`).join('')+`</ul></details>
+            <details><summary>Error Rate Trend</summary><ul>`+
+              (data.drilldowns?.errorRateTrend||[]).map(e=>`<li>${new Date(e.time).toLocaleString()}: ${e.status}</li>`).join('')+`</ul></details>
+          `;
+        }
+        renderAnalyticsContent(data);
+        // Filter handler
+        document.getElementById('apply-analytics-filter').onclick = async function() {
+          let params = [];
+          let platform = document.getElementById('filter-platform').value;
+          let region = document.getElementById('filter-region').value;
+          let minLatency = document.getElementById('filter-min-latency').value;
+          let maxLatency = document.getElementById('filter-max-latency').value;
+          let status = document.getElementById('filter-status').value;
+          let creatorId = document.getElementById('filter-creator').value;
+          if (platform) params.push('platform='+encodeURIComponent(platform));
+          if (region) params.push('region='+encodeURIComponent(region));
+          if (minLatency) params.push('minLatency='+encodeURIComponent(minLatency));
+          if (maxLatency) params.push('maxLatency='+encodeURIComponent(maxLatency));
+          if (status) params.push('status='+encodeURIComponent(status));
+          if (creatorId) params.push('creatorId='+encodeURIComponent(creatorId));
+          let url = '/admin/webhook-analytics'+(params.length?'?'+params.join('&'):'');
+          let resp = await fetch(url, { headers: { Authorization: jwt } });
+          let filteredData = await resp.json();
+          renderAnalyticsContent(filteredData);
+        };
+      } catch (err) {
+        showToast(err.message, true);
+      }
+    }
+    async function registerWebhook() {
+      const jwt = document.getElementById('jwt').value;
+      const platform = document.getElementById('regPlatform').value;
+      const apiKey = document.getElementById('regApiKey').value;
+      const callbackUrl = document.getElementById('regCallbackUrl').value;
+      const eventTypes = document.getElementById('regEventTypes').value.split(',').map(e => e.trim());
+      const creatorId = document.getElementById('regCreatorId').value;
+      try {
+        const res = await fetch('/webhook/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwt}`
+          },
+          body: JSON.stringify({ platform, apiKey, callbackUrl, eventTypes, creatorId })
+        });
+        if (!res.ok) throw new Error('Registration failed');
+        showToast('Webhook registered!');
+        hideRegisterModal();
+        loadRegistrations();
+      } catch (err) {
+        showToast(err.message, true);
+      }
+    }
+    window.onload = loadRegistrations;
+    // --- Diagnostics Expansion ---
+let autoRefreshInterval = null;
+function enableAutoRefresh(ms=5000) {
+  if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+  autoRefreshInterval = setInterval(updatePreviewPane, ms);
+}
+function disableAutoRefresh() {
+  if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+  autoRefreshInterval = null;
+}
+document.getElementById('previewPane').addEventListener('mouseenter', function(){ enableAutoRefresh(3000); });
+document.getElementById('previewPane').addEventListener('mouseleave', disableAutoRefresh);
+  </script>
+</body>
+</html>

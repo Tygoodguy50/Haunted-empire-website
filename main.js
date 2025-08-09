@@ -22,9 +22,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Backend integration
-// Load API base URL from config.js
+// Always use backend public API domain for API calls
 // eslint-disable-next-line no-undef
-const API_BASE_URL = window.API_BASE_URL || (typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://localhost:3002');
+let API_BASE_URL = 'https://haunted-empire-backend-1.onrender.com';
 
 // Stripe payment trigger
 async function triggerStripePayment() {

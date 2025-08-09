@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horror Writing Courses - Haunted Empire</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .courses-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .course-hero {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 3px solid #8B0000;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .course-card {
+            background: #1a1a1a;
+            border: 2px solid #8B0000;
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(139, 0, 0, 0.4);
+            border-color: #DC143C;
+        }
+        
+        .course-level {
+            background: #8B0000;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+        
+        .course-title {
+            color: #8B0000;
+            font-size: 1.8em;
+            margin: 20px 0 15px 0;
+            font-weight: bold;
+        }
+        
+        .course-description {
+            color: #ccc;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+        
+        .course-stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            color: #FF6B6B;
+            font-weight: bold;
+        }
+        
+        .course-modules {
+            background: rgba(139, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .module-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .module-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(139, 0, 0, 0.3);
+            color: #ccc;
+        }
+        
+        .module-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .course-price {
+            font-size: 2.5em;
+            color: #FF6B6B;
+            font-weight: bold;
+            text-align: center;
+            margin: 25px 0;
+        }
+        
+        .enroll-button {
+            background: linear-gradient(45deg, #8B0000, #DC143C);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            width: fit-content;
+        }
+        
+        .enroll-button:hover {
+            background: linear-gradient(45deg, #DC143C, #FF6B6B);
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(139, 0, 0, 0.5);
+        }
+        
+        .testimonial-section {
+            background: rgba(139, 0, 0, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .testimonial {
+            background: #1a1a1a;
+            border: 1px solid #8B0000;
+            border-radius: 10px;
+            padding: 20px;
+            color: #ccc;
+            font-style: italic;
+        }
+        
+        .testimonial-author {
+            color: #FF6B6B;
+            font-weight: bold;
+            margin-top: 15px;
+            font-style: normal;
+        }
+        
+        .guarantee-section {
+            background: linear-gradient(45deg, #8B0000, #DC143C);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .features-highlight {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(139, 0, 0, 0.1);
+            border-radius: 10px;
+            border: 1px solid #8B0000;
+        }
+        
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <h1>🏚️ Haunted Empire</h1>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="courses.html" class="active">Courses</a></li>
+                    <li><a href="subscribe.html">Subscribe</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="courses-container">
+        <div class="course-hero">
+            <h1>🎓 Master the Art of Horror Writing</h1>
+            <p>Transform from beginner to published author with our proven course system</p>
+            <div class="features-highlight">
+                <div class="feature-item">
+                    <div class="feature-icon">📚</div>
+                    <h3>Expert Instruction</h3>
+                    <p>Learn from published horror authors</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Practical Exercises</h3>
+                    <p>Hands-on writing assignments</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">👥</div>
+                    <h3>Community Support</h3>
+                    <p>Connect with fellow writers</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🏆</div>
+                    <h3>Proven Results</h3>
+                    <p>500+ students published</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="course-grid">
+            <!-- Horror Writing Masterclass -->
+            <div class="course-card">
+                <div class="course-level">Comprehensive</div>
+                <h2 class="course-title">🎃 Horror Writing Masterclass</h2>
+                <div class="course-stats">
+                    <span>📹 12 Hours Video</span>
+                    <span>📋 50+ Exercises</span>
+                    <span>⭐ 4.9/5 Rating</span>
+                </div>
+                <div class="course-description">
+                    Master every aspect of horror writing from atmosphere building to character psychology. This comprehensive course covers everything you need to write compelling, terrifying stories that keep readers awake at night.
+                </div>
+                <div class="course-modules">
+                    <h4>Course Modules:</h4>
+                    <ul class="module-list">
+                        <li>🌫️ Building Atmospheric Tension</li>
+                        <li>👻 Character Psychology in Horror</li>
+                        <li>📖 Plot Structure & Pacing</li>
+                        <li>💬 Dialogue That Terrifies</li>
+                        <li>🎭 Point of View & Voice</li>
+                        <li>🔧 Editing & Revision Techniques</li>
+                        <li>📚 Publishing Your Horror Novel</li>
+                        <li>💰 Monetizing Your Writing</li>
+                    </ul>
+                </div>
+                <div class="course-price">$89</div>
+                <a href="#" class="enroll-button" onclick="enrollInCourse('masterclass')">Enroll Now</a>
+            </div>
+
+            <!-- From Draft to Published -->
+            <div class="course-card">
+                <div class="course-level">Advanced</div>
+                <h2 class="course-title">🏆 From Draft to Published</h2>
+                <div class="course-stats">
+                    <span>📞 4 Coaching Calls</span>
+                    <span>📧 Query Templates</span>
+                    <span>💯 Money-Back Guarantee</span>
+                </div>
+                <div class="course-description">
+                    Get your horror novel published with our proven system. This course comes with a money-back guarantee - if you don't get published within 12 months, we refund your money.
+                </div>
+                <div class="course-modules">
+                    <h4>What's Included:</h4>
+                    <ul class="module-list">
+                        <li>📝 Query Letter Mastery</li>
+                        <li>📇 Agent Contact Database</li>
+                        <li>📖 Submission Strategy</li>
+                        <li>📱 Self-Publishing Alternative</li>
+                        <li>📈 Book Marketing Fundamentals</li>
+                        <li>🤝 1-on-1 Coaching Sessions</li>
+                        <li>📊 Analytics & Tracking</li>
+                    </ul>
+                </div>
+                <div class="course-price">$197</div>
+                <a href="#" class="enroll-button" onclick="enrollInCourse('publishing')">Get Published Now</a>
+            </div>
+
+            <!-- Horror That Sells -->
+            <div class="course-card">
+                <div class="course-level">Business</div>
+                <h2 class="course-title">💰 Horror That Sells</h2>
+                <div class="course-stats">
+                    <span>💵 Income Focus</span>
+                    <span>📊 Market Analysis</span>
+                    <span>🔥 Hot Niches</span>
+                </div>
+                <div class="course-description">
+                    Learn to write horror stories that not only terrify but also sell. Discover the most profitable horror niches, understand reader psychology, and build a sustainable writing income.
+                </div>
+                <div class="course-modules">
+                    <h4>Course Content:</h4>
+                    <ul class="module-list">
+                        <li>📈 Market Research for Horror</li>
+                        <li>🎯 Finding Profitable Niches</li>
+                        <li>💡 Reader Psychology & Trends</li>
+                        <li>📚 Series vs Standalone Strategy</li>
+                        <li>💰 Pricing & Revenue Optimization</li>
+                        <li>📱 Building Author Platform</li>
+                        <li>🔄 Creating Recurring Income</li>
+                    </ul>
+                </div>
+                <div class="course-price">$147</div>
+                <a href="#" class="enroll-button" onclick="enrollInCourse('business')">Start Earning</a>
+            </div>
+
+            <!-- Beginner's Horror Writing -->
+            <div class="course-card">
+                <div class="course-level">Beginner</div>
+                <h2 class="course-title">🌱 Beginner's Horror Writing</h2>
+                <div class="course-stats">
+                    <span>⏱️ 4 Weeks</span>
+                    <span>📝 Daily Exercises</span>
+                    <span>👥 Group Support</span>
+                </div>
+                <div class="course-description">
+                    Perfect for absolute beginners. Learn the fundamentals of horror writing through guided exercises, daily writing prompts, and supportive community feedback.
+                </div>
+                <div class="course-modules">
+                    <h4>Week by Week:</h4>
+                    <ul class="module-list">
+                        <li>📖 Week 1: Horror Basics & Elements</li>
+                        <li>👻 Week 2: Creating Fear & Tension</li>
+                        <li>📝 Week 3: Your First Horror Story</li>
+                        <li>🎯 Week 4: Editing & Next Steps</li>
+                        <li>💬 Daily Writing Prompts</li>
+                        <li>📋 Feedback & Critique</li>
+                    </ul>
+                </div>
+                <div class="course-price">$67</div>
+                <a href="#" class="enroll-button" onclick="enrollInCourse('beginner')">Start Writing</a>
+            </div>
+        </div>
+
+        <div class="testimonial-section">
+            <h2>What Our Students Say</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial">
+                    "I went from never writing horror to getting published in 6 months. The Masterclass changed everything!"
+                    <div class="testimonial-author">- Sarah Mitchell, Author</div>
+                </div>
+                <div class="testimonial">
+                    "Made $5,000 last month from horror short stories using techniques from 'Horror That Sells'."
+                    <div class="testimonial-author">- John Davies, Writer</div>
+                </div>
+                <div class="testimonial">
+                    "The publishing course got me an agent in 3 months. Worth every penny!"
+                    <div class="testimonial-author">- Maria Rodriguez, Novelist</div>
+                </div>
+                <div class="testimonial">
+                    "As a beginner, the foundational course gave me confidence to write my first horror story."
+                    <div class="testimonial-author">- Alex Thompson, New Writer</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="guarantee-section">
+            <h2>🛡️ 30-Day Money-Back Guarantee</h2>
+            <p>Try any course risk-free. If you're not completely satisfied within 30 days, get a full refund - no questions asked.</p>
+            <p><strong>Plus:</strong> Lifetime access to all course materials and updates!</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Haunted Empire. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function enrollInCourse(course) {
+            alert(`Enrolling in ${course} course...`);
+            // Redirect to payment processor
+            window.location.href = `https://buy.stripe.com/haunted-empire-course-${course}`;
+        }
+
+        // Track referrals from promotional posts
+        if (document.referrer.includes('bsky.app') || document.referrer.includes('bluesky')) {
+            console.log('Course visitor from Bluesky promotional post!');
+            // Track conversion
+        }
+    </script>
+</body>
+</html>
