@@ -944,7 +944,7 @@
             },
             'masterclass': {
                 name: 'Horror Writing Masterclass',
-                price: 297,
+                price: 89,
                 originalPrice: 997,
                 category: 'courses',
                 rating: 4.9,
@@ -1183,7 +1183,7 @@
         
         const productInfo = {
             'beginners': { name: 'Beginners Horror Writing', price: 59 },
-            'masterclass': { name: 'Horror Writing Masterclass', price: 297 },
+            'masterclass': { name: 'Horror Writing Masterclass', price: 89 },
             'templates': { name: 'Horror Templates Bundle', price: 97 },
             'editing': { name: 'Professional Editing Service', price: 500 },
             'generator': { name: 'Horror Plot Generator', price: 47 },
@@ -1352,19 +1352,19 @@
             const bundles = {
                 // Writer's Complete Package
                 'generator,masterclass,templates': {
-                    price: 297, // Normally $441
+                    price: 199, // Normally $233 (47+89+97)
                     link: 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC', // Masterclass link as primary
                     description: "📚 Writer's Complete Package:\n• Horror Writing Masterclass\n• Horror Templates Bundle\n• Plot Generator"
                 },
                 // Professional Package
                 'editing,masterclass,publishing': {
-                    price: 497, // Normally $994
+                    price: 597, // Normally $786 (500+89+197)
                     link: 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01', // Complete toolkit
                     description: "💼 Professional Package:\n• Horror Writing Masterclass\n• Professional Editing\n• Publishing Course"
                 },
                 // Everything Bundle
                 'editing,generator,masterclass,publishing,templates,toolkit': {
-                    price: 697, // Normally $1535
+                    price: 797, // Normally $1427 (500+47+89+197+97+497)
                     link: 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01', // Complete toolkit
                     description: "🎯 EVERYTHING BUNDLE:\n• Complete Horror Toolkit\n• All courses and templates\n• Professional services"
                 }
