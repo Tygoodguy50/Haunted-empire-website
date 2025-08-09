@@ -503,6 +503,9 @@ function createSocialMediaWidget() {
                     <button onclick="conjureQuantumMoney()" class="monetization-btn money">
                         💰 Conjure Quantum Money
                     </button>
+                    <button onclick="runDailyWealthCycle()" class="monetization-btn ai">
+                        🤖 Run AI Wealth Cycle
+                    </button>
                 </div>
             </div>
         </div>
@@ -660,6 +663,13 @@ function createSocialMediaWidget() {
             animation: moneyGlow 3s ease-in-out infinite alternate;
         }
         
+        .monetization-btn.ai {
+            background: linear-gradient(135deg, #ff00ff, #8000ff);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+            animation: aiGlow 2.5s ease-in-out infinite alternate;
+        }
+        
         @keyframes quantumGlow {
             from { box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); }
             to { box-shadow: 0 0 20px rgba(0, 255, 255, 0.6); }
@@ -668,6 +678,11 @@ function createSocialMediaWidget() {
         @keyframes moneyGlow {
             from { box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
             to { box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); }
+        }
+        
+        @keyframes aiGlow {
+            from { box-shadow: 0 0 15px rgba(255, 0, 255, 0.5); }
+            to { box-shadow: 0 0 30px rgba(255, 0, 255, 0.9); }
         }
         
         .monetization-btn:hover {
@@ -851,6 +866,55 @@ function conjureQuantumMoney() {
         showNotification('❌ Quantum money conjuring failed', 'error');
         console.error('💰 Quantum Money Error:', error);
         updateSocialFeed('💰', 'Quantum money conjuring error - check console', 'just now');
+    });
+}
+
+function runDailyWealthCycle() {
+    // Check admin authentication
+    if (!window.adminSession || !window.adminSession.isLoggedIn) {
+        showNotification('🚫 Admin access required for AI wealth cycle', 'error');
+        return;
+    }
+    
+    if (!window.syntheticIntent) {
+        showNotification('❌ Synthetic Intent AI not loaded', 'error');
+        return;
+    }
+    
+    showNotification('🤖 Initializing AI Daily Wealth Cycle...', 'info');
+    
+    // Start the AI wealth cycle (reduced iterations for demo)
+    window.syntheticIntent.dailyWealthCycle(100, 12).then(results => {
+        const totalWealth = results.totalWealth;
+        const successRate = results.successRate.toFixed(1);
+        const avgPayout = results.averagePayout.toFixed(2);
+        const intelligence = (results.aiStats.intelligence * 100).toFixed(1);
+        
+        if (totalWealth > 0) {
+            showNotification(`🤖 AI Generated $${totalWealth.toFixed(2)} wealth potential (${successRate}% success rate)`, 'success');
+            updateSocialFeed('🤖', `AI simulated ${results.successfulScenarios} profitable scenarios from ${results.totalSimulations} futures`, 'just now');
+            updateSocialFeed('🧠', `AI Intelligence: ${intelligence}% | Avg Payout: $${avgPayout}`, '1m ago');
+            
+            // Show top scenarios
+            if (results.topScenarios.length > 0) {
+                results.topScenarios.slice(0, 3).forEach((scenario, index) => {
+                    const scenarioType = scenario.scenario.type.replace(/_/g, ' ');
+                    const expectedROI = scenario.expectedROI.toFixed(2);
+                    updateSocialFeed('🌟', `Top Scenario ${index + 1}: ${scenarioType} ($${expectedROI} ROI)`, `${index + 2}m ago`);
+                });
+            }
+            
+            // Log detailed results
+            console.log('🤖 AI Wealth Cycle Results:', results);
+            
+        } else {
+            showNotification('🤖 AI found no profitable scenarios in current market conditions', 'error');
+            updateSocialFeed('🤖', 'AI wealth cycle completed - no profitable scenarios detected', 'just now');
+        }
+    }).catch(error => {
+        showNotification('❌ AI wealth cycle failed', 'error');
+        console.error('🤖 AI Wealth Cycle Error:', error);
+        updateSocialFeed('🤖', 'AI wealth cycle error - check console', 'just now');
     });
 }
 
