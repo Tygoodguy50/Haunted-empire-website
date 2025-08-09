@@ -283,11 +283,13 @@ function createAdminLoginInterface() {
 
 function addAdminAccessButton() {
     // Add admin access button to social widget or create separate admin widget
+    console.log('🔐 Creating admin access button...');
+    
     const adminButton = document.createElement('div');
     adminButton.id = 'admin-access-widget';
     adminButton.innerHTML = `
         <button onclick="showAdminLogin()" class="admin-access-btn" title="Admin Access">
-            🔐
+            🔐 ADMIN
         </button>
     `;
     
@@ -296,27 +298,29 @@ function addAdminAccessButton() {
         #admin-access-widget {
             position: fixed;
             top: 20px;
-            right: 140px;
-            z-index: 9999;
+            right: 20px;
+            z-index: 99999;
         }
         
         .admin-access-btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #666;
-            color: #888;
-            font-size: 1.2rem;
+            padding: 12px 20px;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #ff4444, #cc0000);
+            border: 2px solid #fff;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
         }
         
         .admin-access-btn:hover {
-            border-color: var(--horror-red);
-            color: var(--horror-red);
-            transform: scale(1.1);
+            background: linear-gradient(135deg, #ff6666, #ff0000);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 68, 68, 0.6);
         }
         
         .admin-access-btn.logged-in {
@@ -345,6 +349,9 @@ function addAdminAccessButton() {
     `;
     document.head.appendChild(adminButtonStyles);
     document.body.appendChild(adminButton);
+    
+    console.log('✅ Admin button created and added to page');
+    console.log('Button element:', adminButton);
 }
 
 // ===== AUTHENTICATION FUNCTIONS =====
