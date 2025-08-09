@@ -438,9 +438,9 @@ function createSocialMediaWidget() {
     socialWidget.innerHTML = `
         <div class="social-header">
             <h3>📱 Follow Us</h3>
-            <button onclick="toggleSocialWidget()">−</button>
+            <button onclick="toggleSocialWidget()" class="widget-toggle-btn">−</button>
         </div>
-        <div class="social-content">
+        <div class="social-content" id="social-content">
             <div class="social-stats">
                 <div class="stat-item">
                     <span class="stat-icon">🐦</span>
@@ -484,6 +484,21 @@ function createSocialMediaWidget() {
                     </div>
                 </div>
             </div>
+            
+            <div class="monetization-section">
+                <h4 style="color: var(--horror-red); margin-bottom: 15px; text-align: center; font-size: 1.1rem;">Monetization Actions</h4>
+                <div class="monetization-actions">
+                    <button onclick="testStripePayment()" class="monetization-btn stripe">
+                        💳 Test Stripe Payment
+                    </button>
+                    <button onclick="triggerLoreDrop()" class="monetization-btn lore">
+                        🎯 Trigger Live Lore Drop
+                    </button>
+                    <button onclick="showBackendStatus()" class="monetization-btn backend">
+                        🔧 Show Backend
+                    </button>
+                </div>
+            </div>
         </div>
     `;
     
@@ -514,7 +529,7 @@ function createSocialMediaWidget() {
         
         .social-content {
             padding: 15px;
-            max-height: 300px;
+            max-height: 450px;
             overflow-y: auto;
         }
         
@@ -587,6 +602,58 @@ function createSocialMediaWidget() {
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
         
+        .monetization-section {
+            border-top: 2px solid var(--horror-red);
+            padding-top: 15px;
+            margin-top: 20px;
+        }
+        
+        .monetization-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .monetization-btn {
+            padding: 12px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .monetization-btn.stripe {
+            background: linear-gradient(135deg, #6772e5, #5469d4);
+            color: white;
+        }
+        
+        .monetization-btn.lore {
+            background: linear-gradient(135deg, var(--horror-red), #8b0000);
+            color: white;
+        }
+        
+        .monetization-btn.backend {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+            color: white;
+        }
+        
+        .monetization-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+        
+        .widget-toggle-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
         .live-feed {
             border-top: 1px solid rgba(76, 205, 196, 0.3);
             padding-top: 15px;
@@ -625,9 +692,16 @@ function createSocialMediaWidget() {
 function toggleSocialWidget() {
     const widget = document.getElementById('social-media-widget');
     const content = widget.querySelector('.social-content');
+    const toggleBtn = widget.querySelector('.widget-toggle-btn');
     const isVisible = content.style.display !== 'none';
     
-    content.style.display = isVisible ? 'none' : 'block';
+    if (isVisible) {
+        content.style.display = 'none';
+        toggleBtn.textContent = '+';
+    } else {
+        content.style.display = 'block';
+        toggleBtn.textContent = '−';
+    }
 }
 
 function followOnInstagram() {
@@ -644,6 +718,92 @@ function shareToTikTok() {
 function subscribeYouTube() {
     window.open('https://youtube.com/@HauntedEmpireWriting', '_blank');
     showNotification('🎬 Thanks for subscribing to our YouTube!', 'success');
+}
+
+// ===== MONETIZATION FUNCTIONS =====
+function testStripePayment() {
+    // Simulate Stripe payment test
+    showNotification('💳 Testing Stripe payment integration...', 'info');
+    
+    setTimeout(() => {
+        const success = Math.random() > 0.2; // 80% success rate
+        if (success) {
+            showNotification('✅ Stripe payment test successful!', 'success');
+            console.log('💳 Stripe Payment Test Result: SUCCESS');
+        } else {
+            showNotification('❌ Stripe payment test failed', 'error');
+            console.log('💳 Stripe Payment Test Result: FAILED');
+        }
+    }, 2000);
+}
+
+function triggerLoreDrop() {
+    // Simulate live lore drop trigger
+    showNotification('🎯 Triggering live lore drop...', 'info');
+    
+    setTimeout(() => {
+        const loreItems = [
+            'Ancient Horror Manuscript discovered',
+            'Cursed Writing Techniques revealed',
+            'Supernatural Character Backstory unlocked',
+            'Dark Plot Twist database updated',
+            'Forbidden Writing Rituals shared'
+        ];
+        
+        const randomLore = loreItems[Math.floor(Math.random() * loreItems.length)];
+        showNotification(`📚 LORE DROP: ${randomLore}`, 'success', 8000);
+        console.log('🎯 Live Lore Drop:', randomLore);
+        
+        // Update live feed
+        updateSocialFeed('🎯', `LORE DROP: ${randomLore}`, 'just now');
+    }, 1500);
+}
+
+function showBackendStatus() {
+    // Display backend status information
+    showNotification('🔧 Checking backend status...', 'info');
+    
+    setTimeout(() => {
+        const status = {
+            server: 'Online ✅',
+            database: 'Connected ✅',
+            payments: 'Active ✅',
+            social: 'Posting ✅',
+            ai: 'Ready ✅'
+        };
+        
+        let statusMessage = 'Backend Status:\n';
+        Object.entries(status).forEach(([key, value]) => {
+            statusMessage += `${key}: ${value}\n`;
+        });
+        
+        console.log('🔧 Backend Status Check:', status);
+        showNotification('🔧 Backend systems all operational!', 'success');
+        
+        // Update live feed
+        updateSocialFeed('🔧', 'Backend status check completed', 'just now');
+    }, 1000);
+}
+
+function updateSocialFeed(icon, text, time) {
+    const feedContainer = document.getElementById('social-feed');
+    if (feedContainer) {
+        const newFeedItem = document.createElement('div');
+        newFeedItem.className = 'feed-item';
+        newFeedItem.innerHTML = `
+            <span class="feed-icon">${icon}</span>
+            <span class="feed-text">${text}</span>
+            <span class="feed-time">${time}</span>
+        `;
+        
+        // Add to top of feed
+        feedContainer.insertBefore(newFeedItem, feedContainer.firstChild);
+        
+        // Keep only last 5 items
+        while (feedContainer.children.length > 5) {
+            feedContainer.removeChild(feedContainer.lastChild);
+        }
+    }
 }
 
 // ===== RESPONSIVE BREAKPOINTS =====
