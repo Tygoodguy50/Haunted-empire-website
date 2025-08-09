@@ -31,6 +31,8 @@ function updatePaymentLinks() {
             'beginners': 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC',
             'advanced': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01', 
             'masterclass': 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC',
+            'publishing': 'https://buy.stripe.com/28E28t3sT8mCfab1Au',
+            'business': 'https://buy.stripe.com/00w7sN2oP6eu8LNa708EM0f',
             'mentorship': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04'
         };
         

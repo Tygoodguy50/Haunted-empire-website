@@ -550,6 +550,7 @@
                 'editing': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04', // Professional Editing
                 'generator': 'https://buy.stripe.com/dRm6oJ6F5gT8aTVeng8EM03', // Horror Plot Generator
                 'publishing': 'https://buy.stripe.com/28E28t3sT8mCfab1Au', // From Draft to Published Course
+                'business': 'https://buy.stripe.com/00w7sN2oP6eu8LNa708EM0f', // Horror That Sells
                 'toolkit': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01' // Complete Horror Toolkit
             };
             
@@ -848,6 +849,18 @@
                 badge: 'COMPLETE',
                 testimonial: 'Published my first book using these exact strategies!' // - Emma S.'
             },
+            'business': {
+                name: 'Horror That Sells',
+                price: 147,
+                originalPrice: 297,
+                category: 'courses',
+                rating: 4.8,
+                reviews: 92,
+                features: ['Market Research', 'Profitable Niches', 'Reader Psychology', 'Revenue Optimization'],
+                description: 'Learn to write horror stories that not only terrify but also sell consistently.',
+                badge: 'INCOME FOCUSED',
+                testimonial: 'Made $5,000 last month using these strategies!' // - Jennifer R.'
+            },
             'toolkit': {
                 name: 'Complete Horror Toolkit',
                 price: 497,
@@ -916,7 +929,7 @@
                     case 'featured':
                     default: {
                         // Custom featured order (you can modify this)
-                        const featuredOrder = ['toolkit', 'masterclass', 'templates', 'publishing', 'generator', 'editing'];
+                        const featuredOrder = ['toolkit', 'masterclass', 'business', 'templates', 'publishing', 'generator', 'editing'];
                         return featuredOrder.indexOf(a) - featuredOrder.indexOf(b);
                     }
                 }
@@ -1021,6 +1034,7 @@
             'editing': { name: 'Professional Editing Service', price: 500 },
             'generator': { name: 'Horror Plot Generator', price: 47 },
             'publishing': { name: 'From Draft to Published Course', price: 197 },
+            'business': { name: 'Horror That Sells', price: 147 },
             'toolkit': { name: 'Complete Horror Toolkit', price: 497 }
         };
 
