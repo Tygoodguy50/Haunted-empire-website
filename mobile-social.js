@@ -720,8 +720,14 @@ function subscribeYouTube() {
     showNotification('🎬 Thanks for subscribing to our YouTube!', 'success');
 }
 
-// ===== MONETIZATION FUNCTIONS =====
+// ===== MONETIZATION FUNCTIONS (ADMIN ONLY) =====
 function testStripePayment() {
+    // Check admin authentication
+    if (!window.adminSession || !window.adminSession.isLoggedIn) {
+        showNotification('🚫 Admin access required for payment testing', 'error');
+        return;
+    }
+    
     // Simulate Stripe payment test
     showNotification('💳 Testing Stripe payment integration...', 'info');
     
@@ -730,14 +736,22 @@ function testStripePayment() {
         if (success) {
             showNotification('✅ Stripe payment test successful!', 'success');
             console.log('💳 Stripe Payment Test Result: SUCCESS');
+            updateSocialFeed('💳', 'Payment test completed successfully', 'just now');
         } else {
             showNotification('❌ Stripe payment test failed', 'error');
             console.log('💳 Stripe Payment Test Result: FAILED');
+            updateSocialFeed('💳', 'Payment test failed - check logs', 'just now');
         }
     }, 2000);
 }
 
 function triggerLoreDrop() {
+    // Check admin authentication
+    if (!window.adminSession || !window.adminSession.isLoggedIn) {
+        showNotification('🚫 Admin access required for lore drops', 'error');
+        return;
+    }
+    
     // Simulate live lore drop trigger
     showNotification('🎯 Triggering live lore drop...', 'info');
     
@@ -760,6 +774,12 @@ function triggerLoreDrop() {
 }
 
 function showBackendStatus() {
+    // Check admin authentication
+    if (!window.adminSession || !window.adminSession.isLoggedIn) {
+        showNotification('🚫 Admin access required for backend status', 'error');
+        return;
+    }
+    
     // Display backend status information
     showNotification('🔧 Checking backend status...', 'info');
     
@@ -769,7 +789,8 @@ function showBackendStatus() {
             database: 'Connected ✅',
             payments: 'Active ✅',
             social: 'Posting ✅',
-            ai: 'Ready ✅'
+            ai: 'Ready ✅',
+            admin: 'Authenticated ✅'
         };
         
         let statusMessage = 'Backend Status:\n';
