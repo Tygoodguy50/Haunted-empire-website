@@ -66,7 +66,7 @@ function updatePaymentLinks() {
             'shadows-between-ebook': 'https://buy.stripe.com/7sYdRb9Rh8mC0fhcf88EM05', // Templates bundle
             'haunted-origins-ebook': 'https://buy.stripe.com/dRm6oJ6F5gT8aTVeng8EM03', // Plot generator
             'midnight-whispers-ebook': 'https://buy.stripe.com/3cIdRbbZp5aqe674MG8EM06', // Masterclass
-            'candle-curse-ebook': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04', // Editing
+            'candle-curse-ebook': 'https://buy.stripe.com/7sY4gBaVl7iybXZ0wq8EM09', // The Candle Maker's Curse ebook
             'watches-within-ebook': 'https://buy.stripe.com/4gMfZjd3tgT89PRfrk8EM08', // What Watches From Within ebook
             'writers-handbook-ebook': 'https://buy.stripe.com/6oUaEZ1kL5aq0fh6UO8EM07' // Horror Writer's Handbook ebook
         };
