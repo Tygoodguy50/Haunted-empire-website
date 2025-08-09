@@ -68,7 +68,7 @@ function updatePaymentLinks() {
             'facebook': 'https://facebook.com/hauntedempire',
             'twitter': 'https://twitter.com/hauntedempire',
             'instagram': 'https://instagram.com/hauntedempire',
-            'linkedin': 'https://linkedin.com/company/haunted-empire',
+            'linkedin': 'https://linkedin.com/company/phantomdp',
             'youtube': 'https://www.youtube.com/@AreaGhost'
         };
         
