@@ -676,6 +676,15 @@
 
         // Purchase functions - Updated with real Stripe integration
         function purchaseProduct(product) {
+            console.log('PURCHASE PRODUCT called with:', product);
+            
+            // FORCE FIX for beginners course
+            if (product === 'beginners') {
+                console.log('FORCE REDIRECT: Beginners course detected, redirecting to Stripe');
+                window.location.href = 'https://buy.stripe.com/7sYcN78Nd8mCd233IC8EM0g';
+                return;
+            }
+            
             // Real Stripe Payment Links - replace these with your actual Stripe Payment Links
             const paymentLinks = {
                 'beginners': 'https://buy.stripe.com/7sYcN78Nd8mCd233IC8EM0g', // Beginners Horror Writing Course
@@ -1301,6 +1310,15 @@
             // Strategy 1: For single item, use direct payment link
             if (cart.length === 1) {
                 const item = cart[0];
+                console.log('CHECKOUT: Single item detected:', item);
+                
+                // FORCE BEGINNERS COURSE FIX
+                if (item.id === 'beginners') {
+                    console.log('FORCE REDIRECT: Beginners course to Stripe');
+                    window.location.href = 'https://buy.stripe.com/7sYcN78Nd8mCd233IC8EM0g';
+                    return;
+                }
+                
                 purchaseProduct(item.id);
                 return;
             }
