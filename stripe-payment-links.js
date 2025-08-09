@@ -8,7 +8,7 @@ const STRIPE_PAYMENT_LINKS = {
         'templates': 'https://buy.stripe.com/7sYdRb9Rh8mC0fhcf88EM05',   // Horror Templates Bundle - $47
         'editing': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04',     // Professional Editing - $150
         'generator': 'https://buy.stripe.com/dRm6oJ6F5gT8aTVeng8EM03',   // Horror Plot Generator - $29
-        'publishing': 'https://buy.stripe.com/aFadRb0gH32ifab2Ey8EM02',  // From Draft to Published - $197
+        'publishing': 'https://buy.stripe.com/28E28t3sT8mCfab1Au',  // From Draft to Published - $197
         'toolkit': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01'      // Complete Horror Toolkit - $297
     },
     

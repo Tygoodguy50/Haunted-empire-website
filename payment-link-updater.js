@@ -12,7 +12,7 @@ function updatePaymentLinks() {
             'templates': 'https://buy.stripe.com/7sYdRb9Rh8mC0fhcf88EM05',
             'editing': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04',
             'generator': 'https://buy.stripe.com/dRm6oJ6F5gT8aTVeng8EM03',
-            'publishing': 'https://buy.stripe.com/aFadRb0gH32ifab2Ey8EM02',
+            'publishing': 'https://buy.stripe.com/28E28t3sT8mCfab1Au',
             'toolkit': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01'
         };
         
@@ -87,7 +87,7 @@ function updatePaymentLinks() {
         const links = {
             'editing': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04', // Professional editing
             'ghostwriting': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01', // Toolkit for ghostwriting
-            'publishing': 'https://buy.stripe.com/aFadRb0gH32ifab2Ey8EM02', // Publishing course
+            'publishing': 'https://buy.stripe.com/28E28t3sT8mCfab1Au', // Publishing course
             'mentorship': 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC', // Masterclass
             'vip': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01', // Complete toolkit
             'emergency': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04' // Emergency editing
