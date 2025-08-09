@@ -1,0 +1,63 @@
+STRIPE PAYMENT LINKS SETUP GUIDE
+=================================
+
+PRODUCT CATALOG TO CREATE IN STRIPE:
+
+SHOP PRODUCTS:
+1. Horror Writing Masterclass - $89
+2. Horror Templates Bundle - $47
+3. Professional Editing - $150
+4. Horror Plot Generator - $29
+5. From Draft to Published Course - $197
+6. Complete Horror Toolkit - $297
+
+SUBSCRIPTION PLANS:
+1. Writer Plan - $9/month
+2. Author Plan - $29/month
+3. Elite Plan - $99/month
+
+BOOKS (Multiple Formats):
+1. Whispers from the Dark - Ebook ($9.99), Paperback ($14.99), Hardcover ($24.99)
+2. Midnight Terrors - Ebook ($9.99), Paperback ($14.99), Hardcover ($24.99)
+3. The Phantom's Embrace - Ebook ($9.99), Paperback ($14.99), Hardcover ($24.99)
+4. Complete Book Bundle - $49.99
+
+PREMIUM SERVICES:
+1. Professional Editing - $500
+2. Ghostwriting Service - $2000
+3. Publishing Package - $1500
+4. 1-on-1 Mentorship - $300/hour
+5. VIP Author Program - $5000
+
+SETUP STEPS:
+1. Go to https://dashboard.stripe.com
+2. Switch to LIVE MODE (important!)
+3. Go to Products -> Payment Links
+4. Create each product above with the exact pricing
+5. Copy each Payment Link URL
+6. Edit stripe-payment-links.js and replace the placeholder URLs
+7. Run deploy-netlify.ps1 to update your live website
+
+CURRENT STATUS:
+✅ Real Bluesky posting active (every 7 minutes)
+✅ Website live at https://charming-llama-c1e5db.netlify.app
+✅ Payment buttons ready for Stripe links
+⏳ Waiting for your Stripe Payment Links
+
+AUTOMATION SUMMARY:
+- Your promotional system is posting horror writing tips every 7 minutes
+- 35% of posts include direct payment promotions
+- Website gets traffic from social media posts
+- Payment buttons are ready to convert traffic to revenue
+- Just need real Stripe Payment Links to complete the system!
+
+FILES CREATED FOR YOU:
+- stripe-payment-links.js (update this with your Stripe URLs)
+- payment-link-updater.js (automatically updates all payment buttons)
+- This guide (stripe-setup-instructions.txt)
+
+NEXT STEPS:
+1. Create Stripe Payment Links using the product list above
+2. Update stripe-payment-links.js with your real URLs
+3. Deploy to your live website
+4. Start earning revenue from your automated traffic!
