@@ -6,6 +6,7 @@
     <title>Haunted Empire - Creator Monetization Platform</title>
     <script src="config.js"></script>
     <script src="main.js"></script>
+    <script src="payment-link-updater.js"></script>
     <!-- Analytics: Google Analytics or Plausible (privacy-friendly) -->
     <script defer data-domain="haunted-empire.com" src="https://plausible.io/js/plausible.js"></script>
     <script>
@@ -248,6 +249,142 @@
             box-shadow: 
                 0 0 20px rgba(255, 107, 107, 0.3),
                 inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Patreon Social Integration */
+        .patreon-section {
+            background: linear-gradient(135deg, #f96854, #ff6b6b);
+            border: 3px solid #f96854;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .patreon-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #f96854, #ff6b6b, #f96854);
+            border-radius: 15px;
+            z-index: -1;
+            animation: patreonGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes patreonGlow {
+            0% { opacity: 0.7; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.02); }
+        }
+        
+        .patreon-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: patreonFloat 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes patreonFloat {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(-10px) scale(1.05); }
+        }
+        
+        .patreon-btn {
+            background: #f96854;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            box-shadow: 0 5px 15px rgba(249, 104, 84, 0.4);
+        }
+        
+        .patreon-btn:hover {
+            background: #ff6b6b;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(249, 104, 84, 0.6);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .social-link {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+            padding: 12px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .social-link:hover {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .social-link.patreon {
+            background: #f96854;
+            color: white;
+        }
+        
+        .social-link.patreon:hover {
+            background: #ff6b6b;
+            transform: translateY(-2px) scale(1.05);
+        }
+        
+        .tier-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .tier-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid #f96854;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .tier-price {
+            font-size: 2rem;
+            color: #f96854;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .tier-benefits {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .tier-benefits li {
+            margin: 8px 0;
+            color: #ccc;
+        }
+        
+        .tier-benefits li::before {
+            content: '👻 ';
+            margin-right: 8px;
         }
     </style>
 </head>
@@ -533,6 +670,75 @@
                         <div class="horror-card-illustration">🔄💀</div>
                         <h3>🔄 Subscription Management</h3>
                         <p>Flexible subscription models for recurring content, automatic billing, and customer relationship management.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Patreon Social Integration Section -->
+        <section class="section">
+            <div class="container">
+                <div class="patreon-section">
+                    <div class="patreon-icon">🎃💀📚</div>
+                    <h2>Support Our Horror Writing Community</h2>
+                    <p>Join our Patreon to get exclusive horror writing content, early access to courses, and support the growth of our spooky community!</p>
+                    
+                    <div class="tier-preview">
+                        <div class="tier-card">
+                            <div class="tier-price">$5</div>
+                            <h4>👻 Ghostly Supporter</h4>
+                            <ul class="tier-benefits">
+                                <li>Early access to blog posts</li>
+                                <li>Exclusive writing prompts</li>
+                                <li>Community Discord access</li>
+                            </ul>
+                        </div>
+                        <div class="tier-card">
+                            <div class="tier-price">$15</div>
+                            <h4>🧛‍♂️ Vampire Patron</h4>
+                            <ul class="tier-benefits">
+                                <li>All previous tier benefits</li>
+                                <li>Monthly live Q&A sessions</li>
+                                <li>10% off all courses</li>
+                                <li>Exclusive writing worksheets</li>
+                            </ul>
+                        </div>
+                        <div class="tier-card">
+                            <div class="tier-price">$30</div>
+                            <h4>🏚️ Haunted Mansion VIP</h4>
+                            <ul class="tier-benefits">
+                                <li>All previous tier benefits</li>
+                                <li>1-on-1 monthly mentorship call</li>
+                                <li>25% off all courses</li>
+                                <li>Custom story feedback</li>
+                                <li>Beta access to new courses</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <a href="https://www.patreon.com/hauntedempire" class="patreon-btn" target="_blank">
+                        🎭 Support on Patreon
+                    </a>
+                    
+                    <div class="social-links">
+                        <a href="#" class="social-link patreon" onclick="openSocialLink('patreon'); return false;">
+                            🎭 Patreon
+                        </a>
+                        <a href="#" class="social-link" onclick="openSocialLink('facebook'); return false;">
+                            📘 Facebook
+                        </a>
+                        <a href="#" class="social-link" onclick="openSocialLink('twitter'); return false;">
+                            🐦 Twitter
+                        </a>
+                        <a href="#" class="social-link" onclick="openSocialLink('instagram'); return false;">
+                            📸 Instagram
+                        </a>
+                        <a href="#" class="social-link" onclick="openSocialLink('linkedin'); return false;">
+                            💼 LinkedIn
+                        </a>
+                        <a href="#" class="social-link" onclick="openSocialLink('youtube'); return false;">
+                            🎬 YouTube
+                        </a>
                     </div>
                 </div>
             </div>

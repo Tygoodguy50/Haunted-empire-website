@@ -54,6 +54,48 @@
             50% { transform: translate(15px, -15px) rotate(10deg); }
         }
         
+        /* Patreon Integration for Shop */
+        .patreon-shop-section {
+            background: linear-gradient(135deg, #f96854, #ff6b6b);
+            border: 3px solid #f96854;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin: 40px 0;
+            color: white;
+        }
+        
+        .patreon-shop-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: shopPatreonFloat 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes shopPatreonFloat {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(-8px) scale(1.05); }
+        }
+        
+        .patreon-shop-btn {
+            background: white;
+            color: #f96854;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+        }
+        
+        .patreon-shop-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+        
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -576,6 +618,22 @@
                 </div>
                 <a href="#" class="buy-button" onclick="purchaseProduct('toolkit')">Buy Complete Bundle</a>
             </div>
+        </div>
+
+        <!-- Patreon Support Section for Shop -->
+        <div class="patreon-shop-section">
+            <div class="patreon-shop-icon">🛒🎭💀</div>
+            <h2>Get Shop Discounts with Patreon!</h2>
+            <p>Support our horror writing community and unlock exclusive shop benefits:</p>
+            <ul style="list-style: none; margin: 20px 0;">
+                <li>👻 Exclusive member pricing</li>
+                <li>🧛‍♂️ Early access to new products</li>
+                <li>🏚️ Member-only horror resources</li>
+                <li>🎃 Free monthly bonus content</li>
+            </ul>
+            <a href="https://www.patreon.com/hauntedempire" class="patreon-shop-btn" target="_blank" rel="noopener">
+                Join Patreon for Discounts
+            </a>
         </div>
 
         <div style="text-align: center; margin: 50px 0;">

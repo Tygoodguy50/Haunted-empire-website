@@ -47,6 +47,43 @@ function updatePaymentLinks() {
         }
     };
     
+    // Patreon integration function
+    window.joinPatreon = function() {
+        // Track Patreon click analytics
+        if (window.analyticsTrack) {
+            window.analyticsTrack('patreon_clicked', {
+                source: 'website',
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        // Redirect to Patreon page
+        window.open('https://www.patreon.com/hauntedempire', '_blank');
+    };
+    
+    // Social media integration
+    window.openSocialLink = function(platform) {
+        const socialLinks = {
+            'patreon': 'https://www.patreon.com/hauntedempire',
+            'facebook': 'https://facebook.com/hauntedempire',
+            'twitter': 'https://twitter.com/hauntedempire',
+            'instagram': 'https://instagram.com/hauntedempire',
+            'linkedin': 'https://linkedin.com/company/haunted-empire',
+            'youtube': 'https://youtube.com/@hauntedempire'
+        };
+        
+        const url = socialLinks[platform];
+        if (url) {
+            if (window.analyticsTrack) {
+                window.analyticsTrack('social_clicked', {
+                    platform: platform,
+                    timestamp: new Date().toISOString()
+                });
+            }
+            window.open(url, '_blank');
+        }
+    };
+    
     // Updated subscription function
     window.subscribe = function(planId) {
         const links = {

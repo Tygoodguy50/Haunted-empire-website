@@ -198,6 +198,48 @@
             font-style: normal;
         }
         
+        /* Patreon Integration for Courses */
+        .patreon-course-section {
+            background: linear-gradient(135deg, #f96854, #ff6b6b);
+            border: 3px solid #f96854;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin: 40px 0;
+            color: white;
+        }
+        
+        .patreon-course-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: patreonFloat 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes patreonFloat {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-8px); }
+        }
+        
+        .patreon-course-btn {
+            background: white;
+            color: #f96854;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+        }
+        
+        .patreon-course-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+        
         .guarantee-section {
             background: linear-gradient(45deg, #8B0000, #DC143C);
             color: white;
@@ -393,6 +435,22 @@
                 <div class="course-price">$150/session</div>
                 <a href="#" class="enroll-button" onclick="enrollInCourse('mentorship')">Get Personal Mentorship</a>
             </div>
+        </div>
+
+        <!-- Patreon Support Section for Courses -->
+        <div class="patreon-course-section">
+            <div class="patreon-course-icon">🎭📚✨</div>
+            <h2>Get Course Discounts with Patreon!</h2>
+            <p>Support our horror writing community and get exclusive benefits:</p>
+            <ul style="list-style: none; margin: 20px 0;">
+                <li>👻 10-25% off all courses</li>
+                <li>🧛‍♂️ Early access to new content</li>
+                <li>🏚️ Monthly live Q&A sessions</li>
+                <li>🎃 Custom writing feedback</li>
+            </ul>
+            <a href="https://www.patreon.com/hauntedempire" class="patreon-course-btn" target="_blank" rel="noopener">
+                Join Our Patreon Community
+            </a>
         </div>
 
         <div class="testimonial-section">
