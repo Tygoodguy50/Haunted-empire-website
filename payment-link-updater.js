@@ -7,21 +7,29 @@ function updatePaymentLinks() {
     
     // Updated purchase function for shop items
     window.purchaseProduct = function(productId) {
+        console.log('EXTERNAL purchaseProduct called with:', productId); // Debug log
         const links = {
             'beginners': 'https://buy.stripe.com/7sYcN78Nd8mCd233IC8EM0g',
             'masterclass': 'https://buy.stripe.com/eVqdRbfbB46m6DF3IC',
             'templates': 'https://buy.stripe.com/7sYdRb9Rh8mC0fhcf88EM05',
             'editing': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04',
             'generator': 'https://buy.stripe.com/dRm6oJ6F5gT8aTVeng8EM03',
+            'publishing': 'https://buy.stripe.com/28E28t3sT8mCfab1Au',
+            'business': 'https://buy.stripe.com/00w7sN2oP6eu8LNa708EM0f',
             'toolkit': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01'
         };
         
+        console.log('EXTERNAL Available payment links:', Object.keys(links)); // Debug log
         const stripeUrl = links[productId];
+        console.log('EXTERNAL Payment URL found:', stripeUrl); // Debug log
+        
         if (stripeUrl && stripeUrl.startsWith('https://buy.stripe.com/')) {
-            window.open(stripeUrl, '_blank');
+            console.log('EXTERNAL Redirecting to Stripe:', stripeUrl); // Debug log
+            window.location.href = stripeUrl;  // Changed to same-tab redirect for consistency
         } else {
+            console.log('EXTERNAL No valid payment URL for product:', productId); // Debug log
             alert('Product not found. Please try browsing our available products.');
-            window.open('shop.html', '_blank');
+            window.location.href = 'shop.html';
         }
     };
     

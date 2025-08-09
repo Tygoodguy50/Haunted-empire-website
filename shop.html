@@ -688,11 +688,18 @@
                 'toolkit': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01' // Complete Horror Toolkit
             };
             
+            console.log('purchaseProduct called with:', product); // Debug log
+            console.log('Available payment links:', Object.keys(paymentLinks)); // Debug log
+            
             const paymentUrl = paymentLinks[product];
-            if (paymentUrl) {
+            console.log('Payment URL found:', paymentUrl); // Debug log
+            
+            if (paymentUrl && paymentUrl.startsWith('https://buy.stripe.com/')) {
+                console.log('Redirecting to Stripe:', paymentUrl); // Debug log
                 // Redirect to actual Stripe checkout
                 window.location.href = paymentUrl;
             } else {
+                console.log('No valid payment URL found for product:', product); // Debug log
                 // Fallback to contact page
                 alert('Payment processing temporarily unavailable. Please contact us directly.');
                 window.location.href = 'contact.html';
