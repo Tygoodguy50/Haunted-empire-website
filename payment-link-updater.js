@@ -66,7 +66,7 @@ function updatePaymentLinks() {
         const socialLinks = {
             'patreon': 'https://www.patreon.com/hauntedempire',
             'facebook': 'https://facebook.com/hauntedempire',
-            'twitter': 'https://twitter.com/hauntedempire',
+            'twitter': 'https://twitter.com/PhantomDp25',
             'instagram': 'https://instagram.com/hauntedempire',
             'linkedin': 'https://linkedin.com/company/phantomdp',
             'youtube': 'https://www.youtube.com/@AreaGhost'
