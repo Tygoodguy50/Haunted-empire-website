@@ -68,7 +68,7 @@ function updatePaymentLinks() {
             'midnight-whispers-ebook': 'https://buy.stripe.com/3cIdRbbZp5aqe674MG8EM06', // Masterclass
             'candle-curse-ebook': 'https://buy.stripe.com/28EdRb4wX6eu3rt5QK8EM04', // Editing
             'watches-within-ebook': 'https://buy.stripe.com/aFadRb0gH32ifab2Ey8EM02', // Publishing course
-            'writers-handbook-ebook': 'https://buy.stripe.com/fZucN7e7xgT85zBa708EM01' // Complete toolkit
+            'writers-handbook-ebook': 'https://buy.stripe.com/6oUaEZ1kL5aq0fh6UO8EM07' // Horror Writer's Handbook ebook
         };
         
         const key = format ? `${bookId}-${format}` : bookId;
