@@ -500,6 +500,9 @@ function createSocialMediaWidget() {
                     <button onclick="testQuantumNarrative()" class="monetization-btn quantum">
                         🔬 Test Quantum Engine
                     </button>
+                    <button onclick="conjureQuantumMoney()" class="monetization-btn money">
+                        💰 Conjure Quantum Money
+                    </button>
                 </div>
             </div>
         </div>
@@ -650,9 +653,21 @@ function createSocialMediaWidget() {
             animation: quantumGlow 2s ease-in-out infinite alternate;
         }
         
+        .monetization-btn.money {
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #000;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+            animation: moneyGlow 3s ease-in-out infinite alternate;
+        }
+        
         @keyframes quantumGlow {
             from { box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); }
             to { box-shadow: 0 0 20px rgba(0, 255, 255, 0.6); }
+        }
+        
+        @keyframes moneyGlow {
+            from { box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
+            to { box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); }
         }
         
         .monetization-btn:hover {
@@ -796,6 +811,47 @@ function testQuantumNarrative() {
         console.error('🔬 Quantum Test Error:', error);
         updateSocialFeed('🔬', 'Quantum test failed - check console', 'just now');
     }
+}
+
+function conjureQuantumMoney() {
+    // Check admin authentication
+    if (!window.adminSession || !window.adminSession.isLoggedIn) {
+        showNotification('🚫 Admin access required for quantum money conjuring', 'error');
+        return;
+    }
+    
+    if (!window.quantumMoney) {
+        showNotification('❌ Quantum Monetization Engine not loaded', 'error');
+        return;
+    }
+    
+    showNotification('💰 Initiating Quantum Money Conjuring Process...', 'info');
+    
+    // Start the quantum money conjuring process
+    window.quantumMoney.conjureMoney(3).then(results => {
+        const totalEarned = results.totalEarnings;
+        const successRate = (results.successRate * 100).toFixed(1);
+        
+        if (totalEarned > 0) {
+            showNotification(`💸 Quantum Money Conjured: $${totalEarned.toFixed(2)} (${successRate}% success rate)`, 'success');
+            updateSocialFeed('💰', `Quantum conjuring generated $${totalEarned.toFixed(2)} with ${successRate}% success rate`, 'just now');
+            
+            // Show detailed results
+            console.log('💰 Quantum Monetization Results:', results);
+            
+            // Update social feed with breakdown
+            results.results.forEach((payout, index) => {
+                updateSocialFeed('💸', `${payout.dominantEmotion} → $${payout.payout} via ${payout.revenueStream}`, `${index + 1}m ago`);
+            });
+        } else {
+            showNotification('💔 No quantum money conjured this cycle - insufficient emotional gravity', 'error');
+            updateSocialFeed('💰', 'Quantum conjuring failed - low engagement gravity', 'just now');
+        }
+    }).catch(error => {
+        showNotification('❌ Quantum money conjuring failed', 'error');
+        console.error('💰 Quantum Money Error:', error);
+        updateSocialFeed('💰', 'Quantum money conjuring error - check console', 'just now');
+    });
 }
 
 function triggerLoreDrop() {
