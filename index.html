@@ -33,146 +33,11 @@
       });
     </script>
     
-    <!-- EMERGENCY ADMIN BUTTON - INLINE CREATION -->
+    <!-- Admin System - Using admin-button-fix.js for clean implementation -->
     <script>
-    (function() {
-        console.log('🚨 EMERGENCY ADMIN BUTTON SCRIPT LOADING...');
-        
-        function createEmergencyAdminButton() {
-            console.log('🔴 Creating emergency admin button...');
-            
-            // Remove any existing admin buttons first
-            const existing = document.querySelectorAll('[id*="admin"], [class*="admin"]');
-            existing.forEach(el => {
-                if (el.textContent.includes('Admin') || el.textContent.includes('admin')) {
-                    el.remove();
-                }
-            });
-            
-            const btn = document.createElement('button');
-            btn.id = 'emergency-admin-btn';
-            btn.textContent = '🔴 ADMIN ACCESS';
-            btn.style.cssText = `
-                position: fixed !important;
-                top: 10px !important;
-                right: 10px !important;
-                z-index: 2147483647 !important;
-                background: linear-gradient(135deg, #ff0000, #cc0000) !important;
-                color: white !important;
-                border: 3px solid #ffffff !important;
-                padding: 15px 25px !important;
-                font-size: 16px !important;
-                font-weight: bold !important;
-                border-radius: 8px !important;
-                cursor: pointer !important;
-                box-shadow: 0 0 20px rgba(255,0,0,0.8) !important;
-                animation: emergencyPulse 2s infinite !important;
-                font-family: Arial, sans-serif !important;
-                width: 150px !important;
-                height: 60px !important;
-                display: block !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-            `;
-            
-            btn.onclick = function() {
-                console.log('🔴 Emergency admin button clicked!');
-                const username = prompt('Admin Username:');
-                const password = prompt('Admin Password:');
-                const adminKey = prompt('Admin Key:');
-                
-                if (username === 'PhantomDp' && password === 'Sarastine50!' && adminKey === 'TMT27') {
-                    alert('✅ Admin Access Granted!');
-                    // Open admin panel
-                    if (typeof showAdminDashboard === 'function') {
-                        showAdminDashboard();
-                    } else {
-                        alert('Admin dashboard loading...');
-                        window.location.hash = '#admin';
-                    }
-                } else {
-                    alert('❌ Access Denied!');
-                }
-            };
-            
-            document.body.appendChild(btn);
-            console.log('✅ Emergency admin button created and added to DOM');
-            
-            // Add CSS animation
-            if (!document.getElementById('emergency-admin-css')) {
-                const style = document.createElement('style');
-                style.id = 'emergency-admin-css';
-                style.textContent = `
-                    @keyframes emergencyPulse {
-                        0% { transform: scale(1); box-shadow: 0 0 20px rgba(255,0,0,0.8); }
-                        50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(255,0,0,1); }
-                        100% { transform: scale(1); box-shadow: 0 0 20px rgba(255,0,0,0.8); }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
-        }
-        
-        // Try to create button immediately
-        if (document.body) {
-            createEmergencyAdminButton();
-        } else {
-            // Wait for body to exist
-            const observer = new MutationObserver(function(mutations) {
-                if (document.body) {
-                    observer.disconnect();
-                    createEmergencyAdminButton();
-                }
-            });
-            observer.observe(document.documentElement, { childList: true, subtree: true });
-        }
-        
-        // Also try when DOM is ready
-        document.addEventListener('DOMContentLoaded', createEmergencyAdminButton);
-        
-        // And try after a delay
-        setTimeout(createEmergencyAdminButton, 1000);
-        setTimeout(createEmergencyAdminButton, 3000);
-        
-        console.log('🚨 Emergency admin button script loaded');
-    })();
+        console.log('� Clean admin system loading...');
+        // Admin button handled by admin-button-fix.js - no duplicates
     </script>
-    
-    <!-- INSTANT ADMIN BUTTON - BYPASSES EVERYTHING -->
-    <div id="instant-admin-btn" style="
-        position: fixed !important;
-        top: 5px !important;
-        right: 5px !important;
-        z-index: 2147483647 !important;
-        background: #ff0000 !important;
-        color: white !important;
-        border: 2px solid white !important;
-        padding: 10px 20px !important;
-        font-size: 14px !important;
-        font-weight: bold !important;
-        border-radius: 5px !important;
-        cursor: pointer !important;
-        box-shadow: 0 0 10px red !important;
-        font-family: Arial !important;
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        width: 120px !important;
-        height: 40px !important;
-        text-align: center !important;
-        line-height: 20px !important;
-    " onclick="
-        const u = prompt('Username:');
-        const p = prompt('Password:');
-        const k = prompt('Admin Key:');
-        if (u === 'PhantomDp' && p === 'Sarastine50!' && k === 'TMT27') {
-            alert('✅ ADMIN ACCESS GRANTED!');
-            if (typeof showAdminDashboard === 'function') showAdminDashboard();
-            else window.location.hash = '#admin';
-        } else {
-            alert('❌ ACCESS DENIED');
-        }
-    ">🔴 ADMIN</div>
     
     <meta name="description" content="Haunted Empire provides monetization tools and services for horror content creators, including payment processing and revenue tracking.">
     <style>
@@ -1014,8 +879,7 @@
     <script src="enhanced-features.js"></script>
     <script src="analytics-ai.js"></script>
     <script src="ai-writing-tools.js"></script>
-    <script src="admin-auth.js"></script>
-    <script src="force-admin-button.js"></script>
+    <script src="admin-button-fix.js"></script>
     <script src="quantum-narrative.js"></script>
     <script src="quantum-monetization.js"></script>
     <script src="synthetic-intent.js"></script>
