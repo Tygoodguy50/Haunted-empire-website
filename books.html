@@ -161,6 +161,165 @@
             border-radius: 15px;
             font-size: 0.8em;
         }
+
+        /* Enhanced Book Features */
+        .book-actions {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: 1px solid #8B0000;
+            background: transparent;
+            color: #8B0000;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .action-btn:hover {
+            background: #8B0000;
+            color: white;
+        }
+
+        .preview-btn {
+            background: #2196F3;
+            border-color: #2196F3;
+            color: white;
+        }
+
+        .preview-btn:hover {
+            background: #1976D2;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .modal-content {
+            background-color: #1a1a1a;
+            margin: 5% auto;
+            padding: 30px;
+            border: 2px solid #8B0000;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: white;
+        }
+
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close-modal:hover {
+            color: white;
+        }
+
+        .reading-sample {
+            background: #0a0a0a;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #8B0000;
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .author-bio {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #333;
+        }
+
+        .author-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            float: left;
+            margin-right: 20px;
+            margin-bottom: 10px;
+        }
+
+        .related-books {
+            margin-top: 30px;
+            padding: 20px;
+            background: #111;
+            border-radius: 10px;
+        }
+
+        .related-books h4 {
+            color: #8B0000;
+            margin-bottom: 15px;
+        }
+
+        .related-list {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .related-item {
+            background: #222;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            flex: 1;
+            min-width: 200px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .related-item:hover {
+            background: #333;
+            border-color: #8B0000;
+        }
+
+        @media (max-width: 768px) {
+            .book-actions {
+                flex-direction: column;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+                padding: 20px;
+            }
+            
+            .author-photo {
+                float: none;
+                margin: 0 auto 15px auto;
+            }
+        }
     </style>
 </head>
 <body>
@@ -417,6 +576,184 @@
         if (document.referrer.includes('bsky.app') || document.referrer.includes('bluesky')) {
             console.log('Books visitor from Bluesky promotional post!');
             // Track conversion
+        }
+    </script>
+
+    <!-- Enhanced Book Features JavaScript -->
+    <script>
+        // Reading samples database
+        const readingSamples = {
+            'shadows': {
+                title: 'The Shadows Between - Chapter 1',
+                content: `The screaming started at 3:33 AM, just like it had every night for the past week. But tonight, Dr. Sarah Chen wasn't dreaming.
+
+She sat up in her sterile office chair, the leather creaking under her weight. The sound had come from down the hall—from the patient rooms that should have been empty at this hour. The psychiatric ward of St. Mary's Hospital was supposed to be quiet after midnight.
+
+Sarah's hand trembled as she reached for her coffee mug, finding it cold. The digital clock on her desk glowed mockingly: 3:34 AM. She had been dozing again, something that had become increasingly frequent since... since the nightmares started bleeding through.
+
+Another scream pierced the silence, followed by the sound of glass shattering. This time, Sarah knew exactly which room it came from. Room 237. The room that had been sealed since the incident three months ago.
+
+The room where her patient, Michael Torres, had claimed his dreams were becoming real.
+
+The room where Michael had died, found with his eyes wide open, staring at something only he could see.
+
+Sarah stood on unsteady legs, her rational mind warring with the growing dread in her chest. She was a psychiatrist, trained to help people separate fantasy from reality. But lately, that line had become disturbingly blurred...`
+            },
+            'haunted-origins': {
+                title: 'Haunted Empire: Origins - Prologue',
+                content: `The blueprints were drawn in blood, each line a conduit for something that should never have been awakened.
+
+Master architect Aldrich Crane studied the crimson plans spread across his mahogany desk, his fingers tracing the impossible geometries that seemed to shift when he wasn't looking directly at them. The commission had come from a mysterious benefactor—payment in advance, no questions asked, only one requirement: build exactly what the plans specified. No deviations. No improvements. No substitutions.
+
+That had been six months ago. Now, as construction neared completion on the first of what would become known as the Haunted Empire's cornerstone buildings, Aldrich understood the true horror of what he had created.
+
+The workers had started disappearing two weeks into construction. First, it was just absences—men claiming they felt "watched" while working. Then came the injuries: cuts that appeared without cause, tools that seemed to move on their own, shadows that fell in the wrong directions even at midday.
+
+But Aldrich couldn't stop. Every time he tried to deviate from the blood-inked plans, something compelled him back to the exact specifications. The building demanded to be built precisely as designed, and with each brick laid according to the cursed blueprint, something ancient stirred beneath the foundation.
+
+Tonight, on the eve of completion, Aldrich finally understood what he had built. Not a building at all, but a doorway. And something was already pushing against it from the other side...`
+            }
+        };
+
+        // Author biographies
+        const authorBios = {
+            'elena': {
+                name: 'Elena Darkwood',
+                photo: '👩‍💼',
+                bio: `Elena Darkwood is a renowned psychiatrist turned horror novelist whose unique background in psychology brings unparalleled depth to her exploration of the human psyche's darkest corners. With over 15 years of clinical experience, she has treated patients with the most complex psychological disorders, experiences that directly influence her terrifyingly realistic portrayals of mental breakdown and supernatural encounters.
+
+Her debut novel "The Shadows Between" became an instant bestseller, praised by critics for its authentic depiction of psychological trauma interwoven with supernatural elements. Elena holds a PhD in Clinical Psychology from Harvard University and has published numerous academic papers on dream analysis and trauma therapy.
+
+When not writing, Elena continues her practice as a consulting psychiatrist and speaks at conferences about the intersection of psychology and horror fiction. She currently resides in Salem, Massachusetts, in a Victorian home that some say inspired several scenes in her novels.`,
+                awards: ['Bram Stoker Award Winner 2023', 'Shirley Jackson Award Nominee', 'Goodreads Choice Award Winner'],
+                otherBooks: ['Mirrors of Madness', 'The Dream Eaters', 'Psychological Scars']
+            },
+            'marcus': {
+                name: 'Marcus Grimm',
+                photo: '🧙‍♂️',
+                bio: `Marcus Grimm is a master of Gothic horror whose family lineage traces back to the original Gothic architects of medieval Europe. Born in Edinburgh, Scotland, Marcus grew up surrounded by ancient castles and crumbling graveyards that would later inspire his atmospheric horror novels.
+
+A historian by training, Marcus spent a decade researching cursed buildings and haunted architecture before channeling his findings into fiction. His "Haunted Empire" series has become a landmark in modern Gothic horror, blending historical fact with supernatural terror in ways that leave readers questioning what is real.
+
+Marcus is also a practicing architect, specializing in historical restoration. His unique perspective allows him to craft buildings and locations that feel authentically haunted, drawing from real architectural principles that have been associated with paranormal activity throughout history.`,
+                awards: ['World Fantasy Award Winner', 'British Fantasy Award', 'Gothic Literary Prize'],
+                otherBooks: ['Cathedral of Shadows', 'The Cursed Cornerstone', 'Blueprints in Blood']
+            }
+        };
+
+        // Related books recommendations
+        const relatedBooks = {
+            'shadows': [
+                { title: 'The Therapist\'s Nightmare', author: 'Sarah Mitchell', genre: 'Psychological Horror' },
+                { title: 'Dreams That Kill', author: 'Robert Chen', genre: 'Supernatural Thriller' },
+                { title: 'Reality Fractures', author: 'Elena Darkwood', genre: 'Psychological Horror' }
+            ],
+            'haunted-origins': [
+                { title: 'Cathedral of Shadows', author: 'Marcus Grimm', genre: 'Gothic Horror' },
+                { title: 'The Architect\'s Curse', author: 'Victoria Stone', genre: 'Historical Horror' },
+                { title: 'Blueprints in Blood', author: 'Marcus Grimm', genre: 'Gothic Horror' }
+            ]
+        };
+
+        // Show reading sample modal
+        function showReadingSample(bookId) {
+            const sample = readingSamples[bookId];
+            if (!sample) return;
+
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <span class="close-modal" onclick="closeModal(this)">&times;</span>
+                    <h2>${sample.title}</h2>
+                    <div class="reading-sample">
+                        ${sample.content.replace(/\n\n/g, '</p><p>').replace(/^/, '<p>').replace(/$/, '</p>')}
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="action-btn preview-btn" onclick="buyBook('book1')">Buy Full Book</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            modal.style.display = 'block';
+        }
+
+        // Show author bio modal
+        function showAuthorBio(authorId) {
+            const author = authorBios[authorId];
+            if (!author) return;
+
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <span class="close-modal" onclick="closeModal(this)">&times;</span>
+                    <div class="author-bio">
+                        <div class="author-photo">${author.photo}</div>
+                        <h2>${author.name}</h2>
+                        <p>${author.bio}</p>
+                        <h4>Awards & Recognition:</h4>
+                        <ul>
+                            ${author.awards.map(award => `<li>${award}</li>`).join('')}
+                        </ul>
+                        <h4>Other Books:</h4>
+                        <ul>
+                            ${author.otherBooks.map(book => `<li>${book}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            modal.style.display = 'block';
+        }
+
+        // Show related books modal
+        function showRelatedBooks(bookId) {
+            const related = relatedBooks[bookId];
+            if (!related) return;
+
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <span class="close-modal" onclick="closeModal(this)">&times;</span>
+                    <div class="related-books">
+                        <h2>📚 You Might Also Like</h2>
+                        <div class="related-list">
+                            ${related.map(book => `
+                                <div class="related-item">
+                                    <h4>${book.title}</h4>
+                                    <p>by ${book.author}</p>
+                                    <span class="genre-tag">${book.genre}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            modal.style.display = 'block';
+        }
+
+        // Close modal
+        function closeModal(element) {
+            const modal = element.closest('.modal');
+            modal.style.display = 'none';
+            setTimeout(() => {
+                document.body.removeChild(modal);
+            }, 300);
+        }
+
+        // Enhanced preview functionality
+        function previewBook(bookId) {
+            showReadingSample(bookId);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                closeModal(event.target.querySelector('.close-modal'));
+            }
         }
     </script>
     
