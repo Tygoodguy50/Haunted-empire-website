@@ -63,7 +63,7 @@ function updatePaymentLinks() {
     // Updated book purchase function
     window.buyBook = function(bookId, format) {
         const links = {
-            'shadows-between-ebook': 'https://buy.stripe.com/7sYdRb9Rh8mC0fhcf88EM05', // Templates bundle
+            'shadows-between-ebook': 'https://buy.stripe.com/5kQ5kF4wX0Uafabeng8EM0c', // The Shadows Between ebook
             'haunted-origins-ebook': 'https://buy.stripe.com/eVqdRb7J99qG3rtfrk8EM0b', // Haunted Empire: Origins ebook
             'midnight-whispers-ebook': 'https://buy.stripe.com/5kQ5kF3sT32i0fh4MG8EM0a', // Midnight Whispers ebook
             'candle-curse-ebook': 'https://buy.stripe.com/7sY4gBaVl7iybXZ0wq8EM09', // The Candle Maker's Curse ebook
