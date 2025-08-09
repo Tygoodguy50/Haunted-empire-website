@@ -7,7 +7,7 @@ const ADMIN_CONFIG = {
     credentials: {
         username: 'PhantomDp',
         password: 'Sarastine50!', // Secure admin password
-        adminKey: 'haunted_empire_admin_2025' // Additional security layer
+        adminKey: 'TMT27' // Additional security layer
     },
     sessionTimeout: 30 * 60 * 1000, // 30 minutes
     maxLoginAttempts: 3,
