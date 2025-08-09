@@ -65,7 +65,7 @@ function updatePaymentLinks() {
     window.openSocialLink = function(platform) {
         const socialLinks = {
             'patreon': 'https://www.patreon.com/PhantomDp',
-            'facebook': 'https://facebook.com/hauntedempire',
+            'facebook': 'https://facebook.com/PhantomDp',
             'twitter': 'https://twitter.com/PhantomDp25',
             'instagram': 'https://instagram.com/phantomnb_',
             'linkedin': 'https://linkedin.com/company/phantomdp',
