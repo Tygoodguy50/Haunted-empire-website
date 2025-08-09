@@ -412,12 +412,20 @@ function showAdminLogin() {
 
 function closeAdminLogin() {
     const modal = document.getElementById('admin-login-modal');
-    modal.style.display = 'none';
-    
-    // Clear form
-    document.getElementById('admin-username').value = '';
-    document.getElementById('admin-password').value = '';
-    document.getElementById('admin-key').value = '';
+    if (modal) {
+        modal.style.display = 'none';
+        
+        // Clear form if elements exist
+        const usernameField = document.getElementById('admin-username');
+        const passwordField = document.getElementById('admin-password'); 
+        const keyField = document.getElementById('admin-key');
+        
+        if (usernameField) usernameField.value = '';
+        if (passwordField) passwordField.value = '';
+        if (keyField) keyField.value = '';
+    } else {
+        console.warn('⚠️ Admin login modal not found during close operation');
+    }
     
     // Hide warnings
     document.getElementById('login-warning').style.display = 'none';

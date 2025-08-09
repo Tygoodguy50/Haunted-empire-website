@@ -272,9 +272,7 @@ function showNotification(message, type = 'success', duration = 5000) {
 }
 
 // Backend integration
-// Always use backend public API domain for API calls
-// eslint-disable-next-line no-undef
-let API_BASE_URL = 'https://haunted-empire-backend-1.onrender.com';
+// Use API_BASE_URL from config.js - no duplicate declaration needed
 
 // Stripe payment trigger
 async function triggerStripePayment() {
