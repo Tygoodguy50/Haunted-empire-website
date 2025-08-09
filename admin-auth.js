@@ -40,8 +40,16 @@ window.resetAdminLockout = resetAdminLockout;
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔐 DOM loaded - initializing admin system...');
+    
     // Reset any existing lockout on page load
     resetAdminLockout();
+    
+    // Create admin button immediately
+    setTimeout(() => {
+        addAdminAccessButton();
+        console.log('🔐 Admin button should be visible now');
+    }, 100);
     
     initializeAdminSystem();
     checkAdminSession();
@@ -361,7 +369,29 @@ function showAdminLogin() {
         return;
     }
     
+    // Check if modal exists, if not use simple prompts
     const modal = document.getElementById('admin-login-modal');
+    if (!modal) {
+        console.log('⚠️ Modal not found, using prompt fallback');
+        
+        const username = prompt('Admin Username:');
+        if (!username) return;
+        
+        const password = prompt('Admin Password:');
+        if (!password) return;
+        
+        const adminKey = prompt('Admin Key:');
+        if (!adminKey) return;
+        
+        // Use the existing validation function
+        if (validateAdminCredentials(username, password, adminKey)) {
+            loginSuccess();
+        } else {
+            loginFailure();
+        }
+        return;
+    }
+    
     modal.style.display = 'block';
     
     // Check if locked
@@ -842,5 +872,17 @@ function clearAdminLogs() {
         showNotification('🗑️ Admin logs cleared', 'info');
     }
 }
+
+// ===== GLOBAL ACCESS FUNCTIONS =====
+// Function called by HTML buttons
+function showAdminDashboard() {
+    console.log('🎯 showAdminDashboard called');
+    showAdminLogin();
+}
+
+// Global access
+window.showAdminDashboard = showAdminDashboard;
+window.showAdminLogin = showAdminLogin;
+window.showAdminPanel = showAdminPanel;
 
 console.log('🔐 Admin Authentication System loaded');
